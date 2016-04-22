@@ -34,7 +34,7 @@ public extension CGColor {
     }
 }
 
-class OMRadialGradientLayerViewController : UIViewController, UITableViewDataSource {
+class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource {
     
     
     @IBOutlet weak var tableView:  UITableView!

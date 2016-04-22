@@ -15,7 +15,7 @@
 		35F0C59D1CC6D53B0076B308 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0C5951CC6D53B0076B308 /* AppDelegate.swift */; };
 		35F0C59E1CC6D53B0076B308 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35F0C5991CC6D53B0076B308 /* Images.xcassets */; };
 		35F0C5A01CC6D53B0076B308 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35F0C59B1CC6D53B0076B308 /* Main.storyboard */; };
-		35F0C5A11CC6D53B0076B308 /* OMRadialGradientLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0C59C1CC6D53B0076B308 /* OMRadialGradientLayerViewController.swift */; };
+		35F0C5A11CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,7 +28,7 @@
 		35F0C5991CC6D53B0076B308 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		35F0C59A1CC6D53B0076B308 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35F0C59B1CC6D53B0076B308 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		35F0C59C1CC6D53B0076B308 /* OMRadialGradientLayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMRadialGradientLayerViewController.swift; sourceTree = "<group>"; };
+		35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradientLayerViewController.swift; sourceTree = "<group>"; };
 		D247910F1A36BB95007AC991 /* ExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -63,7 +63,7 @@
 				35F0C5991CC6D53B0076B308 /* Images.xcassets */,
 				35F0C59A1CC6D53B0076B308 /* Info.plist */,
 				35F0C59B1CC6D53B0076B308 /* Main.storyboard */,
-				35F0C59C1CC6D53B0076B308 /* OMRadialGradientLayerViewController.swift */,
+				35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */,
 			);
 			name = Example;
 			sourceTree = "<group>";
@@ -162,7 +162,7 @@
 				3510AD6C1CCA08A200BE41F9 /* OMShadingGradient.swift in Sources */,
 				35F0C59D1CC6D53B0076B308 /* AppDelegate.swift in Sources */,
 				3510AD6D1CCA08A200BE41F9 /* OMShadingGradientLayer.swift in Sources */,
-				35F0C5A11CC6D53B0076B308 /* OMRadialGradientLayerViewController.swift in Sources */,
+				35F0C5A11CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

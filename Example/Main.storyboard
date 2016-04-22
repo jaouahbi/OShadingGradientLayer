@@ -8,7 +8,7 @@
         <!--Animated Gradient Layer-->
         <scene sceneID="0Oe-gE-QMH">
             <objects>
-                <viewController id="dsp-wU-3jn" customClass="OMRadialGradientLayerViewController" customModule="ExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dsp-wU-3jn" customClass="OMShadingGradientLayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aYa-cA-CqZ"/>
                         <viewControllerLayoutGuide type="bottom" id="sdC-SB-qof"/>
