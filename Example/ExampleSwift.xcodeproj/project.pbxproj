@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3510AD691CCA08A200BE41F9 /* easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD641CCA08A200BE41F9 /* easing.swift */; };
 		3510AD6A1CCA08A200BE41F9 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 3510AD651CCA08A200BE41F9 /* LICENSE */; };
-		3510AD6B1CCA08A200BE41F9 /* OMGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD661CCA08A200BE41F9 /* OMGradient.swift */; };
 		3510AD6C1CCA08A200BE41F9 /* OMShadingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */; };
 		3510AD6D1CCA08A200BE41F9 /* OMShadingGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD681CCA08A200BE41F9 /* OMShadingGradientLayer.swift */; };
 		35F0C59D1CC6D53B0076B308 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0C5951CC6D53B0076B308 /* AppDelegate.swift */; };
@@ -21,7 +20,6 @@
 /* Begin PBXFileReference section */
 		3510AD641CCA08A200BE41F9 /* easing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = easing.swift; sourceTree = "<group>"; };
 		3510AD651CCA08A200BE41F9 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		3510AD661CCA08A200BE41F9 /* OMGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradient.swift; sourceTree = "<group>"; };
 		3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradient.swift; sourceTree = "<group>"; };
 		3510AD681CCA08A200BE41F9 /* OMShadingGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradientLayer.swift; sourceTree = "<group>"; };
 		35F0C5951CC6D53B0076B308 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -48,7 +46,6 @@
 			children = (
 				3510AD641CCA08A200BE41F9 /* easing.swift */,
 				3510AD651CCA08A200BE41F9 /* LICENSE */,
-				3510AD661CCA08A200BE41F9 /* OMGradient.swift */,
 				3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */,
 				3510AD681CCA08A200BE41F9 /* OMShadingGradientLayer.swift */,
 			);
@@ -158,7 +155,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3510AD691CCA08A200BE41F9 /* easing.swift in Sources */,
-				3510AD6B1CCA08A200BE41F9 /* OMGradient.swift in Sources */,
 				3510AD6C1CCA08A200BE41F9 /* OMShadingGradient.swift in Sources */,
 				35F0C59D1CC6D53B0076B308 /* AppDelegate.swift in Sources */,
 				3510AD6D1CCA08A200BE41F9 /* OMShadingGradientLayer.swift in Sources */,

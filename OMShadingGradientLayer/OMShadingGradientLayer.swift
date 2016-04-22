@@ -216,7 +216,7 @@ let kOMShadingGradientLayerAxial: String   = "axial"
                                              startRadius: startRadius,
                                              to:endPoint,
                                              endRadius: endRadius,
-                                             functionType: .Linear,
+                                             functionType: .Exponential,
                                              gradientType: gradientType,
                                              slopeFunction: slopeFunction)
         

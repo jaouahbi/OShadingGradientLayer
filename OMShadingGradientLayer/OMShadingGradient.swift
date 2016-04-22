@@ -20,6 +20,11 @@ public enum GradientType {
     case Radial
 }
 
+
+func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
+    return min(max(value, lower), upper)
+}
+
 public struct OMGradientShadingColors {
     
     let colorStart:UIColor
@@ -96,34 +101,30 @@ func concaveGradient() -> OMGradientShadingColors
     return gradient;
 }
 
-
-
-
 func ShadingFunctionCreateExponential(colors : OMGradientShadingColors, _ slopeFunction: (Double) -> Double) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
 {
     return { inData, outData in
-        let alpha = Double(slopeFunction(Double(inData[0])))
+        let alpha : Float = Float(inData[0]);
+        let startColor = CGColorGetComponents(colors.colorStart.CGColor)
         
-        let minValue:Double = Double(0.01)
-
-        var end    = log(max(Double(colors.redComponentEnd),minValue))
-        var start  = log(max(Double(colors.redComponent),minValue))
-        outData[0] = CGFloat(exp(start - (end + start) * alpha))
-    
+        print("startColor \(startColor[0]) \(startColor[1]) \(startColor[2]) \(startColor[3])")
         
-        end    = log(max(Double(colors.greenComponentEnd),minValue))
-        start  = log(max(Double(colors.greenComponent),minValue))
-        outData[1] = CGFloat(exp(start - (end + start) * alpha))
+        let endColor   = CGColorGetComponents(colors.colorEnd.CGColor)
         
-
-        end    = log(max(Double(colors.blueComponentEnd),minValue))
-        start  = log(max(Double(colors.blueComponent),minValue))
-        outData[2] = CGFloat(exp(start - (end + start) * alpha))
+        print("endColor \(endColor[0]) \(endColor[1]) \(endColor[2]) \(endColor[3])")
         
-
-        end    = log(max(Double(colors.alphaComponentEnd),minValue))
-        start  = log(max(Double(colors.alphaComponent),minValue))
-        outData[3] = CGFloat(exp(start - (end + start) * alpha))
+        for paintInfo in 0 ..< 4 {
+            let end    = logf(max(Float(endColor[paintInfo]), 0.01))
+            let start  = logf(max(Float(startColor[paintInfo]), 0.01))
+            
+            print("\(start) \(end)")
+            
+            let out = expf(start - (end + start) * alpha)
+            
+            print("out \(out)")
+            
+            outData[paintInfo] = CGFloat(out)
+        }
         
         print("red : \(outData[0])")
         print("green : \(outData[1])")
@@ -131,7 +132,39 @@ func ShadingFunctionCreateExponential(colors : OMGradientShadingColors, _ slopeF
         print("alpha : \(outData[3])")
     }
 }
-
+//
+//func ShadingFunctionCreateExponential(colors : OMGradientShadingColors, _ slopeFunction: (Double) -> Double) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
+//{
+//    return { inData, outData in
+//        let alpha = Double(slopeFunction(Double(inData[0])))
+//        
+//        let minValue:Double = Double(0.01)
+//
+//        var end    = log(max(Double(colors.redComponentEnd),minValue))
+//        var start  = log(max(Double(colors.redComponent),minValue))
+//        outData[0] = CGFloat(exp(start - (end + start) * alpha))
+//    
+//        
+//        end    = log(max(Double(colors.greenComponentEnd),minValue))
+//        start  = log(max(Double(colors.greenComponent),minValue))
+//        outData[1] = CGFloat(exp(start - (end + start) * alpha))
+//        
+//
+//        end    = log(max(Double(colors.blueComponentEnd),minValue))
+//        start  = log(max(Double(colors.blueComponent),minValue))
+//        outData[2] = CGFloat(exp(start - (end + start) * alpha))
+//        
+//
+//        end    = log(max(Double(colors.alphaComponentEnd),minValue))
+//        start  = log(max(Double(colors.alphaComponent),minValue))
+//        outData[3] = CGFloat(exp(start - (end + start) * alpha))
+//        
+//        print("red : \(outData[0])")
+//        print("green : \(outData[1])")
+//        print("blue : \(outData[2])")
+//        print("alpha : \(outData[3])")
+//    }
+//}
 
 
 func ShadingFunctionCreateLinear(colors : OMGradientShadingColors, _ slopeFunction: (Double) -> Double) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
@@ -145,10 +178,11 @@ func ShadingFunctionCreateLinear(colors : OMGradientShadingColors, _ slopeFuncti
         outData[2] = inverse * colors.blueComponent + alpha * colors.blueComponentEnd;
         outData[3] = inverse * colors.alphaComponent + alpha * colors.alphaComponentEnd;
         
-        print("red : \(outData[0])")
-        print("green : \(outData[1])")
-        print("blue : \(outData[2])")
-        print("alpha : \(outData[3])")
+//        print("red : \(outData[0])")
+//        print("green : \(outData[1])")
+//        print("blue : \(outData[2])")
+//        print("alpha : \(outData[3])")
+        
     }
 }
 
