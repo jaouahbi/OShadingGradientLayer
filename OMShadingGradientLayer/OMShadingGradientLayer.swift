@@ -30,7 +30,7 @@
 import UIKit
 
 // Animatable Properties
-private struct OMRadialGradientLayerProperties {
+private struct OMShadingGradientLayerProperties {
     
     static var startPoint   = "startPoint"
     static var startRadius  = "startRadius"
@@ -40,12 +40,11 @@ private struct OMRadialGradientLayerProperties {
     static var locations    = "locations"
 };
 
-let kOMRadialGradientLayerRadial: String  = "radial"
+let kOMShadingGradientLayerRadial: String  = "radial"
+let kOMShadingGradientLayerAxial: String   = "axial"
 
-@objc class OMRadialGradientLayer : CALayer
+@objc class OMShadingGradientLayer : CALayer
 {
-    private(set) var gradient:OMGradient? = OMGradient()
-    
     // The array of CGColorRef objects defining the color of each gradient
     // stop. Defaults to nil. Animatable.
     var colors: [CGColor] = [] {
@@ -65,7 +64,7 @@ let kOMRadialGradientLayerRadial: String  = "radial"
         }
     }
     // The kind of gradient that will be drawn. Default value is `radial'
-    var type : String! = kOMRadialGradientLayerRadial {
+    var type : String! = kOMShadingGradientLayerRadial {
         didSet {
             self.setNeedsDisplay();
         }
@@ -101,7 +100,6 @@ let kOMRadialGradientLayerRadial: String  = "radial"
         }
     }
     // MARK: - Object Helpers
-    
     var extendsPastStart : Bool  {
         set(newValue) {
             let isBitSet = (self.options.rawValue & CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue ) != 0
@@ -142,6 +140,10 @@ let kOMRadialGradientLayerRadial: String  = "radial"
         }
     }
     
+    var slopeFunction: (Double) -> Double       = LinearInterpolation
+    
+    private var cachedColors : OMGradientShadingColors  = OMGradientShadingColors(colorStart: UIColor.greenColor(), colorEnd: UIColor.greenColor())
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
     }
@@ -152,7 +154,6 @@ let kOMRadialGradientLayerRadial: String  = "radial"
     }
     
     // MARK: - Object Overrides
-    
     override init() {
         super.init()
         self.allowsEdgeAntialiasing     = true
@@ -162,30 +163,33 @@ let kOMRadialGradientLayerRadial: String  = "radial"
     
     override init(layer: AnyObject) {
         super.init(layer: layer)
-        if let other = layer as? OMRadialGradientLayer {
+        if let other = layer as? OMShadingGradientLayer {
             
             // common
             self.colors      = other.colors
             self.locations   = other.locations
             self.type        = other.type
+            self.options     = other.options
             
             // radial gradient properties
             self.startPoint  = other.startPoint
             self.startRadius = other.startRadius
+      
+             // axial gradient properties
             self.endPoint    = other.endPoint
             self.endRadius   = other.endRadius
-            self.options     = other.options
-            self.gradient    = other.gradient
+        
+            self.slopeFunction = other.slopeFunction;
         }
     }
     
     override class func needsDisplayForKey(event: String) -> Bool {
-        if (event == OMRadialGradientLayerProperties.startPoint ||
-            event == OMRadialGradientLayerProperties.startRadius ||
-            event == OMRadialGradientLayerProperties.locations   ||
-            event == OMRadialGradientLayerProperties.colors      ||
-            event == OMRadialGradientLayerProperties.endPoint   ||
-            event == OMRadialGradientLayerProperties.endRadius) {
+        if (event == OMShadingGradientLayerProperties.startPoint ||
+            event == OMShadingGradientLayerProperties.startRadius ||
+            event == OMShadingGradientLayerProperties.locations   ||
+            event == OMShadingGradientLayerProperties.colors      ||
+            event == OMShadingGradientLayerProperties.endPoint   ||
+            event == OMShadingGradientLayerProperties.endRadius) {
             return true
         }
         
@@ -193,21 +197,19 @@ let kOMRadialGradientLayerRadial: String  = "radial"
     }
     
     override func actionForKey(event: String) -> CAAction? {
-        if (event == OMRadialGradientLayerProperties.startPoint ||
-            event == OMRadialGradientLayerProperties.startRadius ||
-            event == OMRadialGradientLayerProperties.locations   ||
-            event == OMRadialGradientLayerProperties.colors      ||
-            event == OMRadialGradientLayerProperties.endPoint   ||
-            event == OMRadialGradientLayerProperties.endRadius) {
+        if (event == OMShadingGradientLayerProperties.startPoint ||
+            event == OMShadingGradientLayerProperties.startRadius ||
+            event == OMShadingGradientLayerProperties.locations   ||
+            event == OMShadingGradientLayerProperties.colors      ||
+            event == OMShadingGradientLayerProperties.endPoint   ||
+            event == OMShadingGradientLayerProperties.endRadius) {
             return animationActionForKey(event);
         }
         return super.actionForKey(event)
     }
     
     
-    func linearRadial(ctx: CGContext, colors : OMGradientShadingColors)
-    {
-        
+    func drawShading(ctx: CGContext, colors : OMGradientShadingColors, gradientType : GradientType  = .Axial) {
         var shadingInset = OMShadingGradient(startColor: colors.colorStart,
                                              endColor: colors.colorEnd,
                                              from: startPoint,
@@ -215,150 +217,48 @@ let kOMRadialGradientLayerRadial: String  = "radial"
                                              to:endPoint,
                                              endRadius: endRadius,
                                              functionType: .Linear,
-                                             gradientType: .Radial,
-                                             slopeFunction: LinearInterpolation)
+                                             gradientType: gradientType,
+                                             slopeFunction: slopeFunction)
         
         CGContextDrawShading(ctx, shadingInset.CGShading);
-
     }
-    func linearAxial(ctx: CGContext, colors : OMGradientShadingColors)
-    {
-        var shadingInset = OMShadingGradient(startColor: colors.colorStart,
-                                             endColor: colors.colorEnd,
-                                             from: startPoint,
-                                             startRadius: startRadius,
-                                             to:endPoint,
-                                             endRadius: endRadius,
-                                             functionType: .Linear,
-                                             gradientType: .Axial,
-                                             slopeFunction: LinearInterpolation)
-        
-        CGContextDrawShading(ctx, shadingInset.CGShading);
-        
-    }
+    
     override func drawInContext(ctx: CGContext) {
             super.drawInContext(ctx)
 
+        if let player = self.presentationLayer() as? OMShadingGradientLayer {
+#if DEBUG
+            print("drawing presentationLayer\n\(player)")
+#endif
+           cachedColors  = OMGradientShadingColors(colorStart: player.colors.first!, colorEnd: player.colors.last!)
+            
+            locations    = player.locations
+            startPoint   = player.startPoint
+            endPoint     = player.endPoint
+            startRadius  = player.startRadius
+            endRadius    = player.endRadius
+            
+        } else {
+            cachedColors  = OMGradientShadingColors(colorStart: colors.first!, colorEnd: colors.last!)
+        }
         
-
-//        if let player = self.presentationLayer() as? OMRadialGradientLayer {
-//#if DEBUG
-//            print("drawing presentationLayer\n\(player)")
-//#endif
-//            self.gradient!.setColors(player.colors, withLocations: player.locations)
-//            
-//            startCenter   = player.startCenter
-//            endCenter     = player.endCenter
-//            startRadius   = player.startRadius
-//            endRadius     = player.endRadius
-//            
-//        } else {
-//            self.gradient!.setColors(self.colors, withLocations: self.locations)
-//        }
-//        
-//        if let gradient = self.gradient!.getGradient() {
-//            
-//            // Draw the radial gradient
-//            
-//            if (self.type == kOMRadialGradientLayerRadial) {
-//#if DEBUG
-//                print("Drawing \(self.type) gradient\nstarCenter: \(startCenter)\nendCenter: \(endCenter)\nstartRadius: \(startRadius)\n endRadius: \(endRadius)\nbounds: \(self.bounds.integral)\nanchorPoint: \(self.anchorPoint)")
-//#endif
-//                CGContextDrawRadialGradient(ctx,
-//                                            gradient,
-//                                            startCenter,
-//                                            startRadius ,
-//                                            endCenter,
-//                                            endRadius ,
-//                                            options);
-//                
-//            }
-//        }
-//        
+        // Draw the radial gradient
         
-//      
-//        let colorsConvex = convexGradient()
-//        
-//        var shadingConvex = OMShadingGradient(startColor: colorsConvex.colorStart,
-//                                        endColor: colorsConvex.colorEnd,
-//                                        from: CGPoint(x: CGRectGetMaxX(self.frame)-64, y: CGRectGetMaxY(self.frame)-64),
-//                                        startRadius: startRadius,
-//                                        to:CGPoint(x: CGRectGetMaxX(self.frame), y: CGRectGetMaxY(self.frame)),
-//                                        endRadius: endRadius,
-//                                        functionType: .Exponential,
-//                                        gradientType: .Axial,
-//                                        slopeFunction: LinearInterpolation)
-//
-//        
-//        CGContextDrawShading(ctx, shadingConvex.CGShading);
-//        
-//
-//        self.linearAxial(ctx, colors: insetGradient())
-        self.linearAxial(ctx, colors:concaveGradient())
-//        self.linearAxial(ctx, colors:convexGradient())
-//        self.linearAxial(ctx, colors:shadeGradient())
-//        self.linearAxial(ctx, colors:shineGradient())
-        
-//        self.linearRadial(ctx, colors:insetGradient())
-//        self.linearRadial(ctx, colors:concaveGradient())
-//        self.linearRadial(ctx, colors:convexGradient())
-//          self.linearRadial(ctx, colors:shadeGradient()) //ok
-//        self.linearRadial(ctx, colors:shineGradient())
-//        
-//        var shadingInset = OMShadingGradient(startColor: colorsInset.colorStart,
-//                                             endColor: colorsInset.colorEnd,
-//                                             from: CGPoint(x: CGRectGetMinX(self.frame), y: CGRectGetMinY(self.frame)),
-//                                             startRadius: startRadius,
-//                                             to:CGPoint(x: CGRectGetMaxX(self.frame), y: CGRectGetMaxY(self.frame)),
-//                                             endRadius: endRadius,
-//                                             functionType: .Linear,
-//                                             gradientType: .Radial,
-//                                             slopeFunction: LinearInterpolation)
-        
- //       CGContextDrawShading(ctx, shadingInset.CGShading);
-//        
-//        let colorsShade = shadeGradient()
-//        
-//        var shadingShade = OMShadingGradient(startColor: colorsShade.colorStart,
-//                                         endColor: colorsShade.colorEnd,
-//                                         from: CGPointZero,
-//                                         startRadius: startRadius,
-//                                         to:CGPoint(x: CGRectGetMinX(self.frame)-256, y: CGRectGetMinY(self.frame)-256),
-//                                         endRadius: endRadius,
-//                                         functionType: .Exponential,
-//                                         gradientType: .Axial,
-//                                         slopeFunction: LinearInterpolation)
-//        
-//        CGContextDrawShading(ctx, shadingShade.CGShading);
-//        
-//        let colorsConcave = concaveGradient()
-//        
-//        var shadingConcave = OMShadingGradient(startColor: colorsConcave.colorStart,
-//                                        endColor: colorsConcave.colorEnd,
-//                                        from: CGPointZero,
-//                                        startRadius: startRadius,
-//                                        to:CGPoint(x: CGRectGetMinX(self.frame)+64, y: CGRectGetMinY(self.frame)+64),
-//                                        endRadius: endRadius,
-//                                        functionType: .Exponential,
-//                                        gradientType: .Axial,
-//                                        slopeFunction: LinearInterpolation)
-//        
-//        CGContextDrawShading(ctx, shadingConcave.CGShading);
-        
-//        let colorsShine = shineGradient()
-//        
-//        var shadingShine = OMShadingGradient(startColor: colorsShine.colorStart,
-//                                         endColor: colorsShine.colorEnd,
-//                                         from: CGPointZero,
-//                                         startRadius: startRadius,
-//                                         to:CGPoint(x: CGRectGetMinX(self.frame)+128, y: CGRectGetMinY(self.frame)+128),
-//                                         endRadius: endRadius,
-//                                         functionType: .Exponential,
-//                                         gradientType: .Axial,
-//                                         slopeFunction: LinearInterpolation)
-//        
-//        CGContextDrawShading(ctx, shadingShine.CGShading);
-        
+        if (self.type == kOMShadingGradientLayerRadial) {
+            #if DEBUG
+                print("Drawing \(self.type) gradient\nstarCenter: \(startCenter)\nendCenter: \(endCenter)\nstartRadius: \(startRadius)\n endRadius: \(endRadius)\nbounds: \(self.bounds.integral)\nanchorPoint: \(self.anchorPoint)")
+            #endif
+            // TODO: use a hash table for cache the colors
+            
+            self.drawShading(ctx,colors: self.cachedColors ,gradientType: .Radial)
+            
+        }
+        else
+        {
+            // TODO: use a hash table for cache the colors
+            
+            self.drawShading(ctx,colors: self.cachedColors )
+        }
     }
     
     override var description:String {
@@ -370,7 +270,7 @@ let kOMRadialGradientLayerRadial: String  = "radial"
             if (colors.count > 0) {
                 str += "\(colors)"
             }
-            if (type == kOMRadialGradientLayerRadial) {
+            if (type == kOMShadingGradientLayerRadial) {
                 str += " start from : \(startPoint) to \(endPoint), radius from : \(startRadius) to \(endRadius)"
             }
             if  (self.extendsPastEnd)  {

@@ -10,17 +10,17 @@
 import Foundation
 import UIKit
 
-enum GradientFunction {
+public enum GradientFunction {
     case Linear
     case Exponential
 }
 
-enum GradientType {
+public enum GradientType {
     case Axial
     case Radial
 }
 
-struct OMGradientShadingColors {
+public struct OMGradientShadingColors {
     
     let colorStart:UIColor
     let colorEnd:UIColor
@@ -47,6 +47,10 @@ struct OMGradientShadingColors {
                              green: &greenComponentEnd,
                              blue: &blueComponentEnd,
                              alpha: &alphaComponentEnd)
+    }
+    
+    init(colorStart:CGColor, colorEnd:CGColor) {
+        self.init(colorStart: UIColor(CGColor: colorStart), colorEnd: UIColor(CGColor: colorEnd))
     }
 }
 

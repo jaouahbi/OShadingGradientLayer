@@ -34,8 +34,7 @@ public extension CGColor {
     }
 }
 
-class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource {
-    
+class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate{
     
     @IBOutlet weak var tableView:  UITableView!
     
@@ -45,8 +44,8 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     @IBOutlet weak var pointStartY:  UISlider!
     @IBOutlet weak var pointEndY:  UISlider!
     
-    @IBOutlet weak var endCenterSliderValueLabel : UILabel!
-    @IBOutlet weak var startCenterSliderValueLabel : UILabel!
+    @IBOutlet weak var endPointSliderValueLabel : UILabel!
+    @IBOutlet weak var startPointSliderValueLabel : UILabel!
     
     @IBOutlet weak var viewForGradientLayer: UIView!
     
@@ -65,7 +64,7 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     
     var colors      : [CGColor] = [CGColor]()
     var locations   : [CGFloat] = [0,1]
-    let gradientLayer = OMRadialGradientLayer(type: kOMRadialGradientLayerRadial)
+    let gradientLayer = OMShadingGradientLayer(type: kOMShadingGradientLayerRadial)
     let shapeLayer    = CAShapeLayer()
     var animate       = false
     
@@ -140,6 +139,11 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     }()
     
     
+    func selectIndexPath(row:Int, section:Int = 0) {
+        let indexPath = NSIndexPath(forItem: row, inSection: section)
+        self.tableView.selectRowAtIndexPath(indexPath,animated: true,scrollPosition: .Bottom)
+    }
+    
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
@@ -161,6 +165,11 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         
         return cell
     }
+    
+   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+   {
+    
+   }
     
     // MARK: - Quick reference
     
@@ -269,6 +278,9 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         
         setUpGradientLayer()
         updateGradientLayer()
+        
+        // select the first element
+        self.selectIndexPath(0)
     }
     
     
@@ -298,8 +310,8 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
             print("Update \(self.gradientLayer) gradient\n starCenter: \(startPoint)\n endCenter: \(endPoint)\n minRadius: \(startRadius)\nmaxRadius: \(endRadius)\n bounds: \(gradientLayer.bounds.integral)\n")
         #endif
         
-        startCenterSliderValueLabel.text = "\(pointStartX.value)\n\(pointStartY.value)"
-        endCenterSliderValueLabel.text   = "\(pointEndX.value)\n\(pointEndY.value)"
+        startPointSliderValueLabel.text = "\(pointStartX.value)\n\(pointStartY.value)"
+        endPointSliderValueLabel.text   = "\(pointEndX.value)\n\(pointEndY.value)"
         
         startRadiusSliderValueLabel.text = String(format: "%.1f", startRadius)
         endRadiusSliderValueLabel.text   = String(format: "%.1f", endRadius)
@@ -381,7 +393,7 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         gradientLayer.extendsPastEnd = sender.on
     }
     
-    @IBAction func radialSliderChanged(sender: UISlider) {
+    @IBAction func gradientSliderChanged(sender: UISlider) {
         
         updateGradientLayer()
     }
@@ -470,6 +482,10 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         pointStartY.value = Float( maxSize.height * CGFloat(drand48()))
         pointEndX.value   = Float( maxSize.width * CGFloat(drand48()))
         pointEndY.value   = Float( maxSize.height * CGFloat(drand48()))
+    
+        // select random element
+        self.selectIndexPath(Int(rand()) % tableView.numberOfRowsInSection(0))
+        
     
 //        for (index, _) in locationSliders.enumerate() {
 //
