@@ -1,3 +1,21 @@
+
+//
+//    Copyright 2015 - Jorge Ouahbi
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+
+
 //
 //  OMShadingGradient.swift
 //  ExampleSwift
@@ -20,24 +38,16 @@ public enum GradientType {
     case Radial
 }
 
-
-func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
-    return min(max(value, lower), upper)
-}
-
 public struct OMGradientShadingColors {
     
     let colorStart:UIColor
     let colorEnd:UIColor
-    let startComponents:UnsafePointer<CGFloat>
-    let endComponents:UnsafePointer<CGFloat>
-
+    private let startComponents:UnsafePointer<CGFloat>
+    private let endComponents:UnsafePointer<CGFloat>
     
     init(colorStart:UIColor, colorEnd:UIColor) {
-        
-        self.colorEnd   = colorEnd
-        self.colorStart = colorStart
-        
+        self.colorStart      = colorStart
+        self.colorEnd        = colorEnd
         self.startComponents = CGColorGetComponents(colorStart.CGColor)
         self.endComponents   = CGColorGetComponents(colorEnd.CGColor)
     }
@@ -46,49 +56,6 @@ public struct OMGradientShadingColors {
         self.init(colorStart: UIColor(CGColor: colorStart), colorEnd: UIColor(CGColor: colorEnd))
     }
 }
-
-func insetGradient() -> OMGradientShadingColors
-{
-    let gradient = OMGradientShadingColors(colorStart: UIColor(red: 0 / 255.0, green: 0 / 255.0, blue: 0 / 255.0, alpha:  0.2) ,
-                                           colorEnd  : UIColor(red:0 / 255.0, green: 0 / 255.0, blue: 0 / 255.0, alpha:  0))
-    
-    return gradient;
-}
-
-func shineGradient() -> OMGradientShadingColors
-{
-    let gradient = OMGradientShadingColors(colorStart: UIColor(red: 1, green: 1, blue: 1, alpha:  0) ,
-                                           colorEnd  : UIColor(red: 1, green:1, blue: 1, alpha:  0.8))
-    
-    return gradient;
-}
-
-
-func shadeGradient() -> OMGradientShadingColors
-{
-    let gradient = OMGradientShadingColors(colorStart:UIColor(red:  252 / 255.0, green: 252 / 255.0, blue: 252 / 255.0, alpha:  0.65) ,
-                                           colorEnd  : UIColor(red: 178 / 255.0, green: 178 / 255.0, blue: 178 / 255.0, alpha:  0.65))
-    
-    return gradient;
-}
-
-
-func convexGradient() -> OMGradientShadingColors
-{
-    let gradient = OMGradientShadingColors(colorStart:UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0, alpha:  0.43) ,
-                                           colorEnd  : UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0, alpha:  0.05))
-    
-    return gradient;
-}
-
-func concaveGradient() -> OMGradientShadingColors
-{
-    let gradient = OMGradientShadingColors(colorStart:UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0, alpha:  0) ,
-                                           colorEnd  : UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0, alpha:  0.46))
-    
-    return gradient;
-}
-
 
 func ShadingFunctionCreateExponential(colors : OMGradientShadingColors, _ slopeFunction: (Double) -> Double) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
 {

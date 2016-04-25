@@ -1,65 +1,21 @@
+
 //
-//  GTMNSBezierPath+Shading.m
+//    Copyright 2015 - Jorge Ouahbi
 //
-//  Category for radial and axial stroke and fill functions for NSBezierPaths
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
 //
-//  Copyright 2006-2008 Google Inc.
+//       http://www.apache.org/licenses/LICENSE-2.0
 //
-//  Licensed under the Apache License, Version 2.0 (the "License"); you may not
-//  use this file except in compliance with the License.  You may obtain a copy
-//  of the License at
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-//  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-//  License for the specific language governing permissions and limitations under
-//  the License.
-//
+
 import UIKit
-
-
-//
-////  Fills a CGPathRef either axially or radially with the given shading.
-////
-////  Args:
-////    path: path to fill
-////    axially: if YES fill axially, otherwise fill radially
-////    asStroke: if YES, clip to the stroke of the path, otherwise
-////                        clip to the fill
-////    from: where to shade from
-////    fromRadius: in a radial fill, the radius of the from circle
-////    to: where to shade to
-////    toRadius: in a radial fill, the radius of the to circle
-////    extendingStart: if true, extend the fill with the first color of the shade
-////                    beyond |from| away from |to|
-////    extendingEnd: if true, extend the fill with the last color of the shade
-////                    beyond |to| away from |from|
-////    shading: the shading to use for the fill
-////
-//- (void)gtm_fillCGPath:(CGPathRef)path
-//               axially:(BOOL)axially
-//              asStroke:(BOOL)asStroke
-//                  from(fromPoint:CGPoint fromRadius:(CGFloat)fromRadius
-//                    to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
-//        extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
-//               shading:(id<GTMShading>)shading;
-//
-////  Returns the point which is the projection of a line from point |pointA|
-////  to |pointB| by length
-////
-////  Args:
-////    pointA: first point
-////    pointB: second point
-////    length: distance to project beyond |pointB| which is in line with
-////            |pointA| and |pointB|
-////
-////  Returns:
-////    the projected point
-//- (NSPoint)gtm_projectLineFrom:(NSPoint)pointA
-//                            to:(NSPoint)pointB
-//                            by:(CGFloat)length;
 
 extension CGContext
 {

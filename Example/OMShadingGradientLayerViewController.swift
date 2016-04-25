@@ -1,3 +1,21 @@
+
+//
+//    Copyright 2015 - Jorge Ouahbi
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+
+
 import UIKit
 import InfColorPicker
 
@@ -141,36 +159,36 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
                 "BounceEaseOut",
                 "BounceEaseInOut",
                 //average
-                "QuadraticEaseInAverage",
-                "QuadraticEaseOutAverage",
-                "QuadraticEaseInOutAverage",
-                "CubicEaseInAverage",
-                "CubicEaseOutAverage",
-                "CubicEaseInOutAverage",
-                "QuarticEaseInAverage",
-                "QuarticEaseOutAverage",
-                "QuarticEaseInOutAverage",
-                "QuinticEaseInAverage",
-                "QuinticEaseOutAverage",
-                "QuinticEaseInOutAverage",
-                "SineEaseInAverage",
-                "SineEaseOutAverage",
-                "SineEaseInOutAverage",
-                "CircularEaseInAverage",
-                "CircularEaseOutAverage",
-                "CircularEaseInOutAverage",
-                "ExponentialEaseInAverage",
-                "ExponentialEaseOutAverage",
-                "ExponentialEaseInOutAverage",
-                "ElasticEaseInAverage",
-                "ElasticEaseOutAverage",
-                "ElasticEaseInOutAverage",
-                "BackEaseInAverage",
-                "BackEaseOutAverage",
-                "BackEaseInOutAverage",
-                "BounceEaseInAverage",
-                "BounceEaseOutAverage",
-                "BounceEaseInOutAverage"
+            "QuadraticEaseInAverage",
+            "QuadraticEaseOutAverage",
+            "QuadraticEaseInOutAverage",
+            "CubicEaseInAverage",
+            "CubicEaseOutAverage",
+            "CubicEaseInOutAverage",
+            "QuarticEaseInAverage",
+            "QuarticEaseOutAverage",
+            "QuarticEaseInOutAverage",
+            "QuinticEaseInAverage",
+            "QuinticEaseOutAverage",
+            "QuinticEaseInOutAverage",
+            "SineEaseInAverage",
+            "SineEaseOutAverage",
+            "SineEaseInOutAverage",
+            "CircularEaseInAverage",
+            "CircularEaseOutAverage",
+            "CircularEaseInOutAverage",
+            "ExponentialEaseInAverage",
+            "ExponentialEaseOutAverage",
+            "ExponentialEaseInOutAverage",
+            "ElasticEaseInAverage",
+            "ElasticEaseOutAverage",
+            "ElasticEaseInOutAverage",
+            "BackEaseInAverage",
+            "BackEaseOutAverage",
+            "BackEaseInOutAverage",
+            "BounceEaseInAverage",
+            "BounceEaseOutAverage",
+            "BounceEaseInOutAverage"
         ]
     }()
     
@@ -238,10 +256,13 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         
         extendsPastEnd.on   = true
         extendsPastStart.on = true
+        
+        // radius
+        
         endRadiusSlider.maximumValue     = radius(viewBounds.size)*2
         endRadiusSlider.minimumValue     = 0
-        startRadiusSlider.maximumValue     = radius(viewBounds.size)*2
-        startRadiusSlider.minimumValue     = 0
+        startRadiusSlider.maximumValue   = radius(viewBounds.size)*2
+        startRadiusSlider.minimumValue   = 0
         
         endRadiusSlider.value   = radius(viewBounds.size)
         startRadiusSlider.value = 0.0;
@@ -311,6 +332,36 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     
     @IBAction func typeSwitchChanged(sender: UISwitch) {
         self.gradientLayer.type = sender.on ?  .Radial : .Axial;
+        let viewBounds = self.gradientLayer.bounds
+        if(sender.on == false) {
+            // axial
+            let p1 = CGPoint(
+                x: CGRectGetMinX(viewBounds),
+                y: CGRectGetMidY(viewBounds)
+            )
+            
+            let p2 = CGPoint(
+                x: CGRectGetMaxX(viewBounds),
+                y: CGRectGetMidY(viewBounds)
+            );
+            
+            // left to right
+            
+            pointStartX.value = Float(p1.x)
+            pointStartY.value = Float(p1.y)
+            pointEndX.value   = Float(p2.x)
+            pointEndY.value   = Float(p2.y)
+            
+        } else {
+            //radial
+            let midPoint = CGPoint(x: CGRectGetMidX(viewBounds), y: CGRectGetMidY(viewBounds));
+            
+            pointStartX.value = Float(midPoint.x)
+            pointStartY.value = Float(midPoint.y)
+            pointEndX.value   = Float(midPoint.x)
+            pointEndY.value   = Float(midPoint.y)
+        }
+        
         updateGradientLayer()
     }
     
@@ -390,9 +441,9 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         gradientLayer.extendsPastEnd   = extendsPastEnd.on
         gradientLayer.extendsPastStart = extendsPastStart.on
         
-#if DEBUG
-        print("Updating \(typeGardientSwitch.on ? "radial" : "axial") gradient\nstart: \(startPoint)\nend: \(endPoint)\nstartRadius: \(startRadius)\nendRadius: \(endRadius)\nbounds: \(gradientLayer.bounds.integral)\nFunction \(typeFunctionSwitch.on ? "exponential" : "linear") slope function: \(self.slopeFunctionString[tableView.indexPathForSelectedRow!.row])\n")
-#endif
+        #if DEBUG
+            print("Updating \(typeGardientSwitch.on ? "radial" : "axial") gradient\nstart: \(startPoint)\nend: \(endPoint)\nstartRadius: \(startRadius)\nendRadius: \(endRadius)\nbounds: \(gradientLayer.bounds.integral)\nFunction \(typeFunctionSwitch.on ? "exponential" : "linear") slope function: \(self.slopeFunctionString[tableView.indexPathForSelectedRow!.row])\n")
+        #endif
         if (self.animate) {
             
             // allways remove all animations
