@@ -1,5 +1,0 @@
-platform :ios, '8.0'
-use_frameworks!
- xcodeproj '/Users/jaouahbi/OMRadialGradientLayer/Example/ExampleSwift.xcodeproj'
- pod 'OMRadialGradientLayer', :path => '/Users/jaouahbi/OMRadialGradientLayer/OMRadialGradientLayer/'
-

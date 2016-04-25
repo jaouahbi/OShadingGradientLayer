@@ -260,7 +260,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Gradient Layer" id="ZGO-HE-D9l">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="5og-em-7qt">
+                        <barButtonItem key="leftBarButtonItem" id="5og-em-7qt">
                             <view key="customView" contentMode="scaleToFill" id="NUb-TT-bkr">
                                 <rect key="frame" x="16" y="5" width="71" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -283,7 +283,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="J1N-Ec-Apf">
+                        <barButtonItem key="rightBarButtonItem" id="J1N-Ec-Apf">
                             <view key="customView" contentMode="scaleToFill" id="dec-cQ-NHn">
                                 <rect key="frame" x="233" y="5" width="71" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

@@ -28,7 +28,6 @@ import UIKit
 
 extension UIBezierPath
 {
-    
     // based on http://ericasadun.com/2015/05/15/swift-playground-hack-of-the-day/
     
     class public  func random(size : CGSize) -> UIBezierPath? {
@@ -49,7 +48,7 @@ extension UIBezierPath
         
         let boundingBox = path.boundingBox()
         
-        var affine  = CGAffineTransformMakeScale(size.width/boundingBox.size.width, size.height/boundingBox.size.height)
+        var affine = CGAffineTransformMakeScale(size.width/boundingBox.size.width, size.height/boundingBox.size.height)
         
         return UIBezierPath(CGPath: CGPathCreateCopyByTransformingPath(path.CGPath, &affine)!)
     }
