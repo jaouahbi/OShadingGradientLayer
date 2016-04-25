@@ -307,9 +307,23 @@ func BounceEaseInOut(p: Double) -> Double
         return 0.5 * BounceEaseOut(p * 2 - 1) + 0.5;
     }
 }
+/*
+// Modeled after half sine wave
+func SineEaseInOut(p: Double) -> Double
+{
+    return 0.5 * (1 - cos(p * Double(M_PI)));
+}
+
+ */
 
 func SineEaseInOutLinearAverage(x: Double) -> Double
 {
     let easeInOutSine = ((cos(M_PI * x) - 1) / -2)
     return (easeInOutSine + x) / 2
+}
+
+func AverageEase(x: Double, slopeFunction: (Double) -> Double) -> Double
+{
+    let averageEase = slopeFunction(x)
+    return (averageEase + x) / 2
 }

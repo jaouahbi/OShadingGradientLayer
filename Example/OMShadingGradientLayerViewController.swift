@@ -1,40 +1,9 @@
 import UIKit
-
+import InfColorPicker
 
 let kDefaultAnimationDuration:NSTimeInterval = 5.0
 
-
-public extension CGColor {
-    class func rainbow(numberOfSteps:Int, hue:Double = 0.0) ->  Array<CGColorRef>!{
-        
-        var colors:Array<CGColorRef> = []
-        let iNumberOfSteps = (1.0 - hue) / Double(numberOfSteps)
-        for (var hue:Double = hue; hue < 1.0; hue += iNumberOfSteps) {
-            if(colors.count == numberOfSteps){
-                break
-            }
-            #if os(OSX)
-                lcolors.append(NSColor(hue: CGFloat(hue),
-                    saturation:CGFloat(1.0),
-                    brightness:CGFloat(1.0),
-                    alpha:CGFloat(1.0)).CGColor)
-            #else
-                colors.append(UIColor(hue: CGFloat(hue),
-                    saturation:CGFloat(1.0),
-                    brightness:CGFloat(1.0),
-                    alpha:CGFloat(1.0)).CGColor)
-                
-            #endif
-        }
-        
-        assert(colors.count == numberOfSteps,
-               "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
-        
-        return colors
-    }
-}
-
-class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate{
+class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate , InfColorPickerControllerDelegate{
     
     @IBOutlet weak var tableView:  UITableView!
     
@@ -53,19 +22,23 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     @IBOutlet weak var startRadiusSliderValueLabel: UILabel!
     @IBOutlet weak var endRadiusSlider: UISlider!
     @IBOutlet weak var endRadiusSliderValueLabel: UILabel!
-    
-    //@IBOutlet var colorLabels: [UILabel]!
-    //@IBOutlet var colorSwitches: [UISwitch]!
-    //@IBOutlet var locationSliders: [UISlider]!
-    //@IBOutlet var locationSliderValueLabels: [UILabel]!
+
+    @IBOutlet weak var typeGardientSwitch: UISwitch!
+    @IBOutlet weak var typeFunctionSwitch: UISwitch!
     
     @IBOutlet weak var extendsPastEnd: UISwitch!
     @IBOutlet weak var extendsPastStart: UISwitch!
     
+    @IBOutlet weak var colorStartView : UIButton!
+    @IBOutlet weak var colorEndView : UIButton!
+    
+    let pickerStart = InfColorPickerController(nibName: "InfColorPickerView", bundle: NSBundle(forClass: InfColorPickerController.self))
+    
+    let pickerEnd = InfColorPickerController(nibName: "InfColorPickerView", bundle: NSBundle(forClass: InfColorPickerController.self))
+    
     var colors      : [CGColor] = [CGColor]()
     var locations   : [CGFloat] = [0,1]
-    let gradientLayer = OMShadingGradientLayer(type: kOMShadingGradientLayerRadial)
-    let shapeLayer    = CAShapeLayer()
+    let gradientLayer = OMShadingGradientLayer(type: .Radial)
     var animate       = false
     
     lazy var slopeFunction: [(Double) -> Double] = {
@@ -138,151 +111,94 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
                 "SineEaseInOutLinearAverage"]
     }()
     
+    // MARK: - UITableView Helpers
     
     func selectIndexPath(row:Int, section:Int = 0) {
         let indexPath = NSIndexPath(forItem: row, inSection: section)
         self.tableView.selectRowAtIndexPath(indexPath,animated: true,scrollPosition: .Bottom)
+        self.gradientLayer.slopeFunction = self.slopeFunction[indexPath.row];
     }
     
+    // MARK: - UITableView Datasource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return slopeFunction.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
         
         assert(self.slopeFunctionString.count == self.slopeFunction.count)
         
         cell.textLabel?.textAlignment = .Center
-        cell.textLabel?.font = UIFont(name: "Helvetica", size: 9)
-        cell.textLabel?.text = "\(self.slopeFunctionString[indexPath.row])"
+        cell.textLabel?.font          = UIFont(name: "Helvetica", size: 9)
+        cell.textLabel?.text          = "\(self.slopeFunctionString[indexPath.row])"
         
-        cell.layer.cornerRadius  = 8
-        cell.layer.masksToBounds = true
+        cell.layer.cornerRadius       = 8
+        cell.layer.masksToBounds      = true
         
         return cell
     }
     
-   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
-   {
+    // MARK: - UITableView Delegate
     
-   }
-    
-    // MARK: - Quick reference
-    
-    func setUpGradientLayer() {
-        
-        // default values
-        
-        pointStartX.value = Float(CGRectGetMinX(viewForGradientLayer.frame))
-        pointStartY.value = Float(CGRectGetMinY(viewForGradientLayer.frame))
-        
-        pointEndX.value = Float(CGRectGetMaxX(viewForGradientLayer.frame))
-        pointEndY.value = Float(CGRectGetMaxY(viewForGradientLayer.frame))
-        
-        gradientLayer.frame         = viewForGradientLayer.bounds
-        gradientLayer.colors        = colors
-        gradientLayer.locations     = locations
-
-        viewForGradientLayer.layer.addSublayer(gradientLayer)
-        
-        #if DEBUG
-            viewForGradientLayer.layer.borderWidth = 1.0
-            viewForGradientLayer.layer.borderColor = UIColor.blackColor().CGColor
-        #endif
-        
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.gradientLayer.slopeFunction = self.slopeFunction[indexPath.row];
     }
-    
-    // based on http://ericasadun.com/2015/05/15/swift-playground-hack-of-the-day/
-    
-    func randomShape(size : CGSize) -> CGPath? {
-        func RandomFloat() -> CGFloat {return CGFloat(arc4random()) / CGFloat(UINT32_MAX)}
-        func RandomPoint() -> CGPoint {return CGPointMake(size.width * RandomFloat(), size.height * RandomFloat())}
-        let path = UIBezierPath(); path.moveToPoint(RandomPoint())
-        for _ in 0..<(3 + Int(arc4random_uniform(numericCast(10)))) {
-            switch (random() % 3) {
-            case 0: path.addLineToPoint(RandomPoint())
-            case 1: path.addQuadCurveToPoint(RandomPoint(), controlPoint: RandomPoint())
-            case 2: path.addCurveToPoint(RandomPoint(), controlPoint1: RandomPoint(), controlPoint2: RandomPoint())
-            default: break;
-            }
-        }
-        path.closePath()
-        
-        // maximize it
-        
-        let boundingBox = CGPathGetBoundingBox(path.CGPath)
-        
-        var affine  = CGAffineTransformMakeScale(size.width/boundingBox.size.width, size.height/boundingBox.size.height)
-        
-        return CGPathCreateCopyByTransformingPath(path.CGPath, &affine)
-    }
-
-//    func updateColorLabels()
-//    {
-//        for (index, color) in colors.enumerate() {
-//            self.colorLabels[index].layer.backgroundColor = color
-//        }
-//    }
-//    
-    
-//    func updateLocationSlidersFromLocations() {
-//        for (index, label) in locationSliderValueLabels.enumerate() {
-//            let colorSwitch = colorSwitches[index]
-//            if colorSwitch.on {
-//                let slider = locationSliders[index]
-//                slider.value = Float(locations[index])
-//                label.text   = String(format: "%.2f", slider.value)
-//                label.hidden = false
-//            } else {
-//                label.hidden = true
-//            }
-//        }
-//    }
     
     // MARK: - View life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //updateLocationSlidersFromLocations()
-        extendsPastEnd.on   = (gradientLayer.options.rawValue & CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue) != 0
-        extendsPastStart.on = (gradientLayer.options.rawValue & CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue) != 0
-        
-        self.colors  =  CGColor.rainbow(2, hue: drand48())
-        
-        //updateColorLabels()
+          randomizeColors()
     }
     
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        pointEndX.minimumValue     = 0
-        pointStartX.minimumValue   = 0
+        let viewBounds = viewForGradientLayer.bounds
+
+        pointStartX.maximumValue   = Float(viewBounds.size.width)
+        pointStartY.maximumValue   = Float(viewBounds.size.height)
         
-        pointEndX.maximumValue     = Float(viewForGradientLayer.bounds.size.width)
-        pointStartX.maximumValue   = Float(viewForGradientLayer.bounds.size.width)
+        pointEndX.maximumValue     = Float(viewBounds.size.width)
+        pointEndY.maximumValue     = Float(viewBounds.size.height)
+
+        let midPoint = CGPoint(x: CGRectGetMidX(viewBounds), y: CGRectGetMidY(viewBounds));
         
-        pointEndY.minimumValue     = 0
-        pointStartY.minimumValue   = 0
+        pointStartX.value = Float(midPoint.x)
+        pointStartY.value = Float(midPoint.y)
         
-        pointEndY.maximumValue     = Float(viewForGradientLayer.bounds.size.height)
-        pointStartY.maximumValue   = Float(viewForGradientLayer.bounds.size.height)
+        pointEndX.value = Float(midPoint.x)
+        pointEndY.value = Float(midPoint.y)
         
-        startRadiusSlider.value     = 0
-        endRadiusSlider.value       = 1.0
-        
-        setUpGradientLayer()
-        updateGradientLayer()
+        extendsPastEnd.on   = true
+        extendsPastStart.on = true
+        endRadiusSlider.maximumValue     = radius(viewBounds.size)*2
+        endRadiusSlider.minimumValue     = 0
+        startRadiusSlider.maximumValue     = radius(viewBounds.size)*2
+        startRadiusSlider.minimumValue     = 0
+
+        endRadiusSlider.value   = radius(viewBounds.size)
+        startRadiusSlider.value = 0.0;
         
         // select the first element
-        self.selectIndexPath(0)
-    }
+        selectIndexPath(0)
     
+        gradientLayer.frame         = viewBounds
+        gradientLayer.locations     = locations
+        
+        viewForGradientLayer.layer.addSublayer(gradientLayer)
+        
+        #if DEBUG
+            viewForGradientLayer.layer.borderWidth = 1.0
+            viewForGradientLayer.layer.borderColor = UIColor.blackColor().CGColor
+        #endif
+    
+        updateUI()
+        updateGradientLayer()
+    }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
     {
@@ -294,31 +210,115 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         }
     }
     
-    func updateGradientLayer()
+    // MARK: - Triggered actions
+    
+    @IBAction func extendsPastStartChanged(sender: UISwitch) {
+        
+        gradientLayer.extendsPastStart = sender.on
+    }
+    
+    @IBAction func extendsPastEndChanged(sender: UISwitch) {
+        
+        gradientLayer.extendsPastEnd = sender.on
+    }
+    
+    @IBAction func gradientSliderChanged(sender: UISlider) {
+        
+        updateGradientLayer()
+    }
+
+    @IBAction func strokeSwitchChanged(sender: UISwitch) {
+        
+        if ((gradientLayer.path) != nil) {
+            gradientLayer.stroke = sender.on
+        }
+    }
+    
+    @IBAction func maskSwitchChanged(sender: UISwitch) {
+        
+        if (sender.on) {
+            gradientLayer.path  = UIBezierPath.random(viewForGradientLayer.bounds.size)!.CGPath
+        } else {
+            gradientLayer.path = nil
+        }
+        
+        updateGradientLayer()
+    }
+    
+  
+    @IBAction func typeSwitchChanged(sender: UISwitch) {
+        self.gradientLayer.type = sender.on ?  .Radial : .Axial;
+        updateGradientLayer()
+    }
+    
+    @IBAction func functionSwitchChanged(sender: UISwitch) {
+        self.gradientLayer.function = sender.on ? .Exponential : .Linear;
+        updateGradientLayer()
+    }
+    
+    @IBAction func animateSwitchChanged(sender: UISwitch) {
+        self.animate = sender.on;
+        updateGradientLayer()
+    }
+
+    @IBAction func randomButtonTouchUpInside(sender: UIButton)
     {
+        let maxSize = gradientLayer.bounds.size
+        
+        endRadiusSlider.value   = Float(drand48()*Double(radius(gradientLayer.bounds.size)));
+        startRadiusSlider.value = Float(drand48()*Double(radius(gradientLayer.bounds.size)));
+        
+        pointStartX.value = Float( maxSize.width * CGFloat(drand48()))
+        pointStartY.value = Float( maxSize.height * CGFloat(drand48()))
+        pointEndX.value   = Float( maxSize.width * CGFloat(drand48()))
+        pointEndY.value   = Float( maxSize.height * CGFloat(drand48()))
+    
+        // select random element
+        self.selectIndexPath(Int(rand()) % tableView.numberOfRowsInSection(0))
+        
+        randomizeColors()
+        
+        updateUI();
+        
+        updateGradientLayer()
+        
+    }
+    
+    // MARK: - Helpers
+    
+    func randomizeColors() {
+        let color                 = UIColor.random()
+        self.colors               = [color!.prev()!.CGColor,color!.next()!.CGColor]
+        self.gradientLayer.colors = colors
+    }
+    
+    func radius(size:CGSize) -> Float {
+        if (size.height < size.width) {
+            return Float(size.height) * 0.5;
+        } else {
+            return Float(size.width) * 0.5;
+        }
+    }
+    
+    func updateGradientLayer() {
+        
         viewForGradientLayer.layoutIfNeeded()
         
-        let radius      = Float(min(viewForGradientLayer.bounds.height, viewForGradientLayer.bounds.width))
-        
-        let endRadius   = Double(radius * endRadiusSlider.value)
-        let startRadius = Double(radius * startRadiusSlider.value)
+        let endRadius   = Double(endRadiusSlider.value)
+        let startRadius = Double(startRadiusSlider.value)
         
         let startPoint = CGPoint(x:CGFloat(pointStartX.value),y:CGFloat(pointStartY.value))
         let endPoint   = CGPoint(x:CGFloat(pointEndX.value),y:CGFloat(pointEndY.value))
         
-        #if DEBUG
-            print("Update \(self.gradientLayer) gradient\n starCenter: \(startPoint)\n endCenter: \(endPoint)\n minRadius: \(startRadius)\nmaxRadius: \(endRadius)\n bounds: \(gradientLayer.bounds.integral)\n")
-        #endif
+        gradientLayer.extendsPastEnd   = extendsPastEnd.on
+        gradientLayer.extendsPastStart = extendsPastStart.on
         
-        startPointSliderValueLabel.text = "\(pointStartX.value)\n\(pointStartY.value)"
-        endPointSliderValueLabel.text   = "\(pointEndX.value)\n\(pointEndY.value)"
-        
-        startRadiusSliderValueLabel.text = String(format: "%.1f", startRadius)
-        endRadiusSliderValueLabel.text   = String(format: "%.1f", endRadius)
-    
+//#if DEBUG
+    print("Updating \(typeGardientSwitch.on ? "radial" : "axial") gradient\nstart: \(startPoint)\nend: \(endPoint)\nstartRadius: \(startRadius)\nendRadius: \(endRadius)\nbounds: \(gradientLayer.bounds.integral)\nFunction \(typeFunctionSwitch.on ? "exponential" : "linear") slope function: \(self.slopeFunctionString[tableView.indexPathForSelectedRow!.row])\n")
+//#endif
         if (self.animate) {
             
-            //allways remove all animations
+            // allways remove all animations
             
             gradientLayer.removeAllAnimations()
             
@@ -372,7 +372,6 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
             
             gradientLayer.startPoint   =  startPoint
             gradientLayer.endPoint     =  endPoint
-            
             gradientLayer.colors        = self.colors
             gradientLayer.locations     = self.locations
             
@@ -383,143 +382,56 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         }
     }
     
-    @IBAction func extendsPastStartChanged(sender: UISwitch) {
+    func updateUI() {
         
-        gradientLayer.extendsPastStart = sender.on
+        // points text
+        startPointSliderValueLabel.text = "x:\(roundf(pointStartX.value))\ny:\(roundf(pointStartY.value))"
+        endPointSliderValueLabel.text   = "x:\(roundf(pointEndX.value))\ny:\(roundf(pointEndY.value))"
+        
+        //radius text
+        startRadiusSliderValueLabel.text = String(format: "%.1f", gradientLayer.startRadius)
+        endRadiusSliderValueLabel.text   = String(format: "%.1f", gradientLayer.endRadius)
+        
+        assert(self.colors.count == 2);
+        
+        // color labels
+        colorStartView.backgroundColor = UIColor(CGColor: self.colors.first!)
+        colorEndView.backgroundColor   = UIColor(CGColor: self.colors.last!)
     }
     
-    @IBAction func extendsPastEndChanged(sender: UISwitch) {
+    @IBAction func colorStartViewTapped(sender: UIButton)
+    {
+        pickerStart.sourceColor = self.colorStartView.backgroundColor
+        pickerStart.delegate     = self
+        pickerStart.presentModallyOverViewController(self)
         
-        gradientLayer.extendsPastEnd = sender.on
     }
     
-    @IBAction func gradientSliderChanged(sender: UISlider) {
-        
-        updateGradientLayer()
+    @IBAction func colorEndViewTapped(sender: UIButton)
+    {  
+        pickerEnd.sourceColor = self.colorEndView.backgroundColor
+        pickerEnd.delegate     = self;
+        pickerEnd.presentModallyOverViewController(self)
     }
-
-    @IBAction func maskSwitchChanged(sender: UISwitch) {
+    
+    // Mark : InfColorPickerController Delegate
+    func colorPickerControllerDidChangeColor(picker:InfColorPickerController)
+    {
         
-        if (sender.on) {
-            
-            // mask with a random shape path
-            
-            shapeLayer.frame            = viewForGradientLayer.bounds
-            shapeLayer.fillRule         = drand48() > 0.5 ? kCAFillRuleEvenOdd : kCAFillRuleNonZero
-            shapeLayer.miterLimit       = 4.0
-            shapeLayer.contentsScale    = gradientLayer.contentsScale
-            shapeLayer.setAffineTransform(gradientLayer.affineTransform())
-            shapeLayer.path             = randomShape(viewForGradientLayer.bounds.size)
-            gradientLayer.mask          = shapeLayer
+    }
+    func colorPickerControllerDidFinish(picker:InfColorPickerController)
+    {
+        if (pickerStart == picker) {
+            self.colors[0] = picker.resultColor.CGColor
         } else {
-            gradientLayer.mask          = nil
+            self.colors[1] = picker.resultColor.CGColor
         }
         
-        updateGradientLayer()
-    }
-    
-    
-    @IBAction func animateSwitchChanged(sender: UISwitch) {
-        self.animate = sender.on;
-        updateGradientLayer()
-    }
-    
-//    @IBAction func colorSwitchChanged(sender: UISwitch) {
-//        var gradientLayerColors = [CGColor]()
-//        var locations = [CGFloat]()
-//        
-//        for (index, colorSwitch) in colorSwitches.enumerate() {
-//            let slider = locationSliders[index]
-//            
-//            if colorSwitch.on {
-//                gradientLayerColors.append(colors[index])
-//                locations.append(CGFloat(slider.value))
-//                slider.hidden = false
-//                colorLabels[index].hidden = false;
-//            } else {
-//                slider.hidden = true
-//                colorLabels[index].hidden = true;
-//            }
-//        }
-//        
-//        if gradientLayerColors.count == 1 {
-//            gradientLayerColors.append(gradientLayerColors[0])
-//        }
-//        
-//        gradientLayer.colors    = gradientLayerColors
-//        gradientLayer.locations = locations.count > 1 ? locations : nil
-//        updateColorLabels()
-//        updateLocationSlidersFromLocations()
-//        updateGradientLayer();
-//    }
-    
-//    @IBAction func locationSliderChanged(sender: UISlider) {
-//        var gradientLayerLocations = [CGFloat]()
-//        
-//        for (index, slider) in locationSliders.enumerate() {
-//            let colorSwitch = colorSwitches[index]
-//            
-//            if colorSwitch.on {
-//                gradientLayerLocations.append(CGFloat(slider.value))
-//            }
-//        }
-//        gradientLayer.locations = gradientLayerLocations
-//        updateLocationSlidersFromLocations()
-//        updateGradientLayer();
-//    }
-    
-    // MARK: - Triggered actions
-
-    
-    @IBAction func randomButtonTouchUpInside(sender: UIButton)
-    {
-        let maxSize = self.gradientLayer.bounds.size
+        self.gradientLayer.colors = colors
         
-        endRadiusSlider.value   = Float(drand48());
-        startRadiusSlider.value = Float(drand48());
-        
-        pointStartX.value = Float( maxSize.width * CGFloat(drand48()))
-        pointStartY.value = Float( maxSize.height * CGFloat(drand48()))
-        pointEndX.value   = Float( maxSize.width * CGFloat(drand48()))
-        pointEndY.value   = Float( maxSize.height * CGFloat(drand48()))
-    
-        // select random element
-        self.selectIndexPath(Int(rand()) % tableView.numberOfRowsInSection(0))
-        
-    
-//        for (index, _) in locationSliders.enumerate() {
-//
-//            if (drand48() < 0.5 ? true : false) {
-//                
-//                // random color
-//                
-//                let randomRed   = CGFloat(drand48())
-//                let randomGreen = CGFloat(drand48())
-//                let randomBlue  = CGFloat(drand48())
-//                //let randomAlpha = CGFloat(drand48())
-//                
-//                self.colors[index]  = UIColor(red  : randomRed,
-//                                              green: randomGreen,
-//                                              blue : randomBlue,
-//                                              //alpha: (randomAlpha != 0.0) ? randomAlpha : 1.0).CGColor
-//                                              alpha: 1.0).CGColor
-//                
-//                // random  location
-//                locationSliders[index].value    = Float(drand48())
-//                locationSliders[index].enabled  = true
-//                colorSwitches[index].on         = true
-//                
-//            } else {
-//                locationSliders[index].enabled = false
-//                colorSwitches[index].on        = false
-//            }
-//        }
-//        
-//        updateColorLabels()
-//        
-//        // propage the changes
-//        for colorSwitch in colorSwitches {
-//            self.colorSwitchChanged(colorSwitch)
-//        }
+        picker.dismissViewControllerAnimated(true) {
+            self.updateUI()
+            self.updateGradientLayer()
+        }
     }
 }

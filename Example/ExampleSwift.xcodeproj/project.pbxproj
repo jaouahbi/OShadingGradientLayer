@@ -7,26 +7,51 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3510AD691CCA08A200BE41F9 /* easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD641CCA08A200BE41F9 /* easing.swift */; };
+		3510AD691CCA08A200BE41F9 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD641CCA08A200BE41F9 /* Easing.swift */; };
 		3510AD6A1CCA08A200BE41F9 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 3510AD651CCA08A200BE41F9 /* LICENSE */; };
 		3510AD6C1CCA08A200BE41F9 /* OMShadingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */; };
 		3510AD6D1CCA08A200BE41F9 /* OMShadingGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD681CCA08A200BE41F9 /* OMShadingGradientLayer.swift */; };
+		3515973D1CCD5EC8001F3DE4 /* InfColorPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3515973A1CCD5EBA001F3DE4 /* InfColorPicker.framework */; };
+		353C70811CCC913000CC13E1 /* CGContext+Shading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C70801CCC913000CC13E1 /* CGContext+Shading.swift */; };
 		35F0C59D1CC6D53B0076B308 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0C5951CC6D53B0076B308 /* AppDelegate.swift */; };
 		35F0C59E1CC6D53B0076B308 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35F0C5991CC6D53B0076B308 /* Images.xcassets */; };
 		35F0C5A01CC6D53B0076B308 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35F0C59B1CC6D53B0076B308 /* Main.storyboard */; };
 		35F0C5A11CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */; };
+		35FD83901CCCBDA2008FE15E /* UIBezierPath+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FD838F1CCCBDA2008FE15E /* UIBezierPath+Random.swift */; };
+		35FD83921CCCBE23008FE15E /* UIColor+Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FD83911CCCBE23008FE15E /* UIColor+Generator.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		351597391CCD5EBA001F3DE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 351597351CCD5EBA001F3DE4 /* InfColorPicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3515970D1CCD5E2B001F3DE4;
+			remoteInfo = InfColorPicker;
+		};
+		3515973B1CCD5EC3001F3DE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 351597351CCD5EBA001F3DE4 /* InfColorPicker.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3515970C1CCD5E2B001F3DE4;
+			remoteInfo = InfColorPicker;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		3510AD641CCA08A200BE41F9 /* easing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = easing.swift; sourceTree = "<group>"; };
+		3510AD641CCA08A200BE41F9 /* Easing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		3510AD651CCA08A200BE41F9 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradient.swift; sourceTree = "<group>"; };
 		3510AD681CCA08A200BE41F9 /* OMShadingGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradientLayer.swift; sourceTree = "<group>"; };
+		351597351CCD5EBA001F3DE4 /* InfColorPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = InfColorPicker.xcodeproj; path = ../../InfColorPicker/InfColorPicker.xcodeproj; sourceTree = "<group>"; };
+		353C70801CCC913000CC13E1 /* CGContext+Shading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGContext+Shading.swift"; sourceTree = "<group>"; };
 		35F0C5951CC6D53B0076B308 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35F0C5991CC6D53B0076B308 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		35F0C59A1CC6D53B0076B308 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35F0C59B1CC6D53B0076B308 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradientLayerViewController.swift; sourceTree = "<group>"; };
+		35FD838F1CCCBDA2008FE15E /* UIBezierPath+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Random.swift"; sourceTree = "<group>"; };
+		35FD83911CCCBE23008FE15E /* UIColor+Generator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Generator.swift"; sourceTree = "<group>"; };
 		D247910F1A36BB95007AC991 /* ExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -35,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3515973D1CCD5EC8001F3DE4 /* InfColorPicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,7 +70,8 @@
 		3510AD631CCA08A200BE41F9 /* OMShadingGradientLayer */ = {
 			isa = PBXGroup;
 			children = (
-				3510AD641CCA08A200BE41F9 /* easing.swift */,
+				353C70801CCC913000CC13E1 /* CGContext+Shading.swift */,
+				3510AD641CCA08A200BE41F9 /* Easing.swift */,
 				3510AD651CCA08A200BE41F9 /* LICENSE */,
 				3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */,
 				3510AD681CCA08A200BE41F9 /* OMShadingGradientLayer.swift */,
@@ -53,14 +80,24 @@
 			path = ../OMShadingGradientLayer;
 			sourceTree = "<group>";
 		};
+		351597361CCD5EBA001F3DE4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3515973A1CCD5EBA001F3DE4 /* InfColorPicker.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		35F0C5941CC6D53B0076B308 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				35FD83911CCCBE23008FE15E /* UIColor+Generator.swift */,
 				35F0C5951CC6D53B0076B308 /* AppDelegate.swift */,
 				35F0C5991CC6D53B0076B308 /* Images.xcassets */,
 				35F0C59A1CC6D53B0076B308 /* Info.plist */,
 				35F0C59B1CC6D53B0076B308 /* Main.storyboard */,
 				35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */,
+				35FD838F1CCCBDA2008FE15E /* UIBezierPath+Random.swift */,
 			);
 			name = Example;
 			sourceTree = "<group>";
@@ -68,6 +105,7 @@
 		D24791061A36BB95007AC991 = {
 			isa = PBXGroup;
 			children = (
+				351597351CCD5EBA001F3DE4 /* InfColorPicker.xcodeproj */,
 				3510AD631CCA08A200BE41F9 /* OMShadingGradientLayer */,
 				D24791101A36BB95007AC991 /* Products */,
 				35F0C5941CC6D53B0076B308 /* Example */,
@@ -96,6 +134,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3515973C1CCD5EC3001F3DE4 /* PBXTargetDependency */,
 			);
 			name = ExampleSwift;
 			productName = ExampleSwift;
@@ -129,12 +168,28 @@
 			mainGroup = D24791061A36BB95007AC991;
 			productRefGroup = D24791101A36BB95007AC991 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 351597361CCD5EBA001F3DE4 /* Products */;
+					ProjectRef = 351597351CCD5EBA001F3DE4 /* InfColorPicker.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D247910E1A36BB95007AC991 /* ExampleSwift */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3515973A1CCD5EBA001F3DE4 /* InfColorPicker.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = InfColorPicker.framework;
+			remoteRef = 351597391CCD5EBA001F3DE4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D247910D1A36BB95007AC991 /* Resources */ = {
@@ -154,15 +209,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3510AD691CCA08A200BE41F9 /* easing.swift in Sources */,
+				3510AD691CCA08A200BE41F9 /* Easing.swift in Sources */,
+				35FD83921CCCBE23008FE15E /* UIColor+Generator.swift in Sources */,
+				353C70811CCC913000CC13E1 /* CGContext+Shading.swift in Sources */,
 				3510AD6C1CCA08A200BE41F9 /* OMShadingGradient.swift in Sources */,
 				35F0C59D1CC6D53B0076B308 /* AppDelegate.swift in Sources */,
+				35FD83901CCCBDA2008FE15E /* UIBezierPath+Random.swift in Sources */,
 				3510AD6D1CCA08A200BE41F9 /* OMShadingGradientLayer.swift in Sources */,
 				35F0C5A11CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3515973C1CCD5EC3001F3DE4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = InfColorPicker;
+			targetProxy = 3515973B1CCD5EC3001F3DE4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D247912C1A36BB95007AC991 /* Debug */ = {

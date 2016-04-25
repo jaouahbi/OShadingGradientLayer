@@ -40,11 +40,28 @@ private struct OMShadingGradientLayerProperties {
     static var locations    = "locations"
 };
 
-let kOMShadingGradientLayerRadial: String  = "radial"
-let kOMShadingGradientLayerAxial: String   = "axial"
 
 @objc class OMShadingGradientLayer : CALayer
 {
+    
+    var lineWidth : CGFloat = 1.0 {
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
+    
+    var stroke : Bool = false {
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
+    
+    var path : CGPath?{
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
+    
     // The array of CGColorRef objects defining the color of each gradient
     // stop. Defaults to nil. Animatable.
     var colors: [CGColor] = [] {
@@ -64,7 +81,7 @@ let kOMShadingGradientLayerAxial: String   = "axial"
         }
     }
     // The kind of gradient that will be drawn. Default value is `radial'
-    var type : String! = kOMShadingGradientLayerRadial {
+    var type : GradientType = .Radial {
         didSet {
             self.setNeedsDisplay();
         }
@@ -93,54 +110,31 @@ let kOMShadingGradientLayerAxial: String   = "axial"
             self.setNeedsDisplay();
         }
     }
-    //Defaults to 0. Animatable.
-    var options: CGGradientDrawingOptions = CGGradientDrawingOptions(rawValue:0) {
+    
+    var extendsPastStart : Bool = false {
         didSet {
             self.setNeedsDisplay()
         }
     }
-    // MARK: - Object Helpers
-    var extendsPastStart : Bool  {
-        set(newValue) {
-            let isBitSet = (self.options.rawValue & CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue ) != 0
-            if (newValue != isBitSet) {
-                if newValue {
-                    // add bits to mask
-                    let newOptions = (self.options.rawValue | CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue)
-                    self.options   = CGGradientDrawingOptions(rawValue:newOptions);
-                } else {
-                    // remove bits from mask
-                    let newOptions  = (self.options.rawValue & ~CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue)
-                    self.options    = CGGradientDrawingOptions(rawValue:newOptions);
-                }
-                self.setNeedsDisplay();
-            }
-        }
-        get {
-            return (self.options.rawValue & CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue) != 0
+    
+    var extendsPastEnd:Bool  = false{
+        didSet {
+            self.setNeedsDisplay()
         }
     }
     
-    var extendsPastEnd:Bool {
-        set(newValue) {
-            let isBitSet = (self.options.rawValue & CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue ) != 0
-            if (newValue != isBitSet) {
-                if newValue {
-                    let newOptions = (self.options.rawValue | CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue)
-                    self.options   = CGGradientDrawingOptions(rawValue:newOptions);
-                } else {
-                    let newOptions = (self.options.rawValue & ~CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue)
-                    self.options   = CGGradientDrawingOptions(rawValue:newOptions);
-                }
-                self.setNeedsDisplay();
-            }
-        }
-        get {
-            return (self.options.rawValue & CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue) != 0
+    var slopeFunction: (Double) -> Double  = LinearInterpolation {
+        didSet {
+            self.setNeedsDisplay();
         }
     }
     
-    var slopeFunction: (Double) -> Double       = LinearInterpolation
+    var function: GradientFunction = .Linear {
+        didSet {
+            self.setNeedsDisplay();
+        }
+    }
+    
     
     private var cachedColors : OMGradientShadingColors  = OMGradientShadingColors(colorStart: UIColor.greenColor(), colorEnd: UIColor.greenColor())
     
@@ -148,7 +142,7 @@ let kOMShadingGradientLayerAxial: String   = "axial"
         super.init(coder:aDecoder)
     }
     
-    convenience init(type:String!) {
+    convenience init(type:GradientType!) {
         self.init()
         self.type = type
     }
@@ -169,16 +163,17 @@ let kOMShadingGradientLayerAxial: String   = "axial"
             self.colors      = other.colors
             self.locations   = other.locations
             self.type        = other.type
-            self.options     = other.options
             
             // radial gradient properties
             self.startPoint  = other.startPoint
             self.startRadius = other.startRadius
-      
-             // axial gradient properties
+            
+            // axial gradient properties
             self.endPoint    = other.endPoint
             self.endRadius   = other.endRadius
-        
+            self.extendsPastStart    = other.extendsPastStart
+            self.extendsPastEnd   = other.extendsPastEnd
+            
             self.slopeFunction = other.slopeFunction;
         }
     }
@@ -208,29 +203,14 @@ let kOMShadingGradientLayerAxial: String   = "axial"
         return super.actionForKey(event)
     }
     
-    
-    func drawShading(ctx: CGContext, colors : OMGradientShadingColors, gradientType : GradientType  = .Axial) {
-        var shadingInset = OMShadingGradient(startColor: colors.colorStart,
-                                             endColor: colors.colorEnd,
-                                             from: startPoint,
-                                             startRadius: startRadius,
-                                             to:endPoint,
-                                             endRadius: endRadius,
-                                             functionType: .Exponential,
-                                             gradientType: gradientType,
-                                             slopeFunction: slopeFunction)
-        
-        CGContextDrawShading(ctx, shadingInset.CGShading);
-    }
-    
     override func drawInContext(ctx: CGContext) {
-            super.drawInContext(ctx)
-
+        super.drawInContext(ctx)
+        
         if let player = self.presentationLayer() as? OMShadingGradientLayer {
-#if DEBUG
-            print("drawing presentationLayer\n\(player)")
-#endif
-           cachedColors  = OMGradientShadingColors(colorStart: player.colors.first!, colorEnd: player.colors.last!)
+            #if DEBUG
+                print("drawing presentationLayer\n\(player)")
+            #endif
+            cachedColors  = OMGradientShadingColors(colorStart: player.colors.first!, colorEnd: player.colors.last!)
             
             locations    = player.locations
             startPoint   = player.startPoint
@@ -242,23 +222,37 @@ let kOMShadingGradientLayerAxial: String   = "axial"
             cachedColors  = OMGradientShadingColors(colorStart: colors.first!, colorEnd: colors.last!)
         }
         
-        // Draw the radial gradient
+        #if DEBUG
+            print("Drawing \(self.type) gradient\nstarCenter: \(startCenter)\nendCenter: \(endCenter)\nstartRadius: \(startRadius)\n endRadius: \(endRadius)\nbounds: \(self.bounds.integral)\nanchorPoint: \(self.anchorPoint)")
+        #endif
         
-        if (self.type == kOMShadingGradientLayerRadial) {
-            #if DEBUG
-                print("Drawing \(self.type) gradient\nstarCenter: \(startCenter)\nendCenter: \(endCenter)\nstartRadius: \(startRadius)\n endRadius: \(endRadius)\nbounds: \(self.bounds.integral)\nanchorPoint: \(self.anchorPoint)")
-            #endif
-            // TODO: use a hash table for cache the colors
+        if (self.path != nil) {
             
-            self.drawShading(ctx,colors: self.cachedColors ,gradientType: .Radial)
+            let axially = (self.type == .Radial) ? false : true
+            ctx.fill( self.path!,
+                      colors: self.cachedColors,
+                      axially: axially,
+                      asStroke: self.stroke,
+                      lineWidth:self.lineWidth,
+                      fromPoint: startPoint, fromRadius: startRadius, toPoint: endPoint, toRadius: endRadius, extendingStart: self.extendsPastStart, extendingEnd: self.extendsPastEnd,functionType:
+                self.function,
+                      slopeFunction: self.slopeFunction);
+        } else {
+            var shading = OMShadingGradient(startColor: cachedColors.colorStart,
+                                            endColor: cachedColors.colorEnd,
+                                            from: startPoint,
+                                            startRadius: startRadius,
+                                            to:endPoint,
+                                            endRadius: endRadius,
+                                            extendStart: extendsPastStart,
+                                            extendEnd: extendsPastEnd,
+                                            functionType: self.function,
+                                            gradientType: self.type ,
+                                            slopeFunction: slopeFunction)
             
+            CGContextDrawShading(ctx, shading.CGShading);
         }
-        else
-        {
-            // TODO: use a hash table for cache the colors
-            
-            self.drawShading(ctx,colors: self.cachedColors )
-        }
+        
     }
     
     override var description:String {
@@ -270,7 +264,7 @@ let kOMShadingGradientLayerAxial: String   = "axial"
             if (colors.count > 0) {
                 str += "\(colors)"
             }
-            if (type == kOMShadingGradientLayerRadial) {
+            if (self.type == .Radial) {
                 str += " start from : \(startPoint) to \(endPoint), radius from : \(startRadius) to \(endRadius)"
             }
             if  (self.extendsPastEnd)  {
@@ -279,6 +273,14 @@ let kOMShadingGradientLayerAxial: String   = "axial"
             if  (self.extendsPastStart)  {
                 str += " draws before start location"
             }
+            if  (self.function == .Linear)  {
+                str += " linear interpolation"
+            }else{
+                str += " exponential interpolation"
+            }
+            //if  (self.slopeFunction)  {
+            //    str += " \(slopeFunction)"
+            //}
             return str
         }
     }
