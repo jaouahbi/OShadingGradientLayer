@@ -390,9 +390,9 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         gradientLayer.extendsPastEnd   = extendsPastEnd.on
         gradientLayer.extendsPastStart = extendsPastStart.on
         
-        //#if DEBUG
+#if DEBUG
         print("Updating \(typeGardientSwitch.on ? "radial" : "axial") gradient\nstart: \(startPoint)\nend: \(endPoint)\nstartRadius: \(startRadius)\nendRadius: \(endRadius)\nbounds: \(gradientLayer.bounds.integral)\nFunction \(typeFunctionSwitch.on ? "exponential" : "linear") slope function: \(self.slopeFunctionString[tableView.indexPathForSelectedRow!.row])\n")
-        //#endif
+#endif
         if (self.animate) {
             
             // allways remove all animations
@@ -478,9 +478,8 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     
     // MARK: -  InfColorPickerController Delegate
     
-    func colorPickerControllerDidChangeColor(picker:InfColorPickerController)
-    {
-        
+    func colorPickerControllerDidChangeColor(picker:InfColorPickerController) {
+        //@unused
     }
     
     func colorPickerControllerDidFinish(picker:InfColorPickerController)
