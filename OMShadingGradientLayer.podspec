@@ -8,6 +8,7 @@ Pod::Spec.new do |s|
   s.authors = { 'Jorge Ouahbi' => 'jorgeouahbi@gmail.com' }
   s.source = { :git => 'https://github.com/jaouahbi/OMShadingGradientLayer.git', :tag => s.version }
 
+  s.platform      = :ios, '8.0'
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'OMShadingGradientLayer/*.swift'
