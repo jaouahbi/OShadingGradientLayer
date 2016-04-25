@@ -7,6 +7,106 @@
 
 import Foundation
 
+
+func EaseAverage(x: Double, slopeFunction: (Double) -> Double) -> Double
+{
+    let averageEase = slopeFunction(x)
+    return (averageEase + x) / 2
+}
+
+func QuadraticEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuadraticEaseIn)
+}
+func QuadraticEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuadraticEaseOut)
+}
+func QuadraticEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuadraticEaseInOut)
+}
+func CubicEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:CubicEaseIn)
+}
+func CubicEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:CubicEaseOut)
+}
+func CubicEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:CubicEaseInOut)
+}
+func QuarticEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuarticEaseIn)
+}
+func QuarticEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuarticEaseOut)
+}
+func QuarticEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuarticEaseInOut)
+}
+func QuinticEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuinticEaseIn)
+}
+func QuinticEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuinticEaseOut)
+}
+func QuinticEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:QuinticEaseInOut)
+}
+func SineEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:SineEaseIn)
+}
+func SineEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:SineEaseOut)
+}
+func SineEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:SineEaseInOut)
+}
+func CircularEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:CircularEaseIn)
+}
+func CircularEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:CircularEaseOut)
+}
+func CircularEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:CircularEaseInOut)
+}
+func ExponentialEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:ExponentialEaseIn)
+}
+func ExponentialEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:ExponentialEaseOut)
+}
+func ExponentialEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:ExponentialEaseInOut)
+}
+func ElasticEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:ElasticEaseIn)
+}
+func ElasticEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:ElasticEaseOut)
+}
+func ElasticEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:ElasticEaseInOut)
+}
+func BackEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:BackEaseIn)
+}
+func BackEaseOutAverage(x: Double) -> Double {
+    
+    return EaseAverage(x,slopeFunction:BackEaseOut)
+}
+func BackEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:BackEaseInOut)
+}
+func BounceEaseInAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:BounceEaseIn)
+}
+func BounceEaseOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:BounceEaseOut)
+}
+func BounceEaseInOutAverage(x: Double) -> Double {
+    return EaseAverage(x,slopeFunction:BounceEaseInOut)
+    
+}
+
 //
 //  easing.c
 //
@@ -307,23 +407,4 @@ func BounceEaseInOut(p: Double) -> Double
         return 0.5 * BounceEaseOut(p * 2 - 1) + 0.5;
     }
 }
-/*
-// Modeled after half sine wave
-func SineEaseInOut(p: Double) -> Double
-{
-    return 0.5 * (1 - cos(p * Double(M_PI)));
-}
 
- */
-
-func SineEaseInOutLinearAverage(x: Double) -> Double
-{
-    let easeInOutSine = ((cos(M_PI * x) - 1) / -2)
-    return (easeInOutSine + x) / 2
-}
-
-func AverageEase(x: Double, slopeFunction: (Double) -> Double) -> Double
-{
-    let averageEase = slopeFunction(x)
-    return (averageEase + x) / 2
-}
