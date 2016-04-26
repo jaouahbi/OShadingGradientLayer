@@ -19,6 +19,8 @@
 		352573FE1CCFB7FE0012037E /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 352573F01CCFB7FE0012037E /* InfColorSquarePicker.m */; };
 		352573FF1CCFB7FE0012037E /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 352573F21CCFB7FE0012037E /* InfHSBSupport.m */; };
 		352574001CCFB7FE0012037E /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 352573F41CCFB7FE0012037E /* InfSourceColorView.m */; };
+		352574061CCFBAFA0012037E /* InfColorPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 352574031CCFB7FE0012037E /* InfColorPicker.framework */; };
+		352574081CCFBB560012037E /* InfColorPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 352574031CCFB7FE0012037E /* InfColorPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		353C70811CCC913000CC13E1 /* CGContext+Shading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C70801CCC913000CC13E1 /* CGContext+Shading.swift */; };
 		35F0C59D1CC6D53B0076B308 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0C5951CC6D53B0076B308 /* AppDelegate.swift */; };
 		35F0C59E1CC6D53B0076B308 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35F0C5991CC6D53B0076B308 /* Images.xcassets */; };
@@ -43,7 +45,28 @@
 			remoteGlobalIDString = 3515970C1CCD5E2B001F3DE4;
 			remoteInfo = InfColorPicker;
 		};
+		352574091CCFBB560012037E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 352573F51CCFB7FE0012037E /* InfColorPicker.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3515970C1CCD5E2B001F3DE4;
+			remoteInfo = InfColorPicker;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3525740B1CCFBB560012037E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				352574081CCFBB560012037E /* InfColorPicker.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3510AD641CCA08A200BE41F9 /* Easing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
@@ -84,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				352574061CCFBAFA0012037E /* InfColorPicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,11 +226,13 @@
 				D247910B1A36BB95007AC991 /* Sources */,
 				D247910C1A36BB95007AC991 /* Frameworks */,
 				D247910D1A36BB95007AC991 /* Resources */,
+				3525740B1CCFBB560012037E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				352574051CCFB8110012037E /* PBXTargetDependency */,
+				3525740A1CCFBB560012037E /* PBXTargetDependency */,
 			);
 			name = ExampleSwift;
 			productName = ExampleSwift;
@@ -308,6 +334,11 @@
 			name = InfColorPicker;
 			targetProxy = 352574041CCFB8110012037E /* PBXContainerItemProxy */;
 		};
+		3525740A1CCFBB560012037E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = InfColorPicker;
+			targetProxy = 352574091CCFBB560012037E /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -332,6 +363,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -376,6 +408,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -396,6 +429,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -410,6 +444,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
