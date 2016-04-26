@@ -18,7 +18,6 @@
 
 //
 //  OMShadingGradient.swift
-//  ExampleSwift
 //
 //  Created by Jorge Ouahbi on 20/4/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.

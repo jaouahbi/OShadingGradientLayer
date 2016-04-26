@@ -18,14 +18,10 @@
 //
 //  OMShadingGradientLayer.swift
 //
-//  Created by Jorge Ouahbi on 4/3/15.
+//  Created by Jorge Ouahbi on 20/4/16.
+//  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
-//  0.1.0 (13-06-2016)
-//      Now, all the properties are animatables
-//      Fixed error condition. When the locations count was less than the colors count.
-//      Removed the oval type
-//
-//
+
 
 import UIKit
 
@@ -37,7 +33,7 @@ private struct OMShadingGradientLayerProperties {
     static var endPoint     = "endPoint"
     static var endRadius    = "endRadius"
     static var colors       = "colors"
-    static var locations    = "locations"
+    static var locations    = "locations"   // TODO: use it
 };
 
 
@@ -76,7 +72,7 @@ private struct OMShadingGradientLayerProperties {
     // the colors are mapped to the output colorspace before being
     // interpolated. Defaults to nil. Animatable.
     
-    // @note: unused
+    // TODO: use it
     var locations : [CGFloat]? = nil {
         didSet {
             self.setNeedsDisplay()
@@ -207,7 +203,7 @@ private struct OMShadingGradientLayerProperties {
     override func drawInContext(ctx: CGContext) {
         super.drawInContext(ctx)
         
-        //var locations : [CGFloat]?
+        //var locations : [CGFloat]? // TODO: use it
         var startPoint : CGPoint = self.startPoint
         var endPoint : CGPoint = self.endPoint
         var startRadius: CGFloat = self.startRadius

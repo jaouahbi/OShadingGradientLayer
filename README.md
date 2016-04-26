@@ -1,14 +1,16 @@
 # OMShadingGradientLayer
 
-Shading gradient layer with animatable properties
+Shading gradient layer with animatable properties in Swift
 
 [![Build Status](https://travis-ci.org/jaouahbi/OMShadingGradientLayer.svg?branch=master)](https://travis-ci.org/jaouahbi/OMShadingGradientLayer)
 
 ## Features
 
 - [x] Gradient layer with animatable properties
-- [x] Support axial and radial shading gradient
-- [x] Support fill and stroke shading gradient styles
+- [x] Axial and radial shading gradient styles
+- [x] Fill and stroke shading gradient styles
+- [x] Linear and exponential interpolation
+- [x] Different slope functions
 
 ## Requirements
 
@@ -19,9 +21,13 @@ Shading gradient layer with animatable properties
 
 Open a issue.
 
-## Installation
+## Manual Installation
 
 > To use OMShadingGradientLayer with a project , you must include all Swift files located inside the `OMShadingGradientLayer` directory directly in your project.
+
+## CocoaPods Installation
+
+> Add pod 'OMShadingGradientLayer' to your Podfile
 
 * * *
 

@@ -17,7 +17,7 @@
 
 
 //
-//  easing.swift
+//  Easing.swift
 //
 //  Created by Jorge Ouahbi on 21/4/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
