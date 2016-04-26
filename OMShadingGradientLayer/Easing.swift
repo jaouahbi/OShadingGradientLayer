@@ -26,8 +26,7 @@
 import Foundation
 
 
-func EaseAverage(x: Double, slopeFunction: (Double) -> Double) -> Double
-{
+func EaseAverage(x: Double, slopeFunction: (Double) -> Double) -> Double {
     let averageEase = slopeFunction(x)
     return (averageEase + x) / 2
 }

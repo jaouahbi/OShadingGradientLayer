@@ -75,6 +75,8 @@ private struct OMShadingGradientLayerProperties {
     // assumed to spread uniformly across the [0,1] range. When rendered,
     // the colors are mapped to the output colorspace before being
     // interpolated. Defaults to nil. Animatable.
+    
+    // @note: unused
     var locations : [CGFloat]? = nil {
         didSet {
             self.setNeedsDisplay()
@@ -134,7 +136,6 @@ private struct OMShadingGradientLayerProperties {
             self.setNeedsDisplay();
         }
     }
-    
     
     private var cachedColors : OMGradientShadingColors  = OMGradientShadingColors(colorStart: UIColor.greenColor(), colorEnd: UIColor.greenColor())
     
@@ -206,13 +207,21 @@ private struct OMShadingGradientLayerProperties {
     override func drawInContext(ctx: CGContext) {
         super.drawInContext(ctx)
         
+        //var locations : [CGFloat]?
+        var startPoint : CGPoint = self.startPoint
+        var endPoint : CGPoint = self.endPoint
+        var startRadius: CGFloat = self.startRadius
+        var endRadius : CGFloat = self.endRadius
+        var cachedColors : OMGradientShadingColors = self.cachedColors
+        
         if let player = self.presentationLayer() as? OMShadingGradientLayer {
             #if DEBUG
                 print("drawing presentationLayer\n\(player)")
             #endif
+            
             cachedColors  = OMGradientShadingColors(colorStart: player.colors.first!, colorEnd: player.colors.last!)
             
-            locations    = player.locations
+            //locations    = player.locations
             startPoint   = player.startPoint
             endPoint     = player.endPoint
             startRadius  = player.startRadius
@@ -226,33 +235,45 @@ private struct OMShadingGradientLayerProperties {
             print("Drawing \(self.type) gradient\nstarCenter: \(startCenter)\nendCenter: \(endCenter)\nstartRadius: \(startRadius)\n endRadius: \(endRadius)\nbounds: \(self.bounds.integral)\nanchorPoint: \(self.anchorPoint)")
         #endif
         
-        if (self.path != nil) {
-            
-            let axially = (self.type == .Radial) ? false : true
-            ctx.fill( self.path!,
-                      colors: self.cachedColors,
-                      axially: axially,
-                      asStroke: self.stroke,
-                      lineWidth:self.lineWidth,
-                      fromPoint: startPoint, fromRadius: startRadius, toPoint: endPoint, toRadius: endRadius, extendingStart: self.extendsPastStart, extendingEnd: self.extendsPastEnd,functionType:
-                self.function,
-                      slopeFunction: self.slopeFunction);
-        } else {
-            var shading = OMShadingGradient(startColor: cachedColors.colorStart,
-                                            endColor: cachedColors.colorEnd,
-                                            from: startPoint,
-                                            startRadius: startRadius,
-                                            to:endPoint,
-                                            endRadius: endRadius,
-                                            extendStart: extendsPastStart,
-                                            extendEnd: extendsPastEnd,
-                                            functionType: self.function,
-                                            gradientType: self.type ,
-                                            slopeFunction: slopeFunction)
-            
-            CGContextDrawShading(ctx, shading.CGShading);
+        
+        CGContextSaveGState(ctx);
+        CGContextSetLineWidth(ctx, self.lineWidth);
+        
+        var from:CGPoint = startPoint
+        var to:CGPoint   = endPoint
+        
+        if (self.stroke) {
+            // if we are using the stroke, we offset the from and to points
+            // by half the stroke width away from the center of the stroke.
+            // Otherwise we tend to end up with fills that only cover half of the
+            // because users set the start and end points based on the center
+            // of the stroke.
+            let halfWidth = self.lineWidth * 0.5;
+            from = to.projectLine(startPoint,length: halfWidth)
+            to   = from.projectLine(endPoint,length: -halfWidth)
         }
         
+        var shading = OMShadingGradient(startColor: cachedColors.colorStart,
+                                        endColor: cachedColors.colorEnd,
+                                        from: from,
+                                        startRadius: startRadius,
+                                        to:to,
+                                        endRadius: endRadius,
+                                        extendStart: self.extendsPastStart,
+                                        extendEnd: self.extendsPastEnd,
+                                        functionType: self.function,
+                                        gradientType: self.type,
+                                        slopeFunction: self.slopeFunction)
+        
+        if (self.path != nil) {
+            CGContextAddPath(ctx,self.path);
+            if(self.stroke) {
+                CGContextReplacePathWithStrokedPath(ctx);
+            }
+            CGContextClip(ctx);
+        }
+        CGContextDrawShading(ctx, shading.CGShading);
+        CGContextRestoreGState(ctx);
     }
     
     override var description:String {
@@ -278,12 +299,14 @@ private struct OMShadingGradientLayerProperties {
             }else{
                 str += " exponential interpolation"
             }
+            //TODO: slope function string
             //if  (self.slopeFunction)  {
             //    str += " \(slopeFunction)"
             //}
             return str
         }
     }
+    
     
     // MARK: - CALayer Animation Helpers
     

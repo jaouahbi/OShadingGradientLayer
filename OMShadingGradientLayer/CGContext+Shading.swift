@@ -46,8 +46,8 @@ extension CGContext
             // because users set the start and end points based on the center
             // of the stroke.
             let halfWidth = lineWidth * 0.5;
-            from = projectLineFrom(toPoint,pointB: fromPoint,length: halfWidth)
-            to   = projectLineFrom(fromPoint,pointB: toPoint,length: -halfWidth)
+            from = toPoint.projectLine(fromPoint,length: halfWidth)
+            to   = fromPoint.projectLine(toPoint,length: -halfWidth)
         }
         
         var shading = OMShadingGradient(startColor: colors.colorStart,
@@ -72,31 +72,7 @@ extension CGContext
         CGContextRestoreGState(self);
         
     }
-    
-    
-    func projectLineFrom(pointA :CGPoint,
-                         pointB :CGPoint,
-                         length:CGFloat) -> CGPoint  {
-        var newPoint = CGPointMake(pointB.x, pointB.y)
-        let x = (pointB.x - pointA.x);
-        let y = (pointB.y - pointA.y);
-        if (fpclassify(x) == Int(FP_ZERO)) {
-            newPoint.y += length;
-        } else if (fpclassify(y) == Int(FP_ZERO)) {
-            newPoint.x += length;
-        } else {
-            #if CGFLOAT_IS_DOUBLE
-                let angle = atan(y / x);
-                newPoint.x += sin(angle) * length;
-                newPoint.y += cos(angle) * length;
-            #else
-                let angle = atanf(Float(y) / Float(x));
-                newPoint.x += CGFloat(sinf(angle) * Float(length));
-                newPoint.y += CGFloat(cosf(angle) * Float(length));
-            #endif
-        }
-        return newPoint;
-    }
+
     func strokeAxiallyFrom( path : CGPath,
                             colors:OMGradientShadingColors,
                             lineWidth:CGFloat,
