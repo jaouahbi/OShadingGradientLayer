@@ -6,8 +6,9 @@ Shading gradient layer with animatable properties
 
 ## Features
 
-- [x] Shading gradient layer with animatable properties
-- [x] Axial and Radial
+- [x] Gradient layer with animatable properties
+- [x] Support axial and radial shading gradient
+- [x] Support fill and stroke shading gradient styles
 
 ## Requirements
 
