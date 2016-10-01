@@ -27,154 +27,299 @@
 import Foundation
 import UIKit
 
+// function slope
+typealias GradientSlopeFunction = EasingFunction
+
+// interpolate two UIColors
+typealias GradientInterpolationFunction = (UIColor,UIColor,CGFloat) -> UIColor
+
 public enum GradientFunction {
-    case Linear
-    case Exponential
+    case linear
+    case exponential
+    case cosine
+    case gloss
 }
 
-public enum GradientType {
-    case Axial
-    case Radial
-}
 
-public struct OMGradientShadingColors {
-    
-    let colorStart:UIColor
-    let colorEnd:UIColor
-    private let startComponents:UnsafePointer<CGFloat>
-    private let endComponents:UnsafePointer<CGFloat>
-    
-    init(colorStart:UIColor, colorEnd:UIColor) {
-        self.colorStart      = colorStart
-        self.colorEnd        = colorEnd
-        self.startComponents = CGColorGetComponents(colorStart.CGColor)
-        self.endComponents   = CGColorGetComponents(colorEnd.CGColor)
-    }
-    
-    init(colorStart:CGColor, colorEnd:CGColor) {
-        self.init(colorStart: UIColor(CGColor: colorStart), colorEnd: UIColor(CGColor: colorEnd))
-    }
-}
 
-func ShadingFunctionCreateExponential(colors : OMGradientShadingColors, _ slopeFunction: (Double) -> Double) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
+func ShadingFunctionCreate(_ colors : [UIColor],
+                            locations : [CGFloat],
+                            slopeFunction: @escaping GradientSlopeFunction,
+                              interpolationFunction: @escaping GradientInterpolationFunction) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
 {
     return { inData, outData in
-        let alpha : Float = Float(slopeFunction(Double(inData[0])))
         
-        for paintInfo in 0 ..< 4 {
-            let end    = logf(max(Float(colors.endComponents[paintInfo]), 0.01))
-            let start  = logf(max(Float(colors.startComponents[paintInfo]), 0.01))
-            outData[paintInfo] = CGFloat(expf(start - (end + start) * alpha))
+        let alpha = CGFloat(slopeFunction(Double(inData[0])))
+        
+        var positionIndex = 0;
+        let colorCount    = colors.count
+        var stop1Position = locations.first!
+        var stop1Color    = colors[0]
+        
+        positionIndex += 1;
+        
+        var stop2Position:CGFloat = 0.0
+        var stop2Color:UIColor;
+        
+        if (colorCount > 1) {
+    
+            // First stop color
+            stop2Color  = colors[1]
+            
+            // When originally are 1 location and 1 color.
+            // Add the stop2Position to 1.0
+            
+            if locations.count == 1 {
+                stop2Position  = 1.0
+            } else {
+                // First stop location
+                stop2Position = locations[1];
+            }
+            // Next positon index
+            positionIndex += 1;
+                
+        } else {
+            // if we only have one value, that's what we return
+            stop2Position = stop1Position;
+            stop2Color    = stop1Color;
+        }
+        
+        while (positionIndex < colorCount && stop2Position < alpha) {
+            stop1Color      = stop2Color;
+            stop1Position   = stop2Position;
+            stop2Color      = colors[positionIndex]
+            stop2Position   = locations[positionIndex]
+            positionIndex  += 1;
+        }
+        
+        if (alpha <= stop1Position) {
+            // if we are less than our lowest position, return our first color
+            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
+            outData[0] = (stop1Color.components?[0])!
+            outData[1] = (stop1Color.components?[1])!
+            outData[2] = (stop1Color.components?[2])!
+            outData[3] = (stop1Color.components?[3])!
+            
+        } else if (alpha >= stop2Position) {
+            // likewise if we are greater than our highest position, return the last color
+            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
+            outData[0] = (stop2Color.components?[0])!
+            outData[1] = (stop2Color.components?[1])!
+            outData[2] = (stop2Color.components?[2])!
+            outData[3] = (stop2Color.components?[3])!
+            
+        } else {
+            
+            // otherwise interpolate between the two
+            
+            let newPosition = (alpha - stop1Position) / (stop2Position - stop1Position);
+            
+            let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
+            
+            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
+            
+            for componentIndex in 0 ..< 3 {
+                outData[componentIndex] = (newColor.components?[componentIndex])!
+            }
+            
+            //Premultiply the color by the alpha.?
+            
+            // The alpha component is always 1, the shading is always opaque.
+            // outData[3] = 1.0
         }
     }
 }
 
 
-func ShadingFunctionCreateLinear(colors : OMGradientShadingColors, _ slopeFunction: (Double) -> Double) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
-{
-    return { inData, outData in
-        let alpha = CGFloat(slopeFunction(Double(inData[0])))
-        let inverse = 1.0 - alpha;
-        
-        outData[0] = inverse * colors.startComponents[0] + alpha * colors.endComponents[0];
-        outData[1] = inverse * colors.startComponents[1] + alpha * colors.endComponents[1];
-        outData[2] = inverse * colors.startComponents[2] + alpha * colors.endComponents[2];
-        outData[3] = inverse * colors.startComponents[3] + alpha * colors.endComponents[3];
-        
-    }
-}
-func ShadingCallback(infoPointer: UnsafeMutablePointer<Void>, inData: UnsafePointer<CGFloat>, outData: UnsafeMutablePointer<CGFloat>) -> Void {
-    var info = UnsafeMutablePointer<OMShadingGradient>(infoPointer).memory
-    info.shadingFunction(inData, outData)
+func ShadingCallback(_ infoPointer:UnsafeMutableRawPointer?,
+                     inData: UnsafePointer<CGFloat>,
+                     outData: UnsafeMutablePointer<CGFloat>) -> Swift.Void {
+    let rawPointer = UnsafeMutableRawPointer(infoPointer)
+    var info = rawPointer?.load(as: OMShadingGradient.self)
+    info?.shadingFunction(inData, outData)
 }
 
-struct OMShadingGradient {
-    
-    let colors : OMGradientShadingColors
-    let from : CGPoint
-    let to : CGPoint
+
+public struct OMShadingGradient {
+    fileprivate var monotonicLocations:[CGFloat] = []
+    let colors : [UIColor]
+    let locations : [CGFloat]?
+    let startPoint : CGPoint
+    let endPoint : CGPoint
     let startRadius : CGFloat
     let endRadius : CGFloat
     let extendsPastStart:Bool
     let extendsPastEnd:Bool
-    let colorSpace: CGColorSpace?
-    let slopeFunction: (Double) -> Double
+    let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
+    let slopeFunction: EasingFunction
     let functionType : GradientFunction
-    let gradientType : GradientType
+    let gradientType : OMGradientType
     
-    init(startColor: UIColor, endColor: UIColor, from: CGPoint, to: CGPoint, extendStart: Bool, extendEnd: Bool,functionType: GradientFunction, slopeFunction: (Double) -> Double) {
-        self.init(startColor: startColor,
-                  endColor: endColor,
-                  from: from,
+     init(colors: [UIColor],
+          locations: [CGFloat]?,
+          startPoint: CGPoint,
+          endPoint: CGPoint,
+          extendStart: Bool = false,
+          extendEnd: Bool = false,
+          functionType: GradientFunction = .linear,
+          slopeFunction:  @escaping EasingFunction =  Linear) {
+        
+        self.init(colors:colors,
+                  locations: locations,
+                  startPoint: startPoint,
                   startRadius: 0,
-                  to: to,
-                  endRadius: 0, extendStart: extendStart, extendEnd: extendEnd,functionType: functionType, gradientType: .Axial, slopeFunction: slopeFunction)
+                  endPoint: endPoint,
+                  endRadius: 0,
+                  extendStart: extendStart,
+                  extendEnd: extendEnd,
+                  gradientType: .axial,
+                  functionType: functionType,
+                  slopeFunction:  slopeFunction)
     }
     
-    init(startColor: UIColor, endColor: UIColor, from: CGPoint,  startRadius: CGFloat, to: CGPoint, endRadius: CGFloat,extendStart: Bool, extendEnd: Bool, functionType: GradientFunction, slopeFunction: (Double) -> Double) {
-        self.init(startColor: startColor, endColor: endColor, from: from,  startRadius: startRadius,to: to, endRadius: endRadius, extendStart: extendStart, extendEnd: extendEnd,functionType: functionType, gradientType: .Radial, slopeFunction: slopeFunction)
+     init(colors: [UIColor],
+          locations: [CGFloat]?,
+          startPoint: CGPoint,
+          startRadius: CGFloat,
+          endPoint: CGPoint,
+          endRadius: CGFloat,
+          extendStart: Bool = false,
+          extendEnd: Bool = false,
+          functionType: GradientFunction = .linear,
+          slopeFunction: @escaping EasingFunction =  Linear) {
+        
+        self.init(colors:colors,
+                  locations: locations,
+                  startPoint: startPoint,
+                  startRadius: startRadius,
+                  endPoint: endPoint,
+                  endRadius: endRadius,
+                  extendStart: extendStart,
+                  extendEnd: extendEnd,
+                  gradientType: .radial,
+                  functionType: functionType,
+                  slopeFunction: slopeFunction)
     }
     
-    init(startColor: UIColor, endColor: UIColor, from: CGPoint,  startRadius: CGFloat, to: CGPoint, endRadius: CGFloat,
-         extendStart: Bool, extendEnd: Bool, functionType: GradientFunction, gradientType : GradientType , slopeFunction: (Double) -> Double)
+    init(colors: [UIColor],
+         locations: [CGFloat]?,
+         startPoint: CGPoint,
+         startRadius: CGFloat,
+         endPoint: CGPoint,
+         endRadius: CGFloat,
+         extendStart: Bool,
+         extendEnd: Bool,
+         gradientType : OMGradientType  = .axial,
+         functionType : GradientFunction = .linear,
+         slopeFunction: @escaping EasingFunction  =  Linear)
     {
-        self.colors      = OMGradientShadingColors(colorStart: startColor,colorEnd: endColor)
-        self.from        = from
-        self.to          = to
+        self.locations   = locations
+        self.startPoint  = startPoint
+        self.endPoint    = endPoint
         self.startRadius = startRadius
         self.endRadius   = endRadius
         
-        // must be the same colorspace
-        assert( CGColorSpaceGetModel(CGColorGetColorSpace(startColor.CGColor)) ==
-            CGColorSpaceGetModel(CGColorGetColorSpace(endColor.CGColor)))
+        // already checked in OMShadingGradientLayer
+        assert(colors.count >= 2);
         
-        self.colorSpace     = CGColorGetColorSpace(startColor.CGColor)
+        // if only exist one color, duplicate it.
+        if (colors.count == 1) {
+            let color = colors.first!
+            self.colors = [color,color];
+        } else {
+            self.colors = colors
+        }
+        
+        // check the color space of all colors.
+        if let lastColor = colors.last {
+            for color in colors {
+                // must be the same colorspace
+                assert(lastColor.colorSpace?.model == color.colorSpace?.model,
+                       "unexpected color model \(color.colorSpace?.model.name) != \(lastColor.colorSpace?.model.name)")
+                // and correct model
+                assert(color.colorSpace?.model == .rgb,"unexpected color space model \(color.colorSpace?.model.name)")
+                if(color.colorSpace?.model != .rgb) {
+                    //TODO: handle different color spaces
+                    OMLog.printw("(OMShadingGradient) : Unsupported color space. model: \(color.colorSpace?.model.name)")
+                }
+            }
+        }
+        
         self.slopeFunction  = slopeFunction
         self.functionType   = functionType
         self.gradientType   = gradientType
         self.extendsPastStart = extendStart
-        self.extendsPastEnd = extendEnd
+        self.extendsPastEnd   = extendEnd
+        
+        // handle nil locations
+        if let locations = self.locations {
+            if locations.count > 0 {
+                monotonicLocations = locations
+            }
+        }
+        
+        // TODO(jom): handle different number colors and locations
+        
+        if (monotonicLocations.count == 0) {
+            monotonicLocations = monotonic(colors.count)
+        }
+        
+        OMLog.printv("(OMShadingGradient): \(monotonicLocations.count) monotonic locations")
+        OMLog.printv("(OMShadingGradient): \(monotonicLocations)")
     }
     
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {
-        if (self.functionType == .Linear) {
-            return ShadingFunctionCreateLinear(self.colors, self.slopeFunction)
-        } else {
-            assert(self.functionType == .Exponential)
-            return ShadingFunctionCreateExponential(self.colors, self.slopeFunction)
+        var interpolationFunction:GradientInterpolationFunction =  UIColor.lerp
+        switch(self.functionType){
+        case .linear :
+            interpolationFunction =  UIColor.lerp
+            break
+        case .exponential :
+            interpolationFunction =  UIColor.eerp
+            break
+        case .cosine :
+            interpolationFunction =  UIColor.coserp
+            break
+        case .gloss :
+            interpolationFunction =  OMGlossGradient.glosserp
+            break
         }
+        return ShadingFunctionCreate(self.colors,
+                                     locations: self.monotonicLocations,
+                                     slopeFunction: self.slopeFunction,
+                                     interpolationFunction: interpolationFunction )
     }()
     
-    lazy var CGFunction : CGFunctionRef? = {
+    lazy var handleFunction : CGFunction! = {
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
-        
-        return CGFunctionCreate(&self,                      // info
-            1,                          // domainDimension
-            [0, 1],                     // domain
-            4,                          // rangeDimension
-            [0, 1, 0, 1, 0, 1, 0, 1],   // range
-            &callbacks)                 // callbacks
+        return CGFunction(info: &self,  // info
+            domainDimension: 1,                          // domainDimension
+            domain: [0, 1],                     // domain
+            rangeDimension: 4,                          // rangeDimension
+            range: [0, 1, 0, 1, 0, 1, 0, 1],   // range
+            callbacks: &callbacks)                 // callbacks
     }()
     
-    lazy var CGShading : CGShadingRef! = {
+    lazy var shadingHandle : CGShading! = {
+
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
-        if(self.gradientType == .Axial) {
-            return CGShadingCreateAxial(self.colorSpace,
-                                        self.from,
-                                        self.to,
-                                        self.CGFunction,
-                                        self.extendsPastStart,
-                                        self.extendsPastEnd)
+        if(self.gradientType == .axial) {
+           return CGShading(axialSpace: self.colorSpace,
+                                        start: self.startPoint,
+                                        end: self.endPoint,
+                                        function: self.handleFunction!,
+                                        extendStart: self.extendsPastStart,
+                                        extendEnd: self.extendsPastEnd)
         } else {
-            assert(self.gradientType == .Radial)
-            return CGShadingCreateRadial(self.colorSpace,
-                                         self.from,
-                                         self.startRadius,
-                                         self.to,
-                                         self.endRadius,
-                                         self.CGFunction,
-                                         self.extendsPastStart,
-                                         self.extendsPastEnd)
+            assert(self.gradientType == .radial)
+            return CGShading(radialSpace: self.colorSpace,
+                                         start: self.startPoint,
+                                         startRadius: self.startRadius,
+                                         end: self.endPoint,
+                                         endRadius: self.endRadius,
+                                         function: self.handleFunction!,
+                                         extendStart: self.extendsPastStart,
+                                         extendEnd: self.extendsPastEnd)
         }
     }()
 }

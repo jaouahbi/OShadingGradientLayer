@@ -16,23 +16,57 @@
 //
 
 //
-//  CGPoint+Projection.swift
+//  CGPoint+Extension.swift
 //
 //  Created by Jorge Ouahbi on 26/4/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
 
+// v1.0
+
 import UIKit
 
-extension CGPoint {
+
+public func ==(lhs: CGPoint, rhs: CGPoint) -> Bool {
+    return lhs.equalTo(rhs)
+}
+
+public func *(lhs: CGPoint, rhs: CGSize) -> CGPoint {
+    return CGPoint(x:lhs.x*rhs.width,y: lhs.y*rhs.height)
+}
+
+public func *(lhs: CGPoint, scalar: CGFloat) -> CGPoint {
+    return CGPoint(x:lhs.x*scalar,y: lhs.y*scalar)
+}
+public func /(lhs: CGPoint, rhs: CGSize) -> CGPoint {
+    return CGPoint(x:lhs.x/rhs.width,y: lhs.y/rhs.height)
+}
+
+
+extension CGPoint : Hashable  {
     
-    func projectLine( point :CGPoint, length:CGFloat) -> CGPoint  {
+    public var hashValue: Int {
+        return self.x.hashValue << MemoryLayout<CGFloat>.size ^ self.y.hashValue
+        
+    }
+    var isZero : Bool {
+        return self == CGPoint.zero
+    }
+    
+    func distance(_ point:CGPoint) -> CGFloat {
+        let diff = CGPoint(x: self.x - point.x, y: self.y - point.y);
+        return CGFloat(sqrtf(Float(diff.x*diff.x + diff.y*diff.y)));
+    }
+    
+    
+    func projectLine( _ point:CGPoint, length:CGFloat) -> CGPoint  {
+        
         var newPoint = CGPoint(x: point.x, y: point.y)
         let x = (point.x - self.x);
         let y = (point.y - self.y);
-        if (fpclassify(x) == Int(FP_ZERO)) {
+        if (x.floatingPointClass == FloatingPointClassification.negativeZero) {
             newPoint.y += length;
-        } else if (fpclassify(y) == Int(FP_ZERO)) {
+        } else if (y.floatingPointClass == FloatingPointClassification.negativeZero) {
             newPoint.x += length;
         } else {
             #if CGFLOAT_IS_DOUBLE

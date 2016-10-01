@@ -19,9 +19,9 @@
 import UIKit
 import InfColorPicker
 
-let kDefaultAnimationDuration:NSTimeInterval = 5.0
+let kDefaultAnimationDuration:TimeInterval = 5.0
 
-class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate , InfColorPickerControllerDelegate{
+class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView:  UITableView!
     
@@ -48,21 +48,16 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     @IBOutlet weak var extendsPastEnd   : UISwitch!
     @IBOutlet weak var extendsPastStart : UISwitch!
     
-    @IBOutlet weak var colorStartView   : UIButton!
-    @IBOutlet weak var colorEndView     : UIButton!
     
-    let pickerStart = InfColorPickerController(nibName: "InfColorPickerView", bundle: NSBundle(forClass: InfColorPickerController.self))
-    let pickerEnd   = InfColorPickerController(nibName: "InfColorPickerView", bundle: NSBundle(forClass: InfColorPickerController.self))
-    
-    var colors      : [CGColor] = [CGColor]()
+    var colors      : [UIColor] = []
     var locations   : [CGFloat] = [0.0,1.0]
     
-    let gradientLayer = OMShadingGradientLayer(type: .Radial)
+    let gradientLayer = OMShadingGradientLayer(type: .axial)
     var animate       = false
     
     lazy var slopeFunction: [(Double) -> Double] = {
         return [
-            LinearInterpolation,
+            Linear,
             QuadraticEaseIn,
             QuadraticEaseOut,
             QuadraticEaseInOut,
@@ -93,38 +88,7 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
             BounceEaseIn,
             BounceEaseOut,
             BounceEaseInOut,
-            // average
-            QuadraticEaseInAverage,
-            QuadraticEaseOutAverage,
-            QuadraticEaseInOutAverage,
-            CubicEaseInAverage,
-            CubicEaseOutAverage,
-            CubicEaseInOutAverage,
-            QuarticEaseInAverage,
-            QuarticEaseOutAverage,
-            QuarticEaseInOutAverage,
-            QuinticEaseInAverage,
-            QuinticEaseOutAverage,
-            QuinticEaseInOutAverage,
-            SineEaseInAverage,
-            SineEaseOutAverage,
-            SineEaseInOutAverage,
-            CircularEaseInAverage,
-            CircularEaseOutAverage,
-            CircularEaseInOutAverage,
-            ExponentialEaseInAverage,
-            ExponentialEaseOutAverage,
-            ExponentialEaseInOutAverage,
-            ElasticEaseInAverage,
-            ElasticEaseOutAverage,
-            ElasticEaseInOutAverage,
-            BackEaseInAverage,
-            BackEaseOutAverage,
-            BackEaseInOutAverage,
-            BounceEaseInAverage,
-            BounceEaseOutAverage,
-            BounceEaseInOutAverage
-        ]
+            ]
     }()
     
     lazy var slopeFunctionString:[String] = {
@@ -160,62 +124,31 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
             "BounceEaseIn",
             "BounceEaseOut",
             "BounceEaseInOut",
-            // average
-            "QuadraticEaseInAverage",
-            "QuadraticEaseOutAverage",
-            "QuadraticEaseInOutAverage",
-            "CubicEaseInAverage",
-            "CubicEaseOutAverage",
-            "CubicEaseInOutAverage",
-            "QuarticEaseInAverage",
-            "QuarticEaseOutAverage",
-            "QuarticEaseInOutAverage",
-            "QuinticEaseInAverage",
-            "QuinticEaseOutAverage",
-            "QuinticEaseInOutAverage",
-            "SineEaseInAverage",
-            "SineEaseOutAverage",
-            "SineEaseInOutAverage",
-            "CircularEaseInAverage",
-            "CircularEaseOutAverage",
-            "CircularEaseInOutAverage",
-            "ExponentialEaseInAverage",
-            "ExponentialEaseOutAverage",
-            "ExponentialEaseInOutAverage",
-            "ElasticEaseInAverage",
-            "ElasticEaseOutAverage",
-            "ElasticEaseInOutAverage",
-            "BackEaseInAverage",
-            "BackEaseOutAverage",
-            "BackEaseInOutAverage",
-            "BounceEaseInAverage",
-            "BounceEaseOutAverage",
-            "BounceEaseInOutAverage"
-        ]
+            ]
     }()
     
     // MARK: - UITableView Helpers
     
-    func selectIndexPath(row:Int, section:Int = 0) {
-        let indexPath = NSIndexPath(forItem: row, inSection: section)
-        self.tableView.selectRowAtIndexPath(indexPath,animated: true,scrollPosition: .Bottom)
-        self.gradientLayer.slopeFunction = self.slopeFunction[indexPath.row];
+    func selectIndexPath(_ row:Int, section:Int = 0) {
+        let indexPath = IndexPath(item: row, section: section)
+        self.tableView.selectRow(at: indexPath,animated: true,scrollPosition: .bottom)
+        self.gradientLayer.slopeFunction = self.slopeFunction[(indexPath as NSIndexPath).row];
     }
     
     // MARK: - UITableView Datasource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return slopeFunction.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         
         assert(self.slopeFunctionString.count == self.slopeFunction.count)
         
-        cell.textLabel?.textAlignment = .Center
+        cell.textLabel?.textAlignment = .center
         cell.textLabel?.font          = UIFont(name: "Helvetica", size: 9)
-        cell.textLabel?.text          = "\(self.slopeFunctionString[indexPath.row])"
+        cell.textLabel?.text          = "\(self.slopeFunctionString[(indexPath as NSIndexPath).row])"
         
         cell.layer.cornerRadius       = 8
         cell.layer.masksToBounds      = true
@@ -225,8 +158,8 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     
     // MARK: - UITableView Delegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.gradientLayer.slopeFunction = self.slopeFunction[indexPath.row];
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.gradientLayer.slopeFunction = self.slopeFunction[(indexPath as NSIndexPath).row];
     }
     
     // MARK: - View life cycle
@@ -237,37 +170,42 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         let viewBounds = viewForGradientLayer.bounds
         
-        pointStartX.maximumValue   = Float(viewBounds.size.width)
-        pointStartY.maximumValue   = Float(viewBounds.size.height)
+        pointStartX.maximumValue   = 1.0
+        pointStartY.minimumValue   = 0.0
         
-        pointEndX.maximumValue     = Float(viewBounds.size.width)
-        pointEndY.maximumValue     = Float(viewBounds.size.height)
+        pointEndX.maximumValue     = 1.0
+        pointEndY.minimumValue     = 0.0
         
-        let midPoint = CGPoint(x:viewBounds.midX, y:viewBounds.midY)
+        //let midPoint = CGPoint(x:viewBounds.midX, y:viewBounds.midY) / viewBounds.size
         
-        pointStartX.value = Float(midPoint.x)
-        pointStartY.value = Float(midPoint.y)
+        let startPoint = CGPoint(x:viewBounds.minX,y: viewBounds.minY) / viewBounds.size
+        let endPoint   = CGPoint(x:viewBounds.minX,y: viewBounds.maxY) / viewBounds.size
         
-        pointEndX.value = Float(midPoint.x)
-        pointEndY.value = Float(midPoint.y)
+        pointStartX.value = Float(startPoint.x)
+        pointStartY.value = Float(startPoint.y)
         
-        extendsPastEnd.on   = true
-        extendsPastStart.on = true
+        pointEndX.value   = Float(endPoint.x)
+        pointEndY.value   = Float(endPoint.y)
+        
+        extendsPastEnd.isOn   = true
+        extendsPastStart.isOn = true
         
         // radius
         
-        endRadiusSlider.maximumValue     = radius(viewBounds.size) * 2.0
+        endRadiusSlider.maximumValue     = 1.0
         endRadiusSlider.minimumValue     = 0
-        startRadiusSlider.maximumValue   = radius(viewBounds.size) * 2.0
+        
+        startRadiusSlider.maximumValue   = 1.0
         startRadiusSlider.minimumValue   = 0
         
-        endRadiusSlider.value   = radius(viewBounds.size)
-        startRadiusSlider.value = 0.0;
+        startRadiusSlider.value   = 1.0
+        endRadiusSlider.value     = 0
+        
         
         // select the first element
         selectIndexPath(0)
@@ -286,9 +224,9 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         updateGradientLayer()
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
-        coordinator.animateAlongsideTransition({(UIViewControllerTransitionCoordinatorContext) in
+        coordinator.animate(alongsideTransition: {(UIViewControllerTransitionCoordinatorContext) in
             
         }) {(UIViewControllerTransitionCoordinatorContext) in
             // update the gradient layer frame
@@ -298,93 +236,109 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     
     // MARK: - Triggered actions
     
-    @IBAction func extendsPastStartChanged(sender: UISwitch) {
+    @IBAction func extendsPastStartChanged(_ sender: UISwitch) {
         
-        gradientLayer.extendsPastStart = sender.on
+        gradientLayer.extendsBeforeStart = sender.isOn
     }
     
-    @IBAction func extendsPastEndChanged(sender: UISwitch) {
+    @IBAction func extendsPastEndChanged(_ sender: UISwitch) {
         
-        gradientLayer.extendsPastEnd = sender.on
+        gradientLayer.extendsPastEnd = sender.isOn
     }
     
-    @IBAction func gradientSliderChanged(sender: UISlider) {
+    @IBAction func gradientSliderChanged(_ sender: UISlider) {
         
+        updateUI()
         updateGradientLayer()
     }
     
-    @IBAction func strokeSwitchChanged(sender: UISwitch) {
+    @IBAction func strokeSwitchChanged(_ sender: UISwitch) {
         
         if ((gradientLayer.path) != nil) {
-            gradientLayer.stroke = sender.on
+            gradientLayer.stroke = sender.isOn
         }
     }
     
-    @IBAction func maskSwitchChanged(sender: UISwitch) {
-        if (sender.on) {
-            gradientLayer.path  = UIBezierPath.random(viewForGradientLayer.bounds.size)!.CGPath
-        } else {
-            gradientLayer.path = nil
-        }
-        
+    @IBAction func maskSwitchChanged(_ sender: UISwitch) {
+        let path = UIBezierPath.polygon(frame: viewForGradientLayer.bounds,
+                                        sides: Int(arc4random_uniform(32)) + 4,
+                                        radius:  CGFloat(drand48()) * viewForGradientLayer.bounds.size.min(),
+                                        startAngle: 0 ,
+                                        style: PolygonStyle(rawValue:Int(arc4random_uniform(6)))!,
+                                        percentInflection: CGFloat(drand48()))
+    
+        gradientLayer.path  = path.cgPath
+
         updateGradientLayer()
     }
     
     
-    @IBAction func typeSwitchChanged(sender: UISwitch) {
-        self.gradientLayer.type = sender.on ?  .Radial : .Axial;
-        let viewBounds = self.gradientLayer.bounds
-        if (sender.on == false) {
+    @IBAction func typeSwitchChanged(_ sender: UISwitch) {
+        self.gradientLayer.gradientType = sender.isOn ?  .radial : .axial;
+        
+        if (sender.isOn == false) {
             // axial
-            let startPoint = CGPoint(x: viewBounds.minX, y: viewBounds.midY)
-            let endPoint = CGPoint(x: viewBounds.maxX, y: viewBounds.midY);
-            
-            //left to right
-            pointStartX.value = Float(startPoint.x)
-            pointStartY.value = Float(startPoint.y)
-            pointEndX.value   = Float(endPoint.x)
-            pointEndY.value   = Float(endPoint.y)
+            pointStartX.value = 0.0
+            pointStartY.value = 0.5
+            pointEndX.value   = 1.0
+            pointEndY.value   = 0.5
             
         } else {
-            //radial
-            let midPoint = CGPoint(x: viewBounds.midX, y: viewBounds.midY);
             
             //center
-            pointStartX.value = Float(midPoint.x)
-            pointStartY.value = Float(midPoint.y)
-            pointEndX.value   = Float(midPoint.x)
-            pointEndY.value   = Float(midPoint.y)
+            pointStartX.value = 0.5
+            pointStartY.value = 0.5
+            pointEndX.value   = 0.5
+            pointEndY.value   = 0.5
         }
         
         updateGradientLayer()
     }
     
-    @IBAction func functionSwitchChanged(sender: UISwitch) {
-        self.gradientLayer.function = sender.on ? .Exponential : .Linear;
-        updateGradientLayer()
-    }
-    
-    @IBAction func animateSwitchChanged(sender: UISwitch) {
-        self.animate = sender.on;
-        updateGradientLayer()
-    }
-    
-    @IBAction func randomButtonTouchUpInside(sender: UIButton)
-    {
-        let radii  = radius(gradientLayer.bounds.size);
-        // random radius
-        endRadiusSlider.value   = Float(drand48()*Double(radii));
-        startRadiusSlider.value = Float(drand48()*Double(radii));
+    @IBAction func functionSwitchChanged(_ sender: UISegmentedControl) {
         
-        let maxSize = gradientLayer.bounds.size
-        // random points
-        pointStartX.value = Float( maxSize.width * CGFloat(drand48()))
-        pointStartY.value = Float( maxSize.height * CGFloat(drand48()))
-        pointEndX.value   = Float( maxSize.width * CGFloat(drand48()))
-        pointEndY.value   = Float( maxSize.height * CGFloat(drand48()))
+        switch(sender.selectedSegmentIndex)
+        {
+        case 0:
+            self.gradientLayer.function =  .linear
+            break
+        case 1:
+            self.gradientLayer.function =  .exponential
+            break
+        case 2:
+            self.gradientLayer.function =  .cosine
+            break
+        case 3:
+            self.gradientLayer.function = .gloss
+            self.colors                 = [UIColor.random()]
+            break
+        default:
+            self.gradientLayer.function =  .linear
+            assertionFailure();
+        }
+        
+        updateGradientLayer()
+    }
+    
+    @IBAction func animateSwitchChanged(_ sender: UISwitch) {
+        self.animate = sender.isOn;
+        updateGradientLayer()
+    }
+    
+    @IBAction func randomButtonTouchUpInside(_ sender: UIButton)
+    {
+        //        // random radius
+        //        endRadiusSlider.value   = Float(drand48());
+        //        startRadiusSlider.value = Float(drand48());
+        //
+        //        // random points
+        //        pointStartX.value = Float(CGFloat(drand48()))
+        //        pointStartY.value = Float(CGFloat(drand48()))
+        //        pointEndX.value   = Float(CGFloat(drand48()))
+        //        pointEndY.value   = Float(CGFloat(drand48()))
         
         // select random slope function
-        selectIndexPath(Int(rand()) % tableView.numberOfRowsInSection(0))
+        //        selectIndexPath(Int(arc4random()) % tableView.numberOfRows(inSection: 0))
         
         // random colors
         randomizeColors()
@@ -395,34 +349,23 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         
     }
     
-    
-    @IBAction func colorStartViewTapped(sender: UIButton) {
-        pickerStart.sourceColor = self.colorStartView.backgroundColor
-        pickerStart.delegate    = self
-        pickerStart.presentModallyOverViewController(self)
-        
-    }
-    
-    @IBAction func colorEndViewTapped(sender: UIButton) {
-        pickerEnd.sourceColor = self.colorEndView.backgroundColor
-        pickerEnd.delegate    = self;
-        pickerEnd.presentModallyOverViewController(self)
-    }
-    
     // MARK: - Helpers
     
     func randomizeColors() {
-        self.colors               = [UIColor.random().CGColor,UIColor.random().CGColor]
+        if(self.gradientLayer.function == .gloss)
+        {
+            self.colors               = [UIColor.random()]
+        } else {
+            self.colors               = [UIColor.random(),
+                                         UIColor.random(),
+                                         UIColor.random(),
+                                         UIColor.random(),
+                                         UIColor.random()]
+        }
+        
         self.gradientLayer.colors = colors
     }
     
-    func radius(size:CGSize) -> Float {
-        if (size.height < size.width) {
-            return Float(size.height) * 0.5;
-        } else {
-            return Float(size.width) * 0.5;
-        }
-    }
     
     func updateGradientLayer() {
         
@@ -434,12 +377,9 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         let startPoint = CGPoint(x:CGFloat(pointStartX.value),y:CGFloat(pointStartY.value))
         let endPoint   = CGPoint(x:CGFloat(pointEndX.value),y:CGFloat(pointEndY.value))
         
-        gradientLayer.extendsPastEnd   = extendsPastEnd.on
-        gradientLayer.extendsPastStart = extendsPastStart.on
+        gradientLayer.extendsPastEnd   = extendsPastEnd.isOn
+        gradientLayer.extendsBeforeStart = extendsPastStart.isOn
         
-        #if DEBUG
-            print("Updating \(typeGardientSwitch.on ? "radial" : "axial") gradient\nstart: \(startPoint)\nend: \(endPoint)\nstartRadius: \(startRadius)\nendRadius: \(endRadius)\nbounds: \(gradientLayer.bounds.integral)\nFunction \(typeFunctionSwitch.on ? "exponential" : "linear") slope function: \(self.slopeFunctionString[tableView.indexPathForSelectedRow!.row])\n")
-        #endif
         if (self.animate) {
             
             // allways remove all animations
@@ -450,43 +390,43 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
             CATransaction.begin()
             
             gradientLayer.animateKeyPath("startRadius",
-                                         fromValue: Double(gradientLayer.startRadius),
-                                         toValue: startRadius,
+                                         fromValue: Double(gradientLayer.startRadius) as AnyObject?,
+                                         toValue: startRadius as AnyObject?,
                                          beginTime: mediaTime ,
                                          duration: kDefaultAnimationDuration,
                                          delegate: nil)
             
             gradientLayer.animateKeyPath("endRadius",
-                                         fromValue: Double(gradientLayer.endRadius),
-                                         toValue: endRadius,
+                                         fromValue: Double(gradientLayer.endRadius) as AnyObject?,
+                                         toValue: endRadius as AnyObject?,
                                          beginTime: mediaTime,
                                          duration: kDefaultAnimationDuration,
                                          delegate: nil)
             
             gradientLayer.animateKeyPath("startPoint",
-                                         fromValue: NSValue(CGPoint: gradientLayer.startPoint),
-                                         toValue: NSValue(CGPoint:startPoint),
+                                         fromValue: NSValue(cgPoint: gradientLayer.startPoint),
+                                         toValue: NSValue(cgPoint:startPoint),
                                          beginTime: mediaTime ,
                                          duration: kDefaultAnimationDuration,
                                          delegate: nil)
             
             gradientLayer.animateKeyPath("endCenter",
-                                         fromValue: NSValue(CGPoint:gradientLayer.endPoint),
-                                         toValue: NSValue(CGPoint:endPoint),
+                                         fromValue: NSValue(cgPoint:gradientLayer.endPoint),
+                                         toValue: NSValue(cgPoint:endPoint),
                                          beginTime: mediaTime,
                                          duration: kDefaultAnimationDuration,
                                          delegate: nil)
             
             gradientLayer.animateKeyPath("colors",
                                          fromValue:nil,
-                                         toValue: colors,
+                                         toValue: colors as AnyObject?,
                                          beginTime: mediaTime,
                                          duration: kDefaultAnimationDuration,
                                          delegate: nil)
             
             gradientLayer.animateKeyPath("locations",
                                          fromValue:nil,
-                                         toValue: self.locations,
+                                         toValue: self.locations as AnyObject?,
                                          beginTime: mediaTime,
                                          duration: kDefaultAnimationDuration,
                                          delegate: nil)
@@ -494,10 +434,11 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
             
         } else {
             
-            gradientLayer.startPoint   =  startPoint
-            gradientLayer.endPoint     =  endPoint
-            gradientLayer.colors        = self.colors
-            gradientLayer.locations     = self.locations
+            gradientLayer.startPoint   = startPoint
+            gradientLayer.endPoint     = endPoint
+            gradientLayer.colors       = self.colors
+            
+            // gradientLayer.locations     = self.locations
             
             gradientLayer.startRadius   = CGFloat(startRadius)
             gradientLayer.endRadius     = CGFloat(endRadius)
@@ -509,38 +450,13 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     func updateUI() {
         
         // points text
-        startPointSliderValueLabel.text = "x:\(roundf(pointStartX.value))\ny:\(roundf(pointStartY.value))"
-        endPointSliderValueLabel.text   = "x:\(roundf(pointEndX.value))\ny:\(roundf(pointEndY.value))"
+        startPointSliderValueLabel.text =  String(format: "%.1f,%.1f", pointStartX.value,pointStartY.value)
+        endPointSliderValueLabel.text   =  String(format: "%.1f,%.1f", pointEndX.value,pointEndY.value)
         
         //radius text
-        startRadiusSliderValueLabel.text = String(format: "%.1f", gradientLayer.startRadius)
-        endRadiusSliderValueLabel.text   = String(format: "%.1f", gradientLayer.endRadius)
+        startRadiusSliderValueLabel.text = String(format: "%.1f", Double(startRadiusSlider.value))
+        endRadiusSliderValueLabel.text   = String(format: "%.1f", Double(endRadiusSlider.value))
         
-        assert(self.colors.count == 2);
-        
-        // color labels
-        colorStartView.backgroundColor = UIColor(CGColor: self.colors.first!)
-        colorEndView.backgroundColor   = UIColor(CGColor: self.colors.last!)
-    }
-    
-    // MARK: -  InfColorPickerController Delegate
-    
-    func colorPickerControllerDidChangeColor(picker:InfColorPickerController) {
-        //@unused
-    }
-    
-    func colorPickerControllerDidFinish(picker:InfColorPickerController) {
-        if (pickerStart == picker) {
-            self.colors[0] = picker.resultColor.CGColor
-        } else {
-            self.colors[1] = picker.resultColor.CGColor
-        }
-        
-        self.gradientLayer.colors = colors
-        
-        picker.dismissViewControllerAnimated(true) {
-            self.updateUI()
-            self.updateGradientLayer()
-        }
+        //assert(self.colors.count == 2)
     }
 }

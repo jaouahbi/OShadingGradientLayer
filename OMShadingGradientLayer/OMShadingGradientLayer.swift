@@ -15,330 +15,146 @@
 //
 
 
-//
-//  OMShadingGradientLayer.swift
-//
-//  Created by Jorge Ouahbi on 20/4/16.
-//  Copyright © 2016 Jorge Ouahbi. All rights reserved.
-//
-
-
 import UIKit
 
-// Animatable Properties
-private struct OMShadingGradientLayerProperties {
+open class OMShadingGradientLayer : OMGradientLayer {
     
-    static var startPoint   = "startPoint"
-    static var startRadius  = "startRadius"
-    static var endPoint     = "endPoint"
-    static var endRadius    = "endRadius"
-    static var colors       = "colors"
-    static var locations    = "locations"   // TODO: use it
-};
-
-
-@objc class OMShadingGradientLayer : CALayer
-{
-    
-    var lineWidth : CGFloat = 1.0 {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    
-    var stroke : Bool = false {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    
-    var path : CGPath?{
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    
-    // The array of CGColorRef objects defining the color of each gradient
-    // stop. Defaults to nil. Animatable.
-    var colors: [CGColor] = [] {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    // An optional array of CGFloat objects defining the location of each
-    // gradient stop as a value in the range [0,1]. The values must be
-    // monotonically increasing. If a nil array is given, the stops are
-    // assumed to spread uniformly across the [0,1] range. When rendered,
-    // the colors are mapped to the output colorspace before being
-    // interpolated. Defaults to nil. Animatable.
-    
-    // TODO: use it
-    var locations : [CGFloat]? = nil {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    // The kind of gradient that will be drawn. Default value is `radial'
-    var type : GradientType = .Radial {
-        didSet {
-            self.setNeedsDisplay();
-        }
-    }
-    //Defaults to CGPointZero. Animatable.
-    var startPoint: CGPoint = CGPointZero {
-        didSet {
-            self.setNeedsDisplay();
-        }
-    }
-    //Defaults to CGPointZero. Animatable.
-    var endPoint: CGPoint = CGPointZero {
-        didSet{
-            self.setNeedsDisplay();
-        }
-    }
-    //Defaults to 0. Animatable.
-    var startRadius: CGFloat = 0 {
-        didSet {
-            self.setNeedsDisplay();
-        }
-    }
-    //Defaults to 0. Animatable.
-    var endRadius: CGFloat = 0 {
-        didSet {
-            self.setNeedsDisplay();
-        }
-    }
-    
-    var extendsPastStart : Bool = false {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    
-    var extendsPastEnd:Bool  = false{
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-    
-    var slopeFunction: (Double) -> Double  = LinearInterpolation {
-        didSet {
-            self.setNeedsDisplay();
-        }
-    }
-    
-    var function: GradientFunction = .Linear {
-        didSet {
-            self.setNeedsDisplay();
-        }
-    }
-    
-    private var cachedColors : OMGradientShadingColors  = OMGradientShadingColors(colorStart: UIColor.greenColor(), colorEnd: UIColor.greenColor())
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder:aDecoder)
-    }
-    
-    convenience init(type:GradientType!) {
+    convenience public init(type:OMGradientType) {
         self.init()
-        self.type = type
+        self.gradientType  = type;
+        
+        if(type == .radial) {
+            self.startPoint = CGPoint(x: 0.5,y: 0.5)
+            self.endPoint   = CGPoint(x: 0.5,y: 0.5)
+        }
     }
     
     // MARK: - Object Overrides
-    override init() {
+    override public  init() {
         super.init()
-        self.allowsEdgeAntialiasing     = true
-        self.contentsScale              = UIScreen.mainScreen().scale
-        self.needsDisplayOnBoundsChange = true;
     }
     
-    override init(layer: AnyObject) {
-        super.init(layer: layer)
+    open var slopeFunction: EasingFunction  = Linear {
+        didSet {
+            self.setNeedsDisplay();
+        }
+    }
+    open var function: GradientFunction = .linear {
+        didSet {
+            self.setNeedsDisplay();
+        }
+    }
+    
+    override public  init(layer: Any) {
+        super.init(layer: layer as AnyObject)
         if let other = layer as? OMShadingGradientLayer {
-            
-            // common
-            self.colors      = other.colors
-            self.locations   = other.locations
-            self.type        = other.type
-            
-            // radial gradient properties
-            self.startPoint  = other.startPoint
-            self.startRadius = other.startRadius
-            
-            // axial gradient properties
-            self.endPoint    = other.endPoint
-            self.endRadius   = other.endRadius
-            self.extendsPastStart    = other.extendsPastStart
-            self.extendsPastEnd   = other.extendsPastEnd
-            
             self.slopeFunction = other.slopeFunction;
         }
     }
     
-    override class func needsDisplayForKey(event: String) -> Bool {
-        if (event == OMShadingGradientLayerProperties.startPoint ||
-            event == OMShadingGradientLayerProperties.startRadius ||
-            event == OMShadingGradientLayerProperties.locations   ||
-            event == OMShadingGradientLayerProperties.colors      ||
-            event == OMShadingGradientLayerProperties.endPoint   ||
-            event == OMShadingGradientLayerProperties.endRadius) {
-            return true
-        }
-        
-        return super.needsDisplayForKey(event)
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
-    override func actionForKey(event: String) -> CAAction? {
-        if (event == OMShadingGradientLayerProperties.startPoint ||
-            event == OMShadingGradientLayerProperties.startRadius ||
-            event == OMShadingGradientLayerProperties.locations   ||
-            event == OMShadingGradientLayerProperties.colors      ||
-            event == OMShadingGradientLayerProperties.endPoint   ||
-            event == OMShadingGradientLayerProperties.endRadius) {
-            return animationActionForKey(event);
-        }
-        return super.actionForKey(event)
-    }
+    override open func draw(in ctx: CGContext) {
+        super.draw(in: ctx)
+        
+        var locations   :[CGFloat]? = self.locations
+        var colors      :[UIColor]  = self.colors
+        var startPoint  : CGPoint   = self.startPoint
+        var endPoint    : CGPoint   = self.endPoint
+        var startRadius : CGFloat   = self.startRadius
+        var endRadius   : CGFloat   = self.endRadius
+        
+        let player = self.presentation()
     
-    override func drawInContext(ctx: CGContext) {
-        super.drawInContext(ctx)
-        
-        //var locations : [CGFloat]? // TODO: use it
-        var startPoint : CGPoint = self.startPoint
-        var endPoint : CGPoint = self.endPoint
-        var startRadius: CGFloat = self.startRadius
-        var endRadius : CGFloat = self.endRadius
-        var cachedColors : OMGradientShadingColors = self.cachedColors
-        
-        if let player = self.presentationLayer() as? OMShadingGradientLayer {
-            #if DEBUG
-                print("drawing presentationLayer\n\(player)")
-            #endif
+        if let player = player {
             
-            cachedColors  = OMGradientShadingColors(colorStart: player.colors.first!, colorEnd: player.colors.last!)
+            OMLog.printv("\(self.name ?? "") (presentation) \(player)")
             
-            //locations    = player.locations
+            colors       = player.colors
+            locations    = player.locations
             startPoint   = player.startPoint
             endPoint     = player.endPoint
             startRadius  = player.startRadius
             endRadius    = player.endRadius
             
         } else {
-            cachedColors  = OMGradientShadingColors(colorStart: colors.first!, colorEnd: colors.last!)
+           OMLog.printv("\(self.name ?? "") (model) \(self)")
         }
         
-        #if DEBUG
-            print("Drawing \(self.type) gradient\nstarCenter: \(startCenter)\nendCenter: \(endCenter)\nstartRadius: \(startRadius)\n endRadius: \(endRadius)\nbounds: \(self.bounds.integral)\nanchorPoint: \(self.anchorPoint)")
-        #endif
-        
-        
-        CGContextSaveGState(ctx);
-        CGContextSetLineWidth(ctx, self.lineWidth);
-        
-        var from:CGPoint = startPoint
-        var to:CGPoint   = endPoint
-        
-        if (self.stroke) {
-            // if we are using the stroke, we offset the from and to points
-            // by half the stroke width away from the center of the stroke.
-            // Otherwise we tend to end up with fills that only cover half of the
-            // because users set the start and end points based on the center
-            // of the stroke.
-            let halfWidth = self.lineWidth * 0.5;
-            from = to.projectLine(startPoint,length: halfWidth)
-            to   = from.projectLine(endPoint,length: -halfWidth)
-        }
-        
-        var shading = OMShadingGradient(startColor: cachedColors.colorStart,
-                                        endColor: cachedColors.colorEnd,
-                                        from: from,
-                                        startRadius: startRadius,
-                                        to:to,
-                                        endRadius: endRadius,
-                                        extendStart: self.extendsPastStart,
-                                        extendEnd: self.extendsPastEnd,
-                                        functionType: self.function,
-                                        gradientType: self.type,
-                                        slopeFunction: self.slopeFunction)
-        
-        if (self.path != nil) {
-            CGContextAddPath(ctx,self.path);
-            if(self.stroke) {
-                CGContextReplacePathWithStrokedPath(ctx);
+        if (isDrawable()) {
+            
+            ctx.saveGState()
+            // The starting point of the axis, in the shading's target coordinate space.
+            var start:CGPoint = startPoint * self.bounds.size
+            // The ending point of the axis, in the shading's target coordinate space.
+            var end:CGPoint  = endPoint   * self.bounds.size
+            // The context must be clipped before scale the matrix.
+            addPathAndClipIfNeeded(ctx)
+            
+            if (self.isAxial) {
+                if(self.stroke) {
+                    if(self.path != nil) {
+                        // if we are using the stroke, we offset the from and to points
+                        // by half the stroke width away from the center of the stroke.
+                        // Otherwise we tend to end up with fills that only cover half of the
+                        // because users set the start and end points based on the center
+                        // of the stroke.
+                        let hw = self.lineWidth * 0.5;
+                        start  = end.projectLine(start,length: hw)
+                        end    = start.projectLine(end,length: -hw)
+                    }
+                }
+                
+                ctx.scaleBy(x: self.bounds.size.width,
+                            y: self.bounds.size.height );
+                
+                start  = start / self.bounds.size
+                end    = end   / self.bounds.size
             }
-            CGContextClip(ctx);
+            else
+            {
+                // The starting circle has radius `startRadius' and is centered at
+                // `start', specified in the shading's target coordinate space. The ending
+                // circle has radius `endRadius' and is centered at `end', specified in the
+                // shading's target coordinate space.
+                
+                // CHE¿Scale the context 1:1?
+                
+            }
+            
+            var shading:OMShadingGradient = OMShadingGradient(colors: colors,
+                                                              locations: locations,
+                                                              startPoint: start ,
+                                                              startRadius: startRadius * minRadius(self.bounds.size),
+                                                              endPoint:end ,
+                                                              endRadius: endRadius * minRadius(self.bounds.size),
+                                                              extendStart: self.extendsBeforeStart,
+                                                              extendEnd: self.extendsPastEnd,
+                                                              gradientType: self.gradientType,
+                                                              functionType: self.function,
+                                                              slopeFunction: self.slopeFunction)
+            ctx.drawShading(shading.shadingHandle);
+            ctx.restoreGState();
         }
-        CGContextDrawShading(ctx, shading.CGShading);
-        CGContextRestoreGState(ctx);
     }
     
-    override var description:String {
+    override open var description:String {
         get {
-            var str:String = "type: \(self.type)"
-            if (locations != nil) {
-                str += "\(locations)"
+            var currentDescription:String = super.description
+            if  (self.function == .linear)  {
+                currentDescription += " linear interpolation"
+            } else if(self.function == .exponential) {
+                currentDescription += " exponential interpolation"
+            } else if(self.function == .cosine) {
+                currentDescription += " cosine interpolation"
+            } else if(self.function == .gloss) {
+                currentDescription += " gloss interpolation"
             }
-            if (colors.count > 0) {
-                str += "\(colors)"
-            }
-            if (self.type == .Radial) {
-                str += " start from : \(startPoint) to \(endPoint), radius from : \(startRadius) to \(endRadius)"
-            }
-            if  (self.extendsPastEnd)  {
-                str += " draws after end location"
-            }
-            if  (self.extendsPastStart)  {
-                str += " draws before start location"
-            }
-            if  (self.function == .Linear)  {
-                str += " linear interpolation"
-            }else{
-                str += " exponential interpolation"
-            }
-            //TODO: slope function string
-            //if  (self.slopeFunction)  {
-            //    str += " \(slopeFunction)"
-            //}
-            return str
+            
+            //currentDescription += " \(self.slopeFunction.1)"
+            return currentDescription
         }
-    }
-    
-    
-    // MARK: - CALayer Animation Helpers
-    
-    func animationActionForKey(event:String!) -> CABasicAnimation! {
-        let animation = CABasicAnimation(keyPath: event)
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        animation.fromValue = self.presentationLayer()!.valueForKey(event);
-        return animation
-    }
-    
-    func animateKeyPath(keyPath : String, fromValue : AnyObject?, toValue:AnyObject?, beginTime:NSTimeInterval, duration:NSTimeInterval, delegate:AnyObject?)
-    {
-        let animation = CABasicAnimation(keyPath:keyPath);
-        
-        var currentValue: AnyObject? = self.presentationLayer()?.valueForKey(keyPath)
-        
-        if (currentValue == nil) {
-            currentValue = fromValue
-        }
-        
-        animation.fromValue = currentValue
-        animation.toValue   = toValue
-        animation.delegate  = delegate
-        
-        if(duration > 0.0){
-            animation.duration = duration
-        }
-        if(beginTime > 0.0){
-            animation.beginTime = beginTime
-        }
-        
-        animation.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionLinear)
-        animation.setValue(self,forKey:keyPath)
-        
-        self.addAnimation(animation, forKey:keyPath)
-        
-        self.setValue(toValue,forKey:keyPath)
     }
 }
