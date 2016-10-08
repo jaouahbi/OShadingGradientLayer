@@ -12,6 +12,7 @@ CoreAnimation Shading gradient layer with animatable properties in Swift
 - [x] Linear, cosine and exponential interpolation
 - [x] Different slope functions
 - [x] Radial affine transformation
+- [x] CGShading with colors and locations
 
 ## Requirements
 

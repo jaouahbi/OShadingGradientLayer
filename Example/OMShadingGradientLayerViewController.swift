@@ -374,18 +374,13 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     // MARK: - Helpers
     
     func randomizeColors() {
-       
        self.locations = []
-        
         self.colors.removeAll()
-        var numberOfColor  = (Int(arc4random()) % kMaxNumberOfColors) + kMinNumberOfColors
+        var numberOfColor  = 2
         while numberOfColor > 0 {
             self.colors.append(UIColor.random())
             numberOfColor = numberOfColor - 1
         }
-        
-        //let c = self.gradientLayer.concaveGradient
-        //self.colors = [c.0,c.1]
         self.gradientLayer.colors = colors
     }
     
