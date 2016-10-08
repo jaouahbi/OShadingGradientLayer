@@ -37,7 +37,6 @@ public enum GradientFunction {
     case linear
     case exponential
     case cosine
-    case gloss
 }
 
 
@@ -116,7 +115,13 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             
             let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
             
-            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
+//            let ll = linlin(val: Double(newPosition),inMin: Double(stop1Position),inMax: Double(stop2Position),outMin: 0,outMax: 1.0)
+//            OMLog.printe("(OMShadingGradient) alpha: :\(String(format:"%.1f",alpha)) \(ll)")
+//            
+           OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
+        
+            
+           // newColor = OMGlossGradient(glossColor: newColor).glossit(CGFloat(ll))
             
             for componentIndex in 0 ..< 3 {
                 outData[componentIndex] = (newColor.components?[componentIndex])!
@@ -279,9 +284,6 @@ public struct OMShadingGradient {
             break
         case .cosine :
             interpolationFunction =  UIColor.coserp
-            break
-        case .gloss :
-            interpolationFunction =  OMGlossGradient.glosserp
             break
         }
         return ShadingFunctionCreate(self.colors,

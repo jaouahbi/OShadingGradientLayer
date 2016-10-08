@@ -11,7 +11,7 @@
 		3506A6861D9BD450001C97BF /* OMLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3506A6851D9BD450001C97BF /* OMLog.swift */; };
 		3506A6881D9BD61F001C97BF /* UIBezierPath+Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3506A6871D9BD61F001C97BF /* UIBezierPath+Polygon.swift */; };
 		3506A68A1D9BD625001C97BF /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3506A6891D9BD625001C97BF /* Compatibility.swift */; };
-		3506A6901D9E7947001C97BF /* OMGlossGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3506A68F1D9E7947001C97BF /* OMGlossGradient.swift */; };
+		3510104F1DA97E85008857DD /* CGAffineTransform+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510104E1DA97E85008857DD /* CGAffineTransform+Extensions.swift */; };
 		3510AD6C1CCA08A200BE41F9 /* OMShadingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */; };
 		35D67E0E1D960EE90018EB5F /* OMGradientLayerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D67E0B1D960EE90018EB5F /* OMGradientLayerProtocols.swift */; };
 		35D67E121D960F790018EB5F /* OMShadingGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D67E111D960F790018EB5F /* OMShadingGradientLayer.swift */; };
@@ -40,7 +40,7 @@
 		3506A6851D9BD450001C97BF /* OMLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLog.swift; sourceTree = "<group>"; };
 		3506A6871D9BD61F001C97BF /* UIBezierPath+Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Polygon.swift"; sourceTree = "<group>"; };
 		3506A6891D9BD625001C97BF /* Compatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
-		3506A68F1D9E7947001C97BF /* OMGlossGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGlossGradient.swift; sourceTree = "<group>"; };
+		3510104E1DA97E85008857DD /* CGAffineTransform+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extensions.swift"; sourceTree = "<group>"; };
 		3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradient.swift; sourceTree = "<group>"; };
 		35D67E0B1D960EE90018EB5F /* OMGradientLayerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayerProtocols.swift; sourceTree = "<group>"; };
 		35D67E111D960F790018EB5F /* OMShadingGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradientLayer.swift; sourceTree = "<group>"; };
@@ -84,7 +84,6 @@
 				35D67E211D96174D0018EB5F /* Math */,
 				35D67E131D960FD20018EB5F /* OMGradientLayer.swift */,
 				3510AD671CCA08A200BE41F9 /* OMShadingGradient.swift */,
-				3506A68F1D9E7947001C97BF /* OMGlossGradient.swift */,
 				35D67E111D960F790018EB5F /* OMShadingGradientLayer.swift */,
 				35D67E0B1D960EE90018EB5F /* OMGradientLayerProtocols.swift */,
 				35FB6AB81CEDEDC90014EADA /* Categories */,
@@ -123,6 +122,7 @@
 			children = (
 				3506A6831D9BCDB3001C97BF /* CGSize+Math.swift */,
 				35D67E1B1D96167E0018EB5F /* Float+Math.swift */,
+				3510104E1DA97E85008857DD /* CGAffineTransform+Extensions.swift */,
 				35D67E1C1D96167E0018EB5F /* Double+Math.swift */,
 				35D67E1D1D96167E0018EB5F /* CGFloat+Math.swift */,
 				35D67E151D9615E80018EB5F /* Float+Extensions.swift */,
@@ -232,6 +232,7 @@
 				35D67E141D960FD20018EB5F /* OMGradientLayer.swift in Sources */,
 				35D67E0E1D960EE90018EB5F /* OMGradientLayerProtocols.swift in Sources */,
 				3510AD6C1CCA08A200BE41F9 /* OMShadingGradient.swift in Sources */,
+				3510104F1DA97E85008857DD /* CGAffineTransform+Extensions.swift in Sources */,
 				3506A68A1D9BD625001C97BF /* Compatibility.swift in Sources */,
 				35F0C59D1CC6D53B0076B308 /* AppDelegate.swift in Sources */,
 				35FB6AC01CEDEDC90014EADA /* UIColor+Extensions.swift in Sources */,
@@ -239,7 +240,6 @@
 				35FB6ABD1CEDEDC90014EADA /* CALayer+AnimationKeyPath.swift in Sources */,
 				3506A6841D9BCDB3001C97BF /* CGSize+Math.swift in Sources */,
 				35FB6ABE1CEDEDC90014EADA /* CGColorSpace+Extension.swift in Sources */,
-				3506A6901D9E7947001C97BF /* OMGlossGradient.swift in Sources */,
 				35D67E181D9615E80018EB5F /* CGFloat+Extensions.swift in Sources */,
 				35D67E251D96174D0018EB5F /* Easing.swift in Sources */,
 				35D67E121D960F790018EB5F /* OMShadingGradientLayer.swift in Sources */,

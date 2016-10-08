@@ -59,3 +59,20 @@ public func monotonic(_ numberOfElements:Int) -> [CGFloat] {
     return monotonicFunction
 }
 
+
+public func linlin( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double {
+    return ((val - inMin) / (inMax - inMin) * (outMax - outMin)) + outMin;
+}
+
+public func  linexp( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double
+{
+    //clipping
+    let valclamp = max(min(val, inMax), inMin);
+    return pow((outMax / outMin), (valclamp - inMin) / (inMax - inMin)) * outMin;
+}
+public func explin(val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double
+{
+    //clipping
+    let valclamp = max(min(val, inMax), inMin);
+    return (log(valclamp/inMin) / log(inMax/inMin) * (outMax - outMin)) + outMin;
+}

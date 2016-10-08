@@ -17,9 +17,10 @@
 
 
 import UIKit
-import InfColorPicker
 
 let kDefaultAnimationDuration:TimeInterval = 5.0
+let kMaxNumberOfColors:Int = 25
+let kMinNumberOfColors:Int = 2
 
 class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -181,8 +182,6 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         pointEndX.maximumValue     = 1.0
         pointEndY.minimumValue     = 0.0
         
-        //let midPoint = CGPoint(x:viewBounds.midX, y:viewBounds.midY) / viewBounds.size
-        
         let startPoint = CGPoint(x:viewBounds.minX,y: viewBounds.minY) / viewBounds.size
         let endPoint   = CGPoint(x:viewBounds.minX,y: viewBounds.maxY) / viewBounds.size
         
@@ -214,6 +213,8 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         gradientLayer.locations     = locations
         
         viewForGradientLayer.layer.addSublayer(gradientLayer)
+        
+        viewForGradientLayer.backgroundColor = UIColor.black
         
         #if DEBUG
             viewForGradientLayer.layer.borderWidth = 1.0
@@ -260,14 +261,18 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     }
     
     @IBAction func maskSwitchChanged(_ sender: UISwitch) {
-        let path = UIBezierPath.polygon(frame: viewForGradientLayer.bounds,
-                                        sides: Int(arc4random_uniform(32)) + 4,
-                                        radius:  CGFloat(drand48()) * viewForGradientLayer.bounds.size.min(),
-                                        startAngle: 0 ,
-                                        style: PolygonStyle(rawValue:Int(arc4random_uniform(6)))!,
-                                        percentInflection: CGFloat(drand48()))
-    
-        gradientLayer.path  = path.cgPath
+
+        if sender.isOn  {
+            let path = UIBezierPath.polygon(frame: viewForGradientLayer.bounds,
+                                            sides: Int(arc4random_uniform(32)) + 4,
+                                            radius:  CGFloat(drand48()) * viewForGradientLayer.bounds.size.min(),
+                                            startAngle: 0 ,
+                                            style: PolygonStyle(rawValue:Int(arc4random_uniform(6)))!,
+                                            percentInflection: CGFloat(drand48()))
+            gradientLayer.path  = path.cgPath
+        } else{
+            gradientLayer.path  = nil
+        }
 
         updateGradientLayer()
     }
@@ -308,10 +313,6 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         case 2:
             self.gradientLayer.function =  .cosine
             break
-        case 3:
-            self.gradientLayer.function = .gloss
-            self.colors                 = [UIColor.random()]
-            break
         default:
             self.gradientLayer.function =  .linear
             assertionFailure();
@@ -340,29 +341,51 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         // select random slope function
         //        selectIndexPath(Int(arc4random()) % tableView.numberOfRows(inSection: 0))
         
+        
+        if (gradientLayer.isAxial) {
+            // axial
+            pointStartX.value = 0.0
+            pointStartY.value = 0.5
+            pointEndX.value   = 1.0
+            pointEndY.value   = 0.5
+            
+        } else {
+            
+            //center
+            pointStartX.value = 0.5
+            pointStartY.value = 0.5
+            pointEndX.value   = 0.5
+            pointEndY.value   = 0.5
+            
+            // random scale CGAffineTransform
+        
+            gradientLayer.radialTransform = CGAffineTransform.randomScale()
+            
+        }
+        
         // random colors
         randomizeColors()
         // update the UI
         updateUI();
         // update the gradient layer
         updateGradientLayer()
-        
     }
     
     // MARK: - Helpers
     
     func randomizeColors() {
-        if(self.gradientLayer.function == .gloss)
-        {
-            self.colors               = [UIColor.random()]
-        } else {
-            self.colors               = [UIColor.random(),
-                                         UIColor.random(),
-                                         UIColor.random(),
-                                         UIColor.random(),
-                                         UIColor.random()]
+       
+       self.locations = []
+        
+        self.colors.removeAll()
+        var numberOfColor  = (Int(arc4random()) % kMaxNumberOfColors) + kMinNumberOfColors
+        while numberOfColor > 0 {
+            self.colors.append(UIColor.random())
+            numberOfColor = numberOfColor - 1
         }
         
+        //let c = self.gradientLayer.concaveGradient
+        //self.colors = [c.0,c.1]
         self.gradientLayer.colors = colors
     }
     

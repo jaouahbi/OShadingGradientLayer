@@ -250,41 +250,39 @@ public struct OMGlossGradient
     
     // All colors in the gradient are calculated from the single color parameter.
     
-    public static func glosserp(_ start:UIColor, end:UIColor, t:CGFloat) -> UIColor {
+    public func glossit(_ t:CGFloat) -> UIColor {
         
-        OMLog.printd("(OMGlossGradient) start color: \(start.shortDescription) end color: \(end.shortDescription) alpha: \(t)")
+        OMLog.printd("(OMGlossGradient)  color: \(glossColor.shortDescription)  alpha: \(t)")
         
         var alpha = t
-        let color = UIColor.lerp(start, end: end, t: t)
-        let info  = OMGlossGradient(glossColor: color)
         
         if (alpha < 0.5) {
             
             alpha = alpha * 2.0;
             
-            alpha = 1.0 - info.expScale * CGFloat((expf(Float(alpha * -info.expCoefficient)) - Float(info.expOffset)))
+            alpha = 1.0 - self.expScale * CGFloat((expf(Float(alpha * -self.expCoefficient)) - Float(self.expOffset)))
             
-            let currentWhite = alpha * (info.finalWhite - info.initialWhite) + info.initialWhite;
+            let currentWhite = alpha * (self.finalWhite - self.initialWhite) + self.initialWhite;
             
             let curWhite =  (1.0 - currentWhite)
             
-            return UIColor(red:(info.glossColor.components![0]) * curWhite + currentWhite,
-                           green:(info.glossColor.components![1]) * curWhite + currentWhite,
-                           blue:(info.glossColor.components![2]) * curWhite + currentWhite,
-                           alpha:(info.glossColor.components![3]) * curWhite + currentWhite);
+            return UIColor(red:(self.glossColor.components![0]) * curWhite + currentWhite,
+                           green:(self.glossColor.components![1]) * curWhite + currentWhite,
+                           blue:(self.glossColor.components![2]) * curWhite + currentWhite,
+                           alpha:(self.glossColor.components![3]) * curWhite + currentWhite);
         }
         else
         {
             alpha = (alpha - 0.5) * 2.0;
             
-            alpha = info.expScale *  CGFloat((expf(Float((1.0 - alpha) * -info.expCoefficient)) - Float(info.expOffset)))
+            alpha = self.expScale *  CGFloat((expf(Float((1.0 - alpha) * -self.expCoefficient)) - Float(self.expOffset)))
             
             let curProgress =  (1.0 - alpha)
             
-            return UIColor(red:(info.glossColor.components![0]) * curProgress + info.caustic.components![0] * alpha,
-                           green:(info.glossColor.components![1]) * curProgress + info.caustic.components![1] * alpha,
-                           blue:(info.glossColor.components![2]) * curProgress + info.caustic.components![2] * alpha,
-                           alpha:(info.glossColor.components![3]) * curProgress + info.caustic.components![3] * alpha)
+            return UIColor(red:(self.glossColor.components![0]) * curProgress + self.caustic.components![0] * alpha,
+                           green:(self.glossColor.components![1]) * curProgress + self.caustic.components![1] * alpha,
+                           blue:(self.glossColor.components![2]) * curProgress + self.caustic.components![2] * alpha,
+                           alpha:(self.glossColor.components![3]) * curProgress + self.caustic.components![3] * alpha)
         }
     }
 }

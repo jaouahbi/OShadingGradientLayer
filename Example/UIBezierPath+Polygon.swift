@@ -115,7 +115,9 @@ extension UIBezierPath {
             style: style,
             percentInflection:percentInflection)
         
+        bezier.FitPathToRect(frame)
         bezier.MovePathCenterToPoint(CGPoint(x:frame.midX,y:frame.midY));
+        
         return bezier;
     }
 }
