@@ -63,7 +63,7 @@
 		35FB6ABB1CEDEDC90014EADA /* CGPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		35FB6ABC1CEDEDC90014EADA /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		35FD83911CCCBE23008FE15E /* UIColor+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Random.swift"; sourceTree = "<group>"; };
-		D247910F1A36BB95007AC991 /* ExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D247910F1A36BB95007AC991 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,7 +147,7 @@
 		D24791101A36BB95007AC991 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D247910F1A36BB95007AC991 /* ExampleSwift.app */,
+				D247910F1A36BB95007AC991 /* Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -155,9 +155,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D247910E1A36BB95007AC991 /* ExampleSwift */ = {
+		D247910E1A36BB95007AC991 /* Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D247912E1A36BB95007AC991 /* Build configuration list for PBXNativeTarget "ExampleSwift" */;
+			buildConfigurationList = D247912E1A36BB95007AC991 /* Build configuration list for PBXNativeTarget "Example" */;
 			buildPhases = (
 				D247910B1A36BB95007AC991 /* Sources */,
 				D247910C1A36BB95007AC991 /* Frameworks */,
@@ -167,9 +167,9 @@
 			);
 			dependencies = (
 			);
-			name = ExampleSwift;
+			name = Example;
 			productName = ExampleSwift;
-			productReference = D247910F1A36BB95007AC991 /* ExampleSwift.app */;
+			productReference = D247910F1A36BB95007AC991 /* Example.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -189,7 +189,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D247910A1A36BB95007AC991 /* Build configuration list for PBXProject "ExampleSwift" */;
+			buildConfigurationList = D247910A1A36BB95007AC991 /* Build configuration list for PBXProject "Example" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -202,7 +202,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D247910E1A36BB95007AC991 /* ExampleSwift */,
+				D247910E1A36BB95007AC991 /* Example */,
 			);
 		};
 /* End PBXProject section */
@@ -352,8 +352,8 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "jom.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ExampleSwift;
+				PRODUCT_BUNDLE_IDENTIFIER = jom.OMShadingGradientLayer;
+				PRODUCT_NAME = Example;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -368,8 +368,8 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "jom.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ExampleSwift;
+				PRODUCT_BUNDLE_IDENTIFIER = jom.OMShadingGradientLayer;
+				PRODUCT_NAME = Example;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -377,7 +377,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D247910A1A36BB95007AC991 /* Build configuration list for PBXProject "ExampleSwift" */ = {
+		D247910A1A36BB95007AC991 /* Build configuration list for PBXProject "Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D247912C1A36BB95007AC991 /* Debug */,
@@ -386,7 +386,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D247912E1A36BB95007AC991 /* Build configuration list for PBXNativeTarget "ExampleSwift" */ = {
+		D247912E1A36BB95007AC991 /* Build configuration list for PBXNativeTarget "Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D247912F1A36BB95007AC991 /* Debug */,
