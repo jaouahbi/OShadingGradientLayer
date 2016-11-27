@@ -29,7 +29,7 @@ import UIKit
 extension UIColor
 {
     // RGBA
-    
+
     /// Linear interpolation
     ///
     /// - Parameters:
