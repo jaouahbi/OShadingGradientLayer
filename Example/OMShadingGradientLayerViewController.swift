@@ -19,8 +19,6 @@
 import UIKit
 
 let kDefaultAnimationDuration:TimeInterval = 5.0
-let kMaxNumberOfColors:Int = 25
-let kMinNumberOfColors:Int = 2
 
 class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -378,8 +376,10 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         self.colors.removeAll()
         var numberOfColor  = 2
         while numberOfColor > 0 {
-            self.colors.append(UIColor.random())
-            numberOfColor = numberOfColor - 1
+            if let color = UIColor.random() {
+                self.colors.append(color)
+                numberOfColor = numberOfColor - 1
+            }
         }
         self.gradientLayer.colors = colors
     }

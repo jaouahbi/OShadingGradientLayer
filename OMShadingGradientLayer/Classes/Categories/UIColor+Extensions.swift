@@ -1,4 +1,3 @@
-
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -22,44 +21,49 @@
 //  Created by Jorge Ouahbi on 27/4/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
+// v 1.0 Merged files
+// v 1.1 Some clean and better component access
 
 
 import UIKit
 
-//
-//  Attributes
-//
+///  Attributes
+
 let kLuminanceDarkCutoff:CGFloat = 0.6;
 
 extension UIColor
 {
+    ///  chroma RGB
     var croma : CGFloat {
-        // calculate chroma
-        let min1  = min((components?[1])!, (components?[2])!)
-        let max1  = max((components?[1])!, (components?[2])!)
-        return max(components![0], max1) - min(components![0], min1);
+        
+        let comp  = components
+        let min1  = min(comp[1], comp[2])
+        let max1  = max(comp[1], comp[2])
+        
+        return max(comp[0], max1) - min(comp[0], min1);
         
     }
     // luma RGB
+    // WebKit
+    // luma = (r * 0.2125 + g * 0.7154 + b * 0.0721) * ((double)a / 255.0);
+    
     var luma : CGFloat {
-        
-        let lumaRed   = 0.2126 * Float((components?[0])!)
-        let lumaGreen = 0.7152 * Float((components?[1])!)
-        let lumaBlue  = 0.0722 * Float((components?[2])!)
+        let comp      = components
+        let lumaRed   = 0.2126 * Float(comp[0])
+        let lumaGreen = 0.7152 * Float(comp[1])
+        let lumaBlue  = 0.0722 * Float(comp[2])
         let luma      = Float(lumaRed + lumaGreen + lumaBlue)
         
-        return CGFloat(luma * Float(components![3]))
+        return CGFloat(luma * Float(components[3]))
     }
     
-    var luminance : CGFloat
-    {
-        let fmin = min(min((components?[0])!, (components?[1])!), (components?[2])!);
-        let fmax = max(max((components?[0])!, (components?[1])!), (components?[2])!);
+    var luminance : CGFloat {
+        let comp      = components
+        let fmin = min(min(comp[0],comp[1]),comp[2])
+        let fmax = max(max(comp[0],comp[1]),comp[2])
         return (fmax + fmin) / 2.0;
     }
     
-    // WebKit
-    // luma = (r * 0.2125 + g * 0.7154 + b * 0.0721) * ((double)a / 255.0);
     
     var isLight : Bool {
         return self.luma >= kLuminanceDarkCutoff
@@ -71,24 +75,77 @@ extension UIColor
 }
 
 
-import UIKit
-
 extension UIColor {
-    var components : [CGFloat]? {
-        return self.cgColor.components
+    
+    public convenience init(hex: String) {
+        var characterSet = NSCharacterSet.whitespacesAndNewlines
+        characterSet = characterSet.union(NSCharacterSet(charactersIn: "#") as CharacterSet)
+        let cString = hex.trimmingCharacters(in: characterSet).uppercased()
+        if (cString.characters.count != 6) {
+            self.init(white: 1.0, alpha: 1.0)
+        } else {
+            var rgbValue: UInt32 = 0
+            Scanner(string: cString).scanHexInt32(&rgbValue)
+            
+            self.init(red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+                      green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+                      blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+                      alpha: CGFloat(1.0))
+        }
     }
+    
+    // MARK: RGBA components
+    
+    /// Returns an array of `CGFloat`s containing four elements with `self`'s:
+    /// - red (index `0`)
+    /// - green (index `1`)
+    /// - blue (index `2`)
+    /// - alpha (index `3`)
+    /// or
+    /// - white (index `0`)
+    /// - alpha (index `1`)
+    var components : [CGFloat] {
+        // Constructs the array in which to store the RGBA-components.
+        if let components = self.cgColor.components {
+            if numberOfComponents == 4 {
+                return [components[0],components[1],components[2],components[3]]
+            } else {
+                return [components[0], components[1]]
+            }
+        }
+        
+        return []
+    }
+    
+    /// red component
+    var r : CGFloat {
+        return components[0];
+    }
+    /// green component
+    var g: CGFloat {
+        return  components[1];
+    }
+    /// blue component
+    var b: CGFloat {
+        return  components[2];
+    }
+    
+    /// number of color components
     var numberOfComponents : size_t {
         return self.cgColor.numberOfComponents
     }
+    /// color space
     var colorSpace : CGColorSpace? {
         return self.cgColor.colorSpace
     }
     
+    // MARK: HSBA components
+    
     /// Returns an array of `CGFloat`s containing four elements with `self`'s:
-    /// * hue (index `0`)
-    /// * saturation (index `1`)
-    /// * brightness (index `2`)
-    /// * alpha (index `3`)
+    /// - hue (index `0`)
+    /// - saturation (index `1`)
+    /// - brightness (index `2`)
+    /// - alpha (index `3`)
     var hsbaComponents: [CGFloat] {
         // Constructs the array in which to store the HSBA-components.
         var components = [CGFloat](repeating: 0.0, count: 4)
@@ -102,49 +159,65 @@ extension UIColor {
         
         return components
     }
-    
-    var shortDescription:String {
-        
-        if (numberOfComponents == 2) {
-            
-            let w = (self.components?[0])!.format(true)
-            let a = (self.components?[1])!.format(true)
-            
-            if let colorSpace = self.colorSpace {
-                return "<\(colorSpace.model.name):\(w) \(a)>";
-            }
-            return "<\(w) \(a)>";
-            
-        } else {
-            
-            assert(numberOfComponents == 4)
-            let r = (self.components?[0])!.format(true)
-            let g = (self.components?[1])!.format(true)
-            let b = (self.components?[2])!.format(true)
-            let a = (self.components?[3])!.format(true)
-            
-            if let colorSpace = self.colorSpace {
-                return "<\(colorSpace.model.name):\(r) \(g) \(b) \(a)>";
-            }
-            return "<\(r) \(g) \(b) \(a)>";
-        }
+    /// alpha component
+    var alpha : CGFloat {
+        return self.cgColor.alpha
     }
-}
-
-extension UIColor {
+    /// hue component
+    var hue: CGFloat {
+        return  hsbaComponents[0];
+    }
+    /// saturation component
+    var saturation: CGFloat {
+        return  hsbaComponents[1];
+    }
     
+    /// Returns a lighter color by the provided percentage
+    ///
+    /// - param: lighting percent percentage
+    /// - returns: lighter UIColor
+    
+    func lighterColor(percent : Double) -> UIColor {
+        return colorWithBrightnessFactor(factor: CGFloat(1 + percent));
+    }
+    
+    /// Returns a darker color by the provided percentage
+    ///
+    /// - param: darking percent percentage
+    /// - returns: darker UIColor
+    
+    func darkerColor(percent : Double) -> UIColor {
+        return colorWithBrightnessFactor(factor: CGFloat(1 - percent));
+    }
+    
+    /// Return a modified color using the brightness factor provided
+    ///
+    /// - param: factor brightness factor
+    /// - returns: modified color
+    func colorWithBrightnessFactor(factor: CGFloat) -> UIColor {
+        return UIColor(hue: hsbaComponents[0],
+                       saturation: hsbaComponents[1],
+                       brightness: hsbaComponents[2] * factor,
+                       alpha: hsbaComponents[3])
+        
+    }
+    
+    /// Color difference
+    ///
+    /// - Parameter fromColor: color
+    /// - Returns: Color difference
     func difference(fromColor: UIColor) -> Int {
         // get the current color's red, green, blue and alpha values
-        let red:CGFloat = self.components![0]
-        let green:CGFloat = self.components![1]
-        let blue:CGFloat = self.components![2]
-        //var alpha:CGFloat = self.components![3]
+        let red:CGFloat = self.components[0]
+        let green:CGFloat = self.components[1]
+        let blue:CGFloat = self.components[2]
+        //var alpha:CGFloat = self.components[3]
         
         // get the fromColor's red, green, blue and alpha values
-        let fromRed:CGFloat = fromColor.components![0]
-        let fromGreen:CGFloat = fromColor.components![1]
-        let fromBlue:CGFloat = fromColor.components![2]
-        //var fromAlpha:CGFloat = fromColor.components![3]
+        let fromRed:CGFloat = fromColor.components[0]
+        let fromGreen:CGFloat = fromColor.components[1]
+        let fromBlue:CGFloat = fromColor.components[2]
+        //var fromAlpha:CGFloat = fromColor.components[3]
         
         let redValue = (max(red, fromRed) - min(red, fromRed)) * 255
         let greenValue = (max(green, fromGreen) - min(green, fromGreen)) * 255
@@ -153,84 +226,70 @@ extension UIColor {
         return Int(redValue + greenValue + blueValue)
     }
     
+    /// Brightness difference
+    ///
+    /// - Parameter fromColor: color
+    /// - Returns: Brightness difference
     func brightnessDifference(fromColor: UIColor) -> Int {
         // get the current color's red, green, blue and alpha values
-        let red:CGFloat = self.components![0]
-        let green:CGFloat = self.components![1]
-        let blue:CGFloat = self.components![2]
-        //var alpha:CGFloat = self.components![3]
+        let red:CGFloat = self.components[0]
+        let green:CGFloat = self.components[1]
+        let blue:CGFloat = self.components[2]
+        //var alpha:CGFloat = self.components[3]
         let brightness = Int((((red * 299) + (green * 587) + (blue * 114)) * 255) / 1000)
         
         // get the fromColor's red, green, blue and alpha values
-        let fromRed:CGFloat = fromColor.components![0]
-        let fromGreen:CGFloat = fromColor.components![1]
-        let fromBlue:CGFloat = fromColor.components![2]
-        //var fromAlpha:CGFloat = fromColor.components![3]
+        let fromRed:CGFloat = fromColor.components[0]
+        let fromGreen:CGFloat = fromColor.components[1]
+        let fromBlue:CGFloat = fromColor.components[2]
+        //var fromAlpha:CGFloat = fromColor.components[3]
         
         let fromBrightness = Int((((fromRed * 299) + (fromGreen * 587) + (fromBlue * 114)) * 255) / 1000)
         
         return max(brightness, fromBrightness) - min(brightness, fromBrightness)
     }
-}
-
-extension UIColor
-{
-    // RGBA
-    // linear interpolation
-    public class func lerp(_ start:UIColor, end:UIColor, t:CGFloat) -> UIColor {
-        
-        let srgba = start.components
-        let ergba = end.components
-        
-        return UIColor(red: Interpolation.lerp(srgba![0],y1: ergba![0],t: t),
-                       green: Interpolation.lerp(srgba![1],y1: ergba![1],t: t),
-                       blue: Interpolation.lerp(srgba![2],y1: ergba![2],t: t),
-                       alpha: Interpolation.lerp(srgba![3],y1: ergba![3],t: t))
-    }
-    // cosine interpolate
-    public class func coserp(_ start:UIColor, end:UIColor, t:CGFloat) -> UIColor {
-        let srgba = start.components
-        let ergba = end.components
-        return UIColor(red: Interpolation.coserp(srgba![0],y1: ergba![0],t: t),
-                       green: Interpolation.coserp(srgba![1],y1: ergba![1],t: t),
-                       blue: Interpolation.coserp(srgba![2],y1: ergba![2],t: t),
-                       alpha: Interpolation.coserp(srgba![3],y1: ergba![3],t: t))
+    
+    /// Color delta
+    ///
+    /// - Parameter color: color
+    /// - Returns: Color delta
+    func colorDelta (color: UIColor) -> Double {
+        var total = CGFloat(0)
+        total += pow(self.components[0] - color.components[0], 2)
+        total += pow(self.components[1] - color.components[1], 2)
+        total += pow(self.components[2] - color.components[2], 2)
+        total += pow(self.components[3] - color.components[3], 2)
+        return sqrt(Double(total) * 255.0)
     }
     
-    // exponential interpolation
-    public class func eerp(_ start:UIColor, end:UIColor, t:CGFloat) -> UIColor {
-        let srgba = start.components
-        let ergba = end.components
-        
-        let r = clamp(Interpolation.eerp(srgba![0],y1: ergba![0],t: t),lower: 0,upper: 1)
-        let g = clamp(Interpolation.eerp(srgba![1],y1: ergba![1],t: t),lower: 0,upper: 1)
-        let b = clamp(Interpolation.eerp(srgba![2],y1: ergba![2],t: t),lower: 0,upper: 1)
-        let a = clamp(Interpolation.eerp(srgba![3],y1: ergba![3],t: t),lower: 0,upper: 1)
-        
-        assert(r <= 1.0 && g <= 1.0 && b <= 1.0 && a <= 1.0);
-        
-        return UIColor(red: r,
-                       green: g,
-                       blue: b,
-                       alpha: a)
-        
-    }
-    
-    
-    
-    // bilinear interpolation
-    public class func bilerp(_ start:[UIColor], end:[UIColor], t:[CGFloat]) -> UIColor {
-        let srgba0 = start[0].components
-        let ergba0 = end[0].components
-        
-        let srgba1 = start[1].components
-        let ergba1 = end[1].components
-        
-        return UIColor(red: Interpolation.bilerp(srgba0![0], y01: ergba0![0], t1: t[0], y10: srgba1![0], y11: ergba1![0], t2: t[1]),
-                       green: Interpolation.bilerp(srgba0![1], y01: ergba0![1], t1: t[0], y10: srgba1![1], y11: ergba1![1], t2: t[1]),
-                       blue: Interpolation.bilerp(srgba0![2], y01: ergba0![2], t1: t[0], y10: srgba1![2], y11: ergba1![2], t2: t[1]),
-                       alpha:  Interpolation.bilerp(srgba0![3], y01: ergba0![3], t1: t[0], y10: srgba1![3], y11: ergba1![3], t2: t[1]))
-        
+    /// Short UIColor description
+    var shortDescription:String {
+        let components  = self.components
+        if (numberOfComponents == 2) {
+            let c = String(format: "%.1f %.1f", components[0], components[1])
+            if let colorSpace = self.colorSpace {
+                return "\(colorSpace.model.name):\(c)";
+            }
+            return "\(c)";
+        } else {
+            assert(numberOfComponents == 4)
+            let c = String(format: "%.1f %.1f %.1f %.1f", components[0],components[1],components[2],components[3])
+            if let colorSpace = self.colorSpace {
+                return "\(colorSpace.model.name):\(c)";
+            }
+            return "\(c)";
+        }
     }
 }
 
+/// Random RGBA
+
+extension UIColor {
+    
+    class public func random() -> UIColor? {
+        let r = CGFloat(drand48())
+        let g = CGFloat(drand48())
+        let b = CGFloat(drand48())
+        return UIColor(red: r, green: g, blue: b, alpha: 1.0)
+    }
+}

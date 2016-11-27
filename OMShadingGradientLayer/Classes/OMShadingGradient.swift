@@ -76,7 +76,8 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             }
             // Next positon index
             positionIndex += 1;
-                
+            
+            
         } else {
             // if we only have one value, that's what we return
             stop2Position = stop1Position;
@@ -94,18 +95,18 @@ func ShadingFunctionCreate(_ colors : [UIColor],
         if (alpha <= stop1Position) {
             // if we are less than our lowest position, return our first color
             OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
-            outData[0] = (stop1Color.components?[0])!
-            outData[1] = (stop1Color.components?[1])!
-            outData[2] = (stop1Color.components?[2])!
-            outData[3] = (stop1Color.components?[3])!
+            outData[0] = (stop1Color.components[0])
+            outData[1] = (stop1Color.components[1])
+            outData[2] = (stop1Color.components[2])
+            outData[3] = (stop1Color.components[3])
             
         } else if (alpha >= stop2Position) {
             // likewise if we are greater than our highest position, return the last color
             OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
-            outData[0] = (stop2Color.components?[0])!
-            outData[1] = (stop2Color.components?[1])!
-            outData[2] = (stop2Color.components?[2])!
-            outData[3] = (stop2Color.components?[3])!
+            outData[0] = (stop2Color.components[0])
+            outData[1] = (stop2Color.components[1])
+            outData[2] = (stop2Color.components[2])
+            outData[3] = (stop2Color.components[3])
             
         } else {
             
@@ -115,16 +116,10 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             
             let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
             
-//            let ll = linlin(val: Double(newPosition),inMin: Double(stop1Position),inMax: Double(stop2Position),outMin: 0,outMax: 1.0)
-//            OMLog.printe("(OMShadingGradient) alpha: :\(String(format:"%.1f",alpha)) \(ll)")
-//            
-           OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
+            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
         
-            
-           // newColor = OMGlossGradient(glossColor: newColor).glossit(CGFloat(ll))
-            
             for componentIndex in 0 ..< 3 {
-                outData[componentIndex] = (newColor.components?[componentIndex])!
+                outData[componentIndex] = (newColor.components[componentIndex])
             }
             
             //Premultiply the color by the alpha.?
