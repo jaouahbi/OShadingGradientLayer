@@ -20,7 +20,8 @@ Pod::Spec.new do |s|
   s.description     = 'Shading gradient CALayer with animatable properties in Swift.'
 
   s.homepage         = 'https://github.com/jaouahbi/OMShadingGradientLayer'
-  s.screenshots      = 'https://s3.amazonaws.com/cocoacontrols_production/uploads/control_image/image/10505/ScreenShot.png'
+  s.screenshots      = ['https://s3.amazonaws.com/cocoacontrols_production/uploads/control_image/image/8908/ScreenShot-1.png',
+                        'https://s3.amazonaws.com/cocoacontrols_production/uploads/control_image/image/8909/ScreenShot-2.png']
   s.license          = { :type => 'APACHE 2.0', :file => 'LICENSE' }
   s.author           = { 'Jorge Ouahbi' => 'jorgeouahbi@gmail.com' }
   s.source           = { :git => 'https://github.com/jaouahbi/OMShadingGradientLayer.git', :tag => s.version.to_s }
