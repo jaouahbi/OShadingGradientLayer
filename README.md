@@ -48,4 +48,4 @@ OMShadingGradientLayer is owned and maintained by the [Jorge Ouahbi](https://twi
 
 ## License
 
-OMRadialGradientLayer is released under the APACHE 2.0 license. See LICENSE for details.
+OMShadingGradientLayer is released under the APACHE 2.0 license. See LICENSE for details.
