@@ -1,5 +1,5 @@
 //
-//  BezierPolygon.swift
+//  UIBezierPath+Polygon.swift
 //
 //  Created by Jorge Ouahbi on 12/9/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
@@ -22,8 +22,7 @@ public struct Bezier {
         percentInflection: CGFloat = 0.0) -> BezierPath
     {
         guard sideCount >= 3 else {
-            OMLog.printe("Bezier polygon construction requires 3+ sides")
-            return BezierPath()
+            fatalError("Bezier polygon construction requires 3+ sides")
         }
         
         func pointAt(_ theta: CGFloat, inflected: Bool = false, centered: Bool = false) -> CGPoint {
@@ -156,6 +155,8 @@ func RectByFittingRect(sourceRect:CGRect, destinationRect:CGRect) -> CGRect
     let  targetSize = SizeScaleByFactor(sourceRect.size, factor: aspect);
     return RectAroundCenter(RectGetCenter(destinationRect), size: targetSize);
 }
+
+// MARK: - UIBezierPath+polygon
 
 extension UIBezierPath
 {
