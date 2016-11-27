@@ -20,11 +20,9 @@
 		35637A481DEACA9B0059A6B6 /* Float+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A321DEACA9B0059A6B6 /* Float+Extensions.swift */; };
 		35637A491DEACA9B0059A6B6 /* Float+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A331DEACA9B0059A6B6 /* Float+Math.swift */; };
 		35637A4A1DEACA9B0059A6B6 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A341DEACA9B0059A6B6 /* UIColor+Extensions.swift */; };
-		35637A4B1DEACA9B0059A6B6 /* CGContext+Shading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A351DEACA9B0059A6B6 /* CGContext+Shading.swift */; };
 		35637A4C1DEACA9B0059A6B6 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A371DEACA9B0059A6B6 /* Easing.swift */; };
 		35637A4D1DEACA9B0059A6B6 /* Interpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A381DEACA9B0059A6B6 /* Interpolation.swift */; };
 		35637A4E1DEACA9B0059A6B6 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A391DEACA9B0059A6B6 /* Math.swift */; };
-		35637A4F1DEACA9B0059A6B6 /* OMGlossGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A3A1DEACA9B0059A6B6 /* OMGlossGradient.swift */; };
 		35637A501DEACA9B0059A6B6 /* OMGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A3B1DEACA9B0059A6B6 /* OMGradientLayer.swift */; };
 		35637A511DEACA9B0059A6B6 /* OMGradientLayerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A3C1DEACA9B0059A6B6 /* OMGradientLayerProtocols.swift */; };
 		35637A521DEACA9B0059A6B6 /* OMLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35637A3D1DEACA9B0059A6B6 /* OMLog.swift */; };
@@ -51,11 +49,9 @@
 		35637A321DEACA9B0059A6B6 /* Float+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float+Extensions.swift"; sourceTree = "<group>"; };
 		35637A331DEACA9B0059A6B6 /* Float+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float+Math.swift"; sourceTree = "<group>"; };
 		35637A341DEACA9B0059A6B6 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
-		35637A351DEACA9B0059A6B6 /* CGContext+Shading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGContext+Shading.swift"; sourceTree = "<group>"; };
 		35637A371DEACA9B0059A6B6 /* Easing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		35637A381DEACA9B0059A6B6 /* Interpolation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interpolation.swift; sourceTree = "<group>"; };
 		35637A391DEACA9B0059A6B6 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
-		35637A3A1DEACA9B0059A6B6 /* OMGlossGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGlossGradient.swift; sourceTree = "<group>"; };
 		35637A3B1DEACA9B0059A6B6 /* OMGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayer.swift; sourceTree = "<group>"; };
 		35637A3C1DEACA9B0059A6B6 /* OMGradientLayerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayerProtocols.swift; sourceTree = "<group>"; };
 		35637A3D1DEACA9B0059A6B6 /* OMLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLog.swift; sourceTree = "<group>"; };
@@ -94,9 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				35637A291DEACA9B0059A6B6 /* Categories */,
-				35637A351DEACA9B0059A6B6 /* CGContext+Shading.swift */,
 				35637A361DEACA9B0059A6B6 /* Math */,
-				35637A3A1DEACA9B0059A6B6 /* OMGlossGradient.swift */,
 				35637A3B1DEACA9B0059A6B6 /* OMGradientLayer.swift */,
 				35637A3C1DEACA9B0059A6B6 /* OMGradientLayerProtocols.swift */,
 				35637A3D1DEACA9B0059A6B6 /* OMLog.swift */,
@@ -240,7 +234,6 @@
 			files = (
 				35FD83921CCCBE23008FE15E /* UIColor+Random.swift in Sources */,
 				35637A4D1DEACA9B0059A6B6 /* Interpolation.swift in Sources */,
-				35637A4F1DEACA9B0059A6B6 /* OMGlossGradient.swift in Sources */,
 				35637A451DEACA9B0059A6B6 /* CGPoint+Extension.swift in Sources */,
 				35637A511DEACA9B0059A6B6 /* OMGradientLayerProtocols.swift in Sources */,
 				35637A431DEACA9B0059A6B6 /* CGFloat+Extensions.swift in Sources */,
@@ -253,7 +246,6 @@
 				35637A411DEACA9B0059A6B6 /* CGAffineTransform+Extensions.swift in Sources */,
 				35F0C5A11CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift in Sources */,
 				35637A4A1DEACA9B0059A6B6 /* UIColor+Extensions.swift in Sources */,
-				35637A4B1DEACA9B0059A6B6 /* CGContext+Shading.swift in Sources */,
 				35637A481DEACA9B0059A6B6 /* Float+Extensions.swift in Sources */,
 				35637A4C1DEACA9B0059A6B6 /* Easing.swift in Sources */,
 				35637A441DEACA9B0059A6B6 /* CGFloat+Math.swift in Sources */,
