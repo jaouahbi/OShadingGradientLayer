@@ -8,6 +8,7 @@ CoreAnimation Shading gradient layer with animatable properties in Swift
 
 ![](https://github.com/jaouahbi/OMShadingGradientLayer/blob/master/ScreenShot/ScreenShot_1.png)
 ![](https://github.com/jaouahbi/OMShadingGradientLayer/blob/master/ScreenShot/ScreenShot_2.png)
+![](https://github.com/jaouahbi/OMShadingGradientLayer/blob/master/ScreenShot/ScreenShot_3.png)
 
 ## Features
 
