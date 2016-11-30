@@ -59,13 +59,13 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
     @IBOutlet weak var strokeSwitch   : UISwitch!
     @IBOutlet weak var pathSwitch     : UISwitch!
     
-    var textLayerShading:OMTextLayer = OMTextLayer(string: "CG Shading", font: UIFont(name: "Helvetica",size: 35)!)
+    var textLayer:OMTextLayer = OMTextLayer(string: "CG Shading", font: UIFont(name: "Helvetica",size: 35)!)
     
     var colors      : [UIColor] = [UIColor]()
     var locations   : [CGFloat] = []
     
-    var subviewForShadingGradientLayer  : OMGradientView<OMShadingGradientLayer>!
-    var gradientShadLayer:OMShadingGradientLayer = OMShadingGradientLayer(type:.axial)
+    var subviewForGradientLayer  : OMGradientView<OMShadingGradientLayer>!
+    var gradientLayer:OMShadingGradientLayer = OMShadingGradientLayer(type:.axial)
     
     var gradientAnimation = false
     
@@ -195,7 +195,7 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
     // MARK: - UITableView Delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let i = indexPath.row
-        self.gradientShadLayer.slopeFunction = self.slopeFunction[i];
+        self.gradientLayer.slopeFunction = self.slopeFunction[i];
         if(tableView == self.tableView) {
             updateGradientLayer()
         }else if(tableView == tableViewColorsAndLocations){
@@ -208,15 +208,15 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        subviewForShadingGradientLayer  = OMGradientView<OMShadingGradientLayer>(frame:viewForShadingGradientLayer.frame)
+        subviewForGradientLayer  = OMGradientView<OMShadingGradientLayer>(frame:viewForShadingGradientLayer.frame)
         
-        viewForShadingGradientLayer.addSubview(subviewForShadingGradientLayer)
+        viewForShadingGradientLayer.addSubview(subviewForGradientLayer)
         
-        gradientShadLayer   = subviewForShadingGradientLayer!.gradientLayer
+        gradientLayer   = subviewForGradientLayer!.gradientLayer
         
-        gradientShadLayer.addSublayer(textLayerShading)
-        gradientShadLayer.mask = textLayerShading
-        textLayerShading.borderWidth = 20;
+        gradientLayer.addSublayer(textLayer)
+        gradientLayer.mask = textLayer
+
         
         #if DEBUG_UI
             viewPanel.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -229,32 +229,29 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // 2%
+        textLayer.borderWidth = self.viewForShadingGradientLayer.bounds.width * 0.02
         
-        pointStartX.maximumValue   = Float(1)
-        pointStartY.maximumValue   = Float(1)
         
-        pointEndX.maximumValue     = Float(1)
-        pointEndY.maximumValue     = Float(1)
+        pointStartX.maximumValue   = 1
+        pointStartY.maximumValue   = 1
         
-        pointStartX.minimumValue   = Float(0)
-        pointStartY.minimumValue   = Float(0)
+        pointEndX.maximumValue     = 1
+        pointEndY.maximumValue     = 1
         
-        pointEndX.minimumValue     = Float(0)
-        pointEndY.minimumValue     = Float(0)
+        pointStartX.minimumValue   = 0
+        pointStartY.minimumValue   = 0
         
-        let isAxial = gradientShadLayer.isAxial
+        pointEndX.minimumValue     = 0
+        pointEndY.minimumValue     = 0
+        
+        let isAxial = gradientLayer.isAxial
         
         typeGardientSwitch.isOn  = !isAxial
         extendsPastEnd.isOn      = true
         extendsPastStart.isOn    = true
         
-        self.updateGradientPoints(isAxial)
-        
-        // radius
-        
-        #if (DEBUG_VERBOSE)
-            print("Min Radius: \(minRad) max radius: \(maxRad)")
-        #endif
+        setUpGradientPoints(isAxial)
         
         endRadiusSlider.maximumValue     = 1.0
         endRadiusSlider.minimumValue     = 0
@@ -265,15 +262,15 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
         startRadiusSlider.value          = 0.0;
         
         // select the first element
-        self.selectIndexPath(tableView, row: 0)
-        self.selectIndexPath(tableViewColorsAndLocations, row: 0)
+        selectIndexPath(tableView, row: 0)
+        selectIndexPath(tableViewColorsAndLocations, row: 0)
         
         
         // update the gradient layer frame
-        self.gradientShadLayer.frame = self.viewForShadingGradientLayer.bounds
+        self.gradientLayer.frame = self.viewForShadingGradientLayer.bounds
         
         // text layers
-        self.textLayerShading.frame = self.viewForShadingGradientLayer.bounds
+        self.textLayer.frame = self.viewForShadingGradientLayer.bounds
         
         #if DEBUG_UI
             viewForShadingGradientLayer.layer.borderWidth = 1.0
@@ -290,7 +287,7 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
         coordinator.animate(alongsideTransition: {(UIViewControllerTransitionCoordinatorContext) in
         }) {(UIViewControllerTransitionCoordinatorContext) in
             // update the gradient layer frame
-            self.gradientShadLayer.frame = self.viewForShadingGradientLayer.bounds
+            self.gradientLayer.frame = self.viewForShadingGradientLayer.bounds
 
         }
     }
@@ -307,8 +304,8 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
         updateGradientLayer();
     }
     @IBAction func strokeSwitchChanged(_ sender: UISwitch) {
-        if ((gradientShadLayer.path) != nil) {
-            gradientShadLayer.stroke = sender.isOn
+        if ((gradientLayer.path) != nil) {
+            gradientLayer.stroke = sender.isOn
 
         } else  {
             strokeSwitch.isOn = false;
@@ -326,11 +323,11 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
                                                    percentInflection: CGFloat(drand48()))
             
             
-            gradientShadLayer.path  = pathShading.cgPath
+            gradientLayer.path  = pathShading.cgPath
 
             
         } else {
-            gradientShadLayer.path  = nil
+            gradientLayer.path  = nil
             
             strokeSwitch.isOn         = false;
         }
@@ -338,7 +335,7 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
     }
     
     @IBAction func typeSwitchChanged(_ sender: UISwitch) {
-        updateGradientPoints(sender.isOn == false)
+        setUpGradientPoints(sender.isOn == false)
         updateGradientLayer()
     }
     
@@ -377,15 +374,10 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
     @IBAction func maskTextSwitchChanged(_ sender: UISwitch) {
         
         if (sender.isOn) {
-            gradientShadLayer.mask = textLayerShading
-
+            gradientLayer.mask = textLayer
         } else {
-            gradientShadLayer.mask = nil
-
-            
-            gradientShadLayer.addSublayer(textLayerShading)
-
-            
+            gradientLayer.mask = nil
+            gradientLayer.addSublayer(textLayer)
         }
         updateGradientLayer()
     }
@@ -420,30 +412,30 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
         self.colors            = colorsAndLocations.0
         self.locations         = colorsAndLocations.1
         
-        self.gradientShadLayer.colors    = self.colors
-        self.gradientShadLayer.locations = self.locations
+        self.gradientLayer.colors    = self.colors
+        self.gradientLayer.locations = self.locations
 
         
         tableViewColorsAndLocations.reloadData()
         
         let currentIndex:Int = 0
         
-        self.selectIndexPath(tableViewColorsAndLocations, row: currentIndex)
+        selectIndexPath(tableViewColorsAndLocations, row: currentIndex)
         
-        //self.updateTextGradient()
+        //updateTextGradient()
         
     }
     
     func animateLayers() {
         // allways remove all animations
-        gradientShadLayer.removeAllAnimations()
+        gradientLayer.removeAllAnimations()
 
         
         CATransaction.setAnimationDuration(kDefaultAnimationDuration)
         let mediaTime =  CACurrentMediaTime()
         CATransaction.begin()
         // OMShadingGradientLayer
-        let minRad = minRadius(gradientShadLayer.bounds.size)
+        let minRad = minRadius(gradientLayer.bounds.size)
         let rndStartRadius = CGFloat(drand48()) * minRad
         let rndEndRadius   = CGFloat(drand48()) * minRad
         let rndStartPoint  = CGPoint(x: drand48(),y: drand48())
@@ -454,7 +446,7 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
         
         //weak var delegate = self
         
-        gradientShadLayer.animateKeyPath("startRadius",
+        gradientLayer.animateKeyPath("startRadius",
                                          fromValue: nil,
                                          toValue: rndStartRadius as AnyObject?,
                                          beginTime: mediaTime ,
@@ -462,7 +454,7 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
                                          delegate: nil)
         
         
-        gradientShadLayer.animateKeyPath("endRadius",
+        gradientLayer.animateKeyPath("endRadius",
                                          fromValue: nil,
                                          toValue: rndEndRadius as AnyObject?,
                                          beginTime: mediaTime,
@@ -470,16 +462,14 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
                                          delegate: nil)
         
         
-        gradientShadLayer.animateKeyPath("startPoint",
+        gradientLayer.animateKeyPath("startPoint",
                                          fromValue: nil,
                                          toValue: NSValue(cgPoint:rndStartPoint),
                                          beginTime: mediaTime ,
                                          duration: kDefaultAnimationDuration,
                                          delegate: nil)
         
-        
-        
-        gradientShadLayer.animateKeyPath("endPoint",
+        gradientLayer.animateKeyPath("endPoint",
                                          fromValue: nil,
                                          toValue: NSValue(cgPoint:rndEndPoint),
                                          beginTime: mediaTime,
@@ -487,14 +477,14 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
                                          delegate: nil)
         
         
-        gradientShadLayer.animateKeyPath("colors",
+        gradientLayer.animateKeyPath("colors",
                                          fromValue:nil,
                                          toValue: colorsAndLocations.0 as AnyObject?,
                                          beginTime: mediaTime,
                                          duration: kDefaultAnimationDuration,
                                          delegate: nil)
         
-        gradientShadLayer.animateKeyPath("locations",
+        gradientLayer.animateKeyPath("locations",
                                          fromValue:nil,
                                          toValue: colorsAndLocations.1 as AnyObject?,
                                          beginTime: mediaTime,
@@ -509,14 +499,11 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
     func updateGradientLayer()  {
         
         let axial = !typeGardientSwitch.isOn
-        
-
-        
-        gradientShadLayer.gradientType       = axial ? .axial : .radial
-        gradientShadLayer.extendsBeforeStart = extendsPastStart.isOn
-        gradientShadLayer.extendsPastEnd     = extendsPastEnd.isOn
-        gradientShadLayer.function           = typeFunctionSwitch.isOn ? .exponential : .linear;
-        gradientShadLayer.slopeFunction      = self.slopeFunction[(self.tableView.indexPathForSelectedRow! as NSIndexPath).row] ;
+        gradientLayer.gradientType       = axial ? .axial : .radial
+        gradientLayer.extendsBeforeStart = extendsPastStart.isOn
+        gradientLayer.extendsPastEnd     = extendsPastEnd.isOn
+        gradientLayer.function           = typeFunctionSwitch.isOn ? .exponential : .linear;
+        gradientLayer.slopeFunction      = self.slopeFunction[(self.tableView.indexPathForSelectedRow! as NSIndexPath).row] ;
         
         let endRadius:CGFloat   = CGFloat(endRadiusSlider.value)
         let startRadius:CGFloat = CGFloat(startRadiusSlider.value)
@@ -541,21 +528,18 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
             
             CATransaction.begin()
             CATransaction.setDisableActions(true)
-            
-
-            
-            gradientShadLayer.startPoint  = startPoint;
-            gradientShadLayer.endPoint    = endPoint;
-            gradientShadLayer.startRadius = startRadius
-            gradientShadLayer.endRadius   = endRadius
+        
+            gradientLayer.startPoint  = startPoint;
+            gradientLayer.endPoint    = endPoint;
+            gradientLayer.startRadius = startRadius
+            gradientLayer.endRadius   = endRadius
             
             CATransaction.setDisableActions(false)
             CATransaction.commit();
             
-            gradientShadLayer.setNeedsDisplay()
+            gradientLayer.setNeedsDisplay()
         }
     }
-    
     
     func updateGardientLocationsString() {
         
@@ -564,19 +548,18 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
         endPointSliderValueLabel.text   = "x:\(pointEndX.value.format(true))\ny:\(pointEndY.value.format(true))"
         
         //radius text
-        startRadiusSliderValueLabel.text = Float(gradientShadLayer.startRadius).format(true)
-        endRadiusSliderValueLabel.text   = Float(gradientShadLayer.endRadius).format(true)
+        startRadiusSliderValueLabel.text = Float(gradientLayer.startRadius).format(true)
+        endRadiusSliderValueLabel.text   = Float(gradientLayer.endRadius).format(true)
     }
     
     
-    func updateGradientPoints(_ isAxial:Bool) {
+    func setUpGradientPoints(_ isAxial:Bool) {
         if (isAxial) {
             // axial
             pointStartX.value = 0.0
             pointStartY.value = 0.5
             pointEndX.value   = 1.0
             pointEndY.value   = 0.5
-            
             
         } else {
             //radial
