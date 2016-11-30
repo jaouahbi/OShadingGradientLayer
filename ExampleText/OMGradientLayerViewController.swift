@@ -216,6 +216,7 @@ class OMGradientLayerViewController : UIViewController, UITableViewDataSource, U
         
         gradientShadLayer.addSublayer(textLayerShading)
         gradientShadLayer.mask = textLayerShading
+        textLayerShading.borderWidth = 20;
         
         #if DEBUG_UI
             viewPanel.layer.borderColor = UIColor.lightGrayColor().CGColor

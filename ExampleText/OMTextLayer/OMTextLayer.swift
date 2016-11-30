@@ -37,6 +37,8 @@
 //      Added code so that the text can follow an angle with a certain radius (Based on ArcTextView example by Apple)
 //  Versión 0.14 (25-9-2016)
 //      Added text to path helper function
+//  Versión 0.15 (30-11-2016)
+//      Added vertical alignment
 
 
 #if os(iOS)
@@ -55,6 +57,12 @@ import CoreFoundation
     
     fileprivate(set) var fontRef:CTFont = CTFontCreateWithName("Helvetica" as CFString, 12.0, nil);
     
+    
+    var verticalCeter : Bool = true {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     var angleLenght : Double? {
         didSet {
             setNeedsDisplay()
@@ -79,10 +87,7 @@ import CoreFoundation
         }
     }
     
-    
-    //
-    //  default 1: default ligatures, 0: no ligatures, 2: all ligatures
-    //
+    ///  default 1: default ligatures, 0: no ligatures, 2: all ligatures
     
     var fontLigature:NSNumber   = NSNumber(value: 1 as Int32) {
         didSet {
@@ -362,7 +367,7 @@ import CoreFoundation
                 context.scaleBy(x: 1.0, y: -1.0);
             #endif
             
-            let rect:CGRect = bounds
+            var rect:CGRect = bounds
             
             if (radiusRatio == 0 && angleLenght == nil) {
                 
@@ -371,14 +376,21 @@ import CoreFoundation
                 
                 let path = CGMutablePath();
                 
-                // add the rect for the frame
-                path.addRect(rect);
-                
                 // Add the atributtes to the String
                 let attrStringWithAttributes = stringWithAttributes(string)
                 
                 // Create the framesetter with the attributed string.
                 let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
+                
+                if verticalCeter {
+                    let boundingBox = CTFontGetBoundingBox(fontRef);
+                    // Get the position on the y axis (middle)
+                    let midHeight = (rect.size.height * 0.5) - boundingBox.size.height * 0.5
+                    rect = CGRect(x:0, y:midHeight, width:rect.size.width, height:boundingBox.size.height)
+                }
+                
+                // add the rect for the frame
+                path.addRect(rect);
                 
                 // Create a frame.
                 let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
@@ -550,7 +562,7 @@ extension OMTextLayer {
                 context.rotate(by: CGFloat(M_PI_2));
                 
                 // Now for the actual drawing. The angle offset for each glyph relative to the previous glyph has already been
-                // calculated; with that information in hand, draw those glyphs overstruck and centered over one another, making sure 
+                // calculated; with that information in hand, draw those glyphs overstruck and centered over one another, making sure
                 // to rotate the context after each glyph so the glyphs are spread along a semicircular path.
                 var textPosition = CGPoint(x:0.0,y: self.radiusRatio * minRadius(rect.size));
                 
@@ -580,7 +592,7 @@ extension OMTextLayer {
                         let glyphWidth:CGFloat = glyphArcInfo[runGlyphIndex + glyphOffset].width;
                         let halfGlyphWidth:CGFloat = glyphWidth / 2.0;
                         let positionForThisGlyph:CGPoint = CGPoint(x:textPosition.x - halfGlyphWidth, y:textPosition.y);
-            
+                        
                         // Glyphs are positioned relative to the text position for the line,
                         // so offset text position leftwards by this glyph's width in preparation for the next glyph.
                         
