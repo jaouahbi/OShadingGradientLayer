@@ -24,13 +24,13 @@
 
 import UIKit
 
-/// Interpolation type
+/// Interpolation type: http://paulbourke.net/miscellaneous/interpolation/
 ///
-/// - linear: lineal interpolation https://en.wikipedia.org/wiki/Linear_interpolation
-/// - exponential: <#exponential description#>
-/// - cosine: <#cosine description#>
-/// - cubic: <#cubic description#>
-/// - bilinear: <#bilinear description#>
+/// - linear: lineal interpolation
+/// - exponential: exponential interpolation
+/// - cosine: cosine interpolation
+/// - cubic: cubic interpolation
+/// - bilinear: bilinear interpolation
 
 enum InterpolationType {
     case linear
