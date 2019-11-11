@@ -36,9 +36,9 @@ extension CGColorSpaceModel {
         case .deviceN:return "DeviceN"
         case .indexed:return "Indexed"
         case .pattern:return "Pattern"
-        case .XYZ:return "Pattern"
+        case .XYZ:return "XYZ"
         @unknown default:
-            fatalError()
+            return "Unknown"
         }
     }
 }
@@ -67,5 +67,4 @@ extension CGColorSpace {
     var isPattern : Bool {
         return model == .pattern
     }
-    
 }
