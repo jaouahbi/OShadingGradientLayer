@@ -271,7 +271,7 @@ public struct OMShadingGradient {
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {
         
         // @default: linear interpolation
-        var interpolationFunction:GradientInterpolationFunction =  UIColor.lerp
+        var interpolationFunction: GradientInterpolationFunction =  UIColor.lerp
         switch(self.functionType){
         case .linear :
             interpolationFunction =  UIColor.lerp

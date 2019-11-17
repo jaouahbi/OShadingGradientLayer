@@ -1,123 +1,127 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="yW7-Er-xAo">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="yW7-Er-xAo">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Shading Gradient Layer-->
         <scene sceneID="0Oe-gE-QMH">
             <objects>
-                <viewController id="dsp-wU-3jn" customClass="OMShadingGradientLayerViewController" customModule="ExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dsp-wU-3jn" customClass="OMShadingGradientLayerViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aYa-cA-CqZ"/>
                         <viewControllerLayoutGuide type="bottom" id="sdC-SB-qof"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="aY5-vo-gvH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="deK-tR-y8G">
+                                <rect key="frame" x="0.0" y="88" width="414" height="391"/>
                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UlH-Nn-j6W">
+                                <rect key="frame" x="47" y="479" width="320" height="383"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EP5-7j-UhX">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="25" translatesAutoresizingMaskIntoConstraints="NO" id="3ir-sX-OBC">
-                                                <frame key="frameInset" minX="120" minY="35" width="42" height="32"/>
+                                                <rect key="frame" x="120" y="35" width="42" height="32"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="25" translatesAutoresizingMaskIntoConstraints="NO" id="5Ak-z9-ivf">
-                                                <frame key="frameInset" minX="120" minY="68" width="42" height="31"/>
+                                                <rect key="frame" x="120" y="68" width="42" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="25" translatesAutoresizingMaskIntoConstraints="NO" id="ART-Tt-IWm">
-                                                <frame key="frameInset" minX="266" minY="35" width="54" height="32"/>
+                                                <rect key="frame" x="266" y="35" width="54" height="32"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="J3k-VK-ZBn">
-                                                <frame key="frameInset" minX="162" minY="35" width="52" height="31"/>
+                                                <rect key="frame" x="162" y="35" width="52" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="gradientSliderChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="DGG-J5-d4E"/>
                                                 </connections>
                                             </slider>
                                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="N7q-0Q-77u">
-                                                <frame key="frameInset" minX="162" minY="68" width="52" height="31"/>
+                                                <rect key="frame" x="162" y="68" width="52" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="gradientSliderChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="Am4-as-i1l"/>
                                                 </connections>
                                             </slider>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="25" translatesAutoresizingMaskIntoConstraints="NO" id="WOR-mX-xfu">
-                                                <frame key="frameInset" minX="266" minY="68" width="54" height="31"/>
+                                                <rect key="frame" x="266" y="68" width="54" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="YPy-aL-ILY">
-                                                <frame key="frameInset" minX="214" minY="68" width="52" height="31"/>
+                                                <rect key="frame" x="214" y="68" width="52" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="gradientSliderChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="7za-8D-hyy"/>
                                                 </connections>
                                             </slider>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Points" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4G-6D-T47">
-                                                <frame key="frameInset" minX="162" width="158" height="35"/>
+                                                <rect key="frame" x="162" y="0.0" width="158" height="35"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rkm-KD-3fy">
-                                                <frame key="frameInset" minX="214" minY="35" width="52" height="31"/>
+                                                <rect key="frame" x="214" y="35" width="52" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="gradientSliderChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="nxF-0B-6Zf"/>
                                                 </connections>
                                             </slider>
                                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="s65-zk-Gzz">
-                                                <frame key="frameInset" minX="40" minY="68" width="80" height="31"/>
+                                                <rect key="frame" x="40" y="68" width="80" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="gradientSliderChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="eet-ma-Pze"/>
                                                 </connections>
                                             </slider>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="End" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d1g-AR-xRo">
-                                                <frame key="frameInset" minY="68" width="40" height="31"/>
+                                                <rect key="frame" x="0.0" y="68" width="40" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMC-tW-XXj">
-                                                <frame key="frameInset" minY="35" width="40" height="32"/>
+                                                <rect key="frame" x="0.0" y="35" width="40" height="32"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" fixedFrame="YES" text="Radius" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EKA-6E-bZg">
-                                                <frame key="frameInset" width="162" height="35"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="162" height="35"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="GQ9-Wi-BuH">
-                                                <frame key="frameInset" minX="40" minY="35" width="80" height="31"/>
+                                                <rect key="frame" x="40" y="35" width="80" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="gradientSliderChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="sPO-vP-MLG"/>
@@ -130,37 +134,38 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gGy-3f-JT6">
+                                        <rect key="frame" x="0.0" y="100" width="320" height="269"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Extends start/end" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8cP-qO-Eta">
-                                                <frame key="frameInset" minX="116" minY="237" width="53" height="31"/>
+                                                <rect key="frame" x="116" y="237" width="53" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HhA-4k-5Ng">
-                                                <frame key="frameInset" minX="218" minY="237" width="51" height="31"/>
+                                                <rect key="frame" x="218" y="237" width="51" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="extendsPastEndChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="po3-IO-e5T"/>
                                                 </connections>
                                             </switch>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5OB-Rf-U3p">
-                                                <frame key="frameInset" minX="168" minY="237" width="51" height="31"/>
+                                                <rect key="frame" x="168" y="237" width="51" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="extendsPastStartChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="Ury-D6-WEc"/>
                                                 </connections>
                                             </switch>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="9UG-3n-3Fi">
-                                                <frame key="frameInset" minX="66" minY="237" width="51" height="31"/>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9UG-3n-3Fi">
+                                                <rect key="frame" x="66" y="237" width="51" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="animateSwitchChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="iE7-EP-IGL"/>
                                                 </connections>
                                             </switch>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CRb-Ed-Qga">
-                                                <frame key="frameInset" minX="270" minY="237" width="48" height="32"/>
+                                                <rect key="frame" x="270" y="237" width="48" height="32"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                 <state key="normal" title="Randomize" backgroundImage="randomButton">
@@ -171,14 +176,14 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Animate the gradient" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="98w-Sf-EmQ">
-                                                <frame key="frameInset" minY="237" width="66" height="31"/>
+                                                <rect key="frame" x="0.0" y="237" width="66" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="20" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8dA-yP-139">
-                                                <frame key="frameInset" minY="21" width="320" height="186"/>
+                                                <rect key="frame" x="0.0" y="21" width="320" height="186"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <prototypes>
@@ -186,11 +191,11 @@
                                                         <rect key="frame" x="0.0" y="28" width="320" height="20"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Kf-ok-R7V" id="tCg-Mu-bKL">
-                                                            <frame key="frameInset" width="320" height="19.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="89r-je-une">
-                                                                    <frame key="frameInset" minX="15" width="290" height="19.5"/>
+                                                                    <rect key="frame" x="16" y="0.0" width="288" height="20"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -207,28 +212,28 @@
                                                 </connections>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Slope Function" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOw-ks-Ind">
-                                                <frame key="frameInset" width="320" height="21"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="tzf-yL-9LH">
-                                                <frame key="frameInset" minX="66" minY="207" width="51" height="31"/>
+                                                <rect key="frame" x="66" y="207" width="51" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <connections>
                                                     <action selector="typeSwitchChanged:" destination="dsp-wU-3jn" eventType="valueChanged" id="LYR-LI-HUu"/>
                                                 </connections>
                                             </switch>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Axial/Radial" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DdY-dj-I0h">
-                                                <frame key="frameInset" minX="1" minY="207" width="65" height="31"/>
+                                                <rect key="frame" x="1" y="207" width="65" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="syW-5A-eei">
-                                                <frame key="frameInset" minX="116" minY="208" width="202" height="29"/>
+                                                <rect key="frame" x="116" y="208" width="202" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <segments>
                                                     <segment title="Linear"/>
@@ -270,11 +275,11 @@
                     <navigationItem key="navigationItem" title="Shading Gradient Layer" id="ZGO-HE-D9l">
                         <barButtonItem key="leftBarButtonItem" id="5og-em-7qt">
                             <view key="customView" contentMode="scaleToFill" id="NUb-TT-bkr">
-                                <rect key="frame" x="16" y="5" width="71" height="33"/>
+                                <rect key="frame" x="20" y="5.5" width="71" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="stroke" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aei-Un-z7y">
-                                        <frame key="frameInset" minY="1" width="22" height="32"/>
+                                        <rect key="frame" x="0.0" y="1" width="22" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="7"/>
@@ -282,7 +287,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fNp-lA-bQl">
-                                        <frame key="frameInset" minX="21" minY="1" width="51" height="31"/>
+                                        <rect key="frame" x="21" y="1" width="51" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
@@ -295,11 +300,11 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" id="J1N-Ec-Apf">
                             <view key="customView" contentMode="scaleToFill" id="dec-cQ-NHn">
-                                <rect key="frame" x="288" y="5" width="71" height="33"/>
+                                <rect key="frame" x="323" y="5.5" width="71" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="shape" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hzZ-Tz-2Cr">
-                                        <frame key="frameInset" minY="1" width="22" height="32"/>
+                                        <rect key="frame" x="0.0" y="1" width="22" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="7"/>
@@ -307,7 +312,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="CqQ-Nk-xJu">
-                                        <frame key="frameInset" minX="21" minY="1" width="51" height="31"/>
+                                        <rect key="frame" x="21" y="1" width="51" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
@@ -329,6 +334,7 @@
                         <outlet property="pointEndY" destination="YPy-aL-ILY" id="cfZ-6v-oNt"/>
                         <outlet property="pointStartX" destination="J3k-VK-ZBn" id="srg-wx-C2K"/>
                         <outlet property="pointStartY" destination="rkm-KD-3fy" id="llb-mO-oxl"/>
+                        <outlet property="segmenFunction" destination="syW-5A-eei" id="3Dj-fC-Vzk"/>
                         <outlet property="startPointSliderValueLabel" destination="ART-Tt-IWm" id="fgq-OM-5Hd"/>
                         <outlet property="startRadiusSlider" destination="GQ9-Wi-BuH" id="vF5-Eb-Zke"/>
                         <outlet property="startRadiusSliderValueLabel" destination="3ir-sX-OBC" id="JYk-ob-opK"/>
@@ -339,7 +345,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UQk-dT-rF4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-18.5" y="631.5"/>
+            <point key="canvasLocation" x="-26.811594202898554" y="422.87946428571428"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="u24-ae-ou1">
@@ -347,7 +353,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yW7-Er-xAo" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="OX3-yc-g9f">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -357,15 +363,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t1a-DG-git" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-433.06666666666666" y="624.79999999999995"/>
+            <point key="canvasLocation" x="-627.63285024154595" y="418.39285714285711"/>
         </scene>
     </scenes>
     <resources>
-        <image name="randomButton" width="100" height="14"/>
+        <image name="randomButton" width="100.33333587646484" height="14.333333015441895"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

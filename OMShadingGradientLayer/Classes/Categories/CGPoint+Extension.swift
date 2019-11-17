@@ -64,9 +64,9 @@ extension CGPoint : Hashable  {
         var newPoint = CGPoint(x: point.x, y: point.y)
         let x = (point.x - self.x);
         let y = (point.y - self.y);
-        if (x.floatingPointClass == FloatingPointClassification.negativeZero) {
+        if (x.floatingPointClass == .negativeZero) {
             newPoint.y += length;
-        } else if (y.floatingPointClass == FloatingPointClassification.negativeZero) {
+        } else if (y.floatingPointClass == .negativeZero) {
             newPoint.x += length;
         } else {
             #if CGFLOAT_IS_DOUBLE
