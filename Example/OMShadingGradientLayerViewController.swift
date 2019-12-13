@@ -47,6 +47,9 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     @IBOutlet weak var extendsPastStart : UISwitch!
     @IBOutlet weak var segmenFunction : UISegmentedControl!
     
+    @IBOutlet weak var strokePath  : UISwitch!
+    @IBOutlet weak var randomPath : UISwitch!
+    
     var colors      : [UIColor] = []
     var locations   : [CGFloat] = [0.0,1.0]
     
@@ -255,22 +258,26 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         if ((gradientLayer.path) != nil) {
             gradientLayer.stroke = sender.isOn
         }
+        
+        sender.isOn = gradientLayer.stroke
     }
     
     @IBAction func maskSwitchChanged(_ sender: UISwitch) {
-        
         if sender.isOn  {
+            let style = PolygonStyle(rawValue:Int(arc4random_uniform(6)))!
+            let radius = CGFloat(drand48()) * viewForGradientLayer.bounds.size.min()
+            let sides = Int(arc4random_uniform(32)) + 4
             let path = UIBezierPath.polygon(frame: viewForGradientLayer.bounds,
-                                            sides: Int(arc4random_uniform(32)) + 4,
-                                            radius:  CGFloat(drand48()) * viewForGradientLayer.bounds.size.min(),
-                                            startAngle: 0 ,
-                                            style: PolygonStyle(rawValue:Int(arc4random_uniform(6)))!,
+                                            sides: sides,
+                                            radius:  radius,
+                                            startAngle: 0,
+                                            style: style,
                                             percentInflection: CGFloat(drand48()))
             gradientLayer.path  = path.cgPath
         } else{
             gradientLayer.path  = nil
+            strokePath.isOn = false
         }
-        
         updateGradientLayer()
     }
     
@@ -306,7 +313,7 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     }
     
     @IBAction func animateSwitchChanged(_ sender: UISwitch) {
-        self.animate = sender.isOn;
+        self.animate = sender.isOn
         updateGradientLayer()
     }
     
