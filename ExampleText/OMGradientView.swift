@@ -28,8 +28,7 @@ import UIKit
 
 
 // MARK: - Gradient View
-
-open class OMGradientView<T:AnyObject> : UIView {
+open class OMGradientView<T: CALayer>: UIView {
     
     // MARK: - Properties
     
@@ -38,7 +37,7 @@ open class OMGradientView<T:AnyObject> : UIView {
         return layer as! T
     }
     
-    override open class var layerClass : AnyClass {
+    override open class var layerClass: AnyClass {
         return T.self as AnyClass
     }
     
@@ -46,16 +45,11 @@ open class OMGradientView<T:AnyObject> : UIView {
         super.init(frame: frame)
         setup()
     }
-    
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
-    
-//    public override func drawLayer(layer: CALayer, inContext ctx: CGContext) {
-//        super.drawLayer(layer, inContext: ctx)
-//    }
     
     fileprivate func setup() {
         let scale =  UIScreen.main.scale
@@ -65,13 +59,8 @@ open class OMGradientView<T:AnyObject> : UIView {
         layer.allowsGroupOpacity = true
         layer.shouldRasterize = true
         layer.rasterizationScale = scale
-        
+        self.backgroundColor    = UIColor.white
         layer.setNeedsDisplay()
-        
-        
-        // layer.delegate = self
-    
-        self.backgroundColor       = UIColor.white;
     }
 }
 

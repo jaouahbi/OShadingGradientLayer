@@ -43,12 +43,17 @@ public func /(lhs: CGPoint, rhs: CGSize) -> CGPoint {
 }
 
 
-extension CGPoint : Hashable  {
+extension CGPoint: Hashable  {
     
-    public var hashValue: Int {
-        return self.x.hashValue << MemoryLayout<CGFloat>.size ^ self.y.hashValue
-        
+//    public var hashValue: Int {
+//        return self.x.hashValue << MemoryLayout<CGFloat>.size ^ self.y.hashValue
+//    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.x)
+        hasher.combine(self.y)
     }
+    
     var isZero : Bool {
         return self.equalTo(CGPoint.zero)
     }
