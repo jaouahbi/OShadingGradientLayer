@@ -5,10 +5,7 @@ CoreAnimation Shading gradient layer with animatable properties in Swift
 [![Version](https://img.shields.io/cocoapods/v/OMShadingGradientLayer.svg?style=flat)](http://cocoadocs.org/docsets/OMShadingGradientLayer)
 [![Build Status](https://travis-ci.org/jaouahbi/OMShadingGradientLayer.svg?branch=master)](https://travis-ci.org/jaouahbi/OMShadingGradientLayer)
 
-
-![](https://github.com/jaouahbi/OMShadingGradientLayer/blob/master/ScreenShot/ScreenShot_1.png)
-![](https://github.com/jaouahbi/OMShadingGradientLayer/blob/master/ScreenShot/ScreenShot_2.png)
-![](https://github.com/jaouahbi/OMShadingGradientLayer/blob/master/ScreenShot/ScreenShot_3.png)
+![](https://github.com/jaouahbi/OMShadingGradientLayer/blob/master/gif/gif.gif)
 
 ## Features
 
