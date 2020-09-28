@@ -334,10 +334,12 @@
                         <outlet property="pointEndY" destination="YPy-aL-ILY" id="cfZ-6v-oNt"/>
                         <outlet property="pointStartX" destination="J3k-VK-ZBn" id="srg-wx-C2K"/>
                         <outlet property="pointStartY" destination="rkm-KD-3fy" id="llb-mO-oxl"/>
+                        <outlet property="randomPath" destination="CqQ-Nk-xJu" id="gLw-LJ-6RD"/>
                         <outlet property="segmenFunction" destination="syW-5A-eei" id="3Dj-fC-Vzk"/>
                         <outlet property="startPointSliderValueLabel" destination="ART-Tt-IWm" id="fgq-OM-5Hd"/>
                         <outlet property="startRadiusSlider" destination="GQ9-Wi-BuH" id="vF5-Eb-Zke"/>
                         <outlet property="startRadiusSliderValueLabel" destination="3ir-sX-OBC" id="JYk-ob-opK"/>
+                        <outlet property="strokePath" destination="fNp-lA-bQl" id="6Ec-4E-TS5"/>
                         <outlet property="tableView" destination="8dA-yP-139" id="KBh-ll-4wz"/>
                         <outlet property="typeGardientSwitch" destination="tzf-yL-9LH" id="GCg-s3-s9g"/>
                         <outlet property="viewForGradientLayer" destination="deK-tR-y8G" id="DZZ-2J-q2u"/>
