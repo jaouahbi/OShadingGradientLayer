@@ -52,8 +52,8 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     
     var colors      : [UIColor] = []
     var locations   : [CGFloat] = [0.0,1.0]
-    
-    let gradientLayer = OMShadingGradientLayer(type: .radial)
+    var subviewForGradientLayer : OMGradientView<OMShadingGradientLayer>!
+    var gradientLayer: OMShadingGradientLayer = OMShadingGradientLayer(type:.radial)
     var animate       = true
     
     lazy var slopeFunction: [(Double) -> Double] = {
@@ -163,10 +163,33 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         self.gradientLayer.slopeFunction = self.slopeFunction[(indexPath as NSIndexPath).row];
     }
     
-    // MARK: - View life cycle
+    @IBAction func maskTextSwitchChanged(_ sender: UISwitch) {
+        
+        if (sender.isOn) {
+            textLayer.removeFromSuperlayer()
+            gradientLayer.mask = textLayer
+        } else {
+            gradientLayer.mask = nil
+            gradientLayer.addSublayer(textLayer)
+        }
+        updateGradientLayer()
+    }
     
+    
+    // MARK: - View life cycle
+    var textLayer: OMTextLayer = OMTextLayer(string: "Hello text shading", font: UIFont(name: "Helvetica",size: 50)!)
+  
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        subviewForGradientLayer  = OMGradientView<OMShadingGradientLayer>(frame: viewForGradientLayer.frame)
+        
+        viewForGradientLayer.addSubview(subviewForGradientLayer)
+        
+        gradientLayer   = subviewForGradientLayer!.gradientLayer
+        
+        gradientLayer.addSublayer(textLayer)
+        
         randomizeColors()
     }
     
@@ -212,9 +235,21 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         gradientLayer.frame         = viewBounds
         gradientLayer.locations     = locations
         
-        viewForGradientLayer.layer.addSublayer(gradientLayer)
         
-        viewForGradientLayer.backgroundColor = UIColor.black
+        // update the gradient layer frame
+        self.gradientLayer.frame = self.viewForGradientLayer.bounds
+        
+        // text layers
+        self.textLayer.frame = self.viewForGradientLayer.bounds
+        
+        // 2%
+//        textLayer.borderWidth = 100
+        
+//        self.textLayer.frame = self.viewForGradientLayer.bounds
+//
+//        viewForGradientLayer.layer.addSublayer(gradientLayer)
+//
+        viewForGradientLayer.backgroundColor = UIColor.clear
         
         #if DEBUG
         viewForGradientLayer.layer.borderWidth = 1.0

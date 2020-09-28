@@ -70,7 +70,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
     // MARK: - OMAxialGradientLayerProtocol
     
-    open var gradientType: OMGradientType = .axial {
+    open var gradientType :OMGradientType = .axial {
         didSet {
             self.setNeedsDisplay();
         }

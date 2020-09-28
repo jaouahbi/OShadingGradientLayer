@@ -124,7 +124,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
                 // shading's target coordinate space.
             }
             
-         
+        
             
             if !self.radialTransform.isIdentity && !self.isAxial {
                 // transform the radial context

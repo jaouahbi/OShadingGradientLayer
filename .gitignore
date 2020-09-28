@@ -61,3 +61,7 @@ Carthage/Build
 
 fastlane/report.xml
 fastlane/screenshots
+Example/Example.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+Example/Example.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+ExampleText/ExampleText.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+ExampleText/ExampleText.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist

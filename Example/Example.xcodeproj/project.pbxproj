@@ -33,6 +33,8 @@
 		35F0C59E1CC6D53B0076B308 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35F0C5991CC6D53B0076B308 /* Images.xcassets */; };
 		35F0C5A01CC6D53B0076B308 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35F0C59B1CC6D53B0076B308 /* Main.storyboard */; };
 		35F0C5A11CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */; };
+		D1073FFD2521741100953986 /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1073FFC2521741100953986 /* OMTextLayer.swift */; };
+		D1074001252175EC00953986 /* OMGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1074000252175EC00953986 /* OMGradientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +65,8 @@
 		35F0C59A1CC6D53B0076B308 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35F0C59B1CC6D53B0076B308 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShadingGradientLayerViewController.swift; sourceTree = "<group>"; };
+		D1073FFC2521741100953986 /* OMTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMTextLayer.swift; sourceTree = "<group>"; };
+		D1074000252175EC00953986 /* OMGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientView.swift; sourceTree = "<group>"; };
 		D247910F1A36BB95007AC991 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -132,15 +136,25 @@
 		35F0C5941CC6D53B0076B308 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				D1074000252175EC00953986 /* OMGradientView.swift */,
+				D1073FFB2521741100953986 /* OMTextLayer */,
 				3506A6891D9BD625001C97BF /* Compatibility.swift */,
 				3506A6871D9BD61F001C97BF /* UIBezierPath+Polygon.swift */,
+				35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */,
 				35F0C5951CC6D53B0076B308 /* AppDelegate.swift */,
 				35F0C5991CC6D53B0076B308 /* Images.xcassets */,
 				35F0C59A1CC6D53B0076B308 /* Info.plist */,
 				35F0C59B1CC6D53B0076B308 /* Main.storyboard */,
-				35F0C59C1CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift */,
 			);
 			name = Example;
+			sourceTree = "<group>";
+		};
+		D1073FFB2521741100953986 /* OMTextLayer */ = {
+			isa = PBXGroup;
+			children = (
+				D1073FFC2521741100953986 /* OMTextLayer.swift */,
+			);
+			path = OMTextLayer;
 			sourceTree = "<group>";
 		};
 		D24791061A36BB95007AC991 = {
@@ -187,7 +201,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Jorge Ouahbi";
 				TargetAttributes = {
 					D247910E1A36BB95007AC991 = {
@@ -245,6 +259,7 @@
 				35637A421DEACA9B0059A6B6 /* CGColorSpace+Extension.swift in Sources */,
 				35637A581DEAD04C0059A6B6 /* UIColor+Extensions.swift in Sources */,
 				35637A471DEACA9B0059A6B6 /* Double+Math.swift in Sources */,
+				D1074001252175EC00953986 /* OMGradientView.swift in Sources */,
 				35637A411DEACA9B0059A6B6 /* CGAffineTransform+Extensions.swift in Sources */,
 				35F0C5A11CC6D53B0076B308 /* OMShadingGradientLayerViewController.swift in Sources */,
 				35637A481DEACA9B0059A6B6 /* Float+Extensions.swift in Sources */,
@@ -252,6 +267,7 @@
 				35637A441DEACA9B0059A6B6 /* CGFloat+Math.swift in Sources */,
 				35637A461DEACA9B0059A6B6 /* CGSize+Math.swift in Sources */,
 				35637A521DEACA9B0059A6B6 /* OMLog.swift in Sources */,
+				D1073FFD2521741100953986 /* OMTextLayer.swift in Sources */,
 				3506A6881D9BD61F001C97BF /* UIBezierPath+Polygon.swift in Sources */,
 				35637A531DEACA9B0059A6B6 /* OMShadingGradient.swift in Sources */,
 				35637A4E1DEACA9B0059A6B6 /* Math.swift in Sources */,
@@ -286,6 +302,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -311,7 +328,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -344,6 +361,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -362,7 +380,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -381,7 +399,7 @@
 				DEVELOPMENT_TEAM = 9LCWBZHZFL;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jom.Example;
 				PRODUCT_NAME = Example;
@@ -401,7 +419,7 @@
 				DEVELOPMENT_TEAM = 9LCWBZHZFL;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jom.Example;
 				PRODUCT_NAME = Example;
