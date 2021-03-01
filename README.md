@@ -1,11 +1,8 @@
-# OMShadingGradientLayer
+# OShadingGradientLayer
 
 CoreAnimation Shading gradient layer with animatable properties in Swift
 
-[![Version](https://img.shields.io/cocoapods/v/OMShadingGradientLayer.svg?style=flat)](http://cocoadocs.org/docsets/OMShadingGradientLayer)
-[![Build Status](https://travis-ci.org/jaouahbi/OMShadingGradientLayer.svg?branch=master)](https://travis-ci.org/jaouahbi/OMShadingGradientLayer)
-
-![](https://github.com/jaouahbi/OMShadingGradientLayer/blob/master/gif/gif.gif)
+![](https://github.com/jaouahbi/OShadingGradientLayer/blob/master/gif/gif.gif)
 
 ## Features
 
@@ -32,18 +29,18 @@ Open a issue.
 
 ## CocoaPods Installation
 
-> TODO
+> NO
 
 ## Carthage Installation
 
-> TODO
+> NO
 
 * * *
 
 ## Credits
 
-OMShadingGradientLayer is owned and maintained by the [Jorge Ouahbi](https://twitter.com/a_c_r_a_t_a_).
+OShadingGradientLayer is owned and maintained by the [Jorge Ouahbi].
 
 ## License
 
-OMShadingGradientLayer is released under the APACHE 2.0 license. See LICENSE for details.
+OShadingGradientLayer is released under the APACHE 2.0 license. See LICENSE for details.
