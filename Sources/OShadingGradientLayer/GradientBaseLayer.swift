@@ -23,12 +23,13 @@
 
 
 import UIKit
+import LibControl
 
 public typealias  GradientColors = (UIColor,UIColor)
 typealias  TransformContextClosure = (_ ctx:CGContext, _ startPoint:CGPoint, _ endPoint:CGPoint, _ startRadius:CGFloat, _ endRadius:CGFloat) -> (Void)
 
 
-open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
+public class GradientBaseLayer: CALayer, GradientLayerProtocol {
     
     // MARK: - OMColorsAndLocationsProtocol
     
@@ -70,7 +71,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
     // MARK: - OMAxialGradientLayerProtocol
     
-    open var gradientType :OMGradientType = .axial {
+    open var gradientType: GradientType = .axial {
         didSet {
             self.setNeedsDisplay();
         }
@@ -101,13 +102,13 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     // MARK: - OMRadialGradientLayerProtocol
     @objc open var startRadius: CGFloat = 0 {
         didSet {
-            startRadius = clamp(startRadius, lower: 0, upper: 1.0)
+            startRadius = clamp(startRadius, lowerValue: 0, upperValue: 1.0)
             self.setNeedsDisplay();
         }
     }
     @objc open var endRadius: CGFloat = 0 {
         didSet {
-            endRadius = clamp(endRadius, lower: 0, upper: 1.0)
+            endRadius = clamp(endRadius, lowerValue: 0, upperValue: 1.0)
             self.setNeedsDisplay();
         }
     }
@@ -213,7 +214,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
         super.init(coder:aDecoder)
     }
     
-    convenience public init(type:OMGradientType) {
+    convenience public init(type:GradientType) {
         self.init()
         self.gradientType  = type
     }
@@ -230,7 +231,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     override public  init(layer: Any) {
         super.init(layer: layer)
         
-        if let other = layer as? OMGradientLayer {
+        if let other = layer as? GradientBaseLayer {
             
             // common
             self.colors             = other.colors
@@ -258,24 +259,24 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
     // MARK: - Functions
     override open class func needsDisplay(forKey event: String) -> Bool {
-        if (event == OMGradientLayerProperties.startPoint  ||
-            event == OMGradientLayerProperties.locations   ||
-            event == OMGradientLayerProperties.colors      ||
-            event == OMGradientLayerProperties.endPoint     ||
-            event == OMGradientLayerProperties.startRadius ||
-            event == OMGradientLayerProperties.endRadius) {
+        if (event == GradientLayerProperties.startPoint  ||
+            event == GradientLayerProperties.locations   ||
+            event == GradientLayerProperties.colors      ||
+            event == GradientLayerProperties.endPoint     ||
+            event == GradientLayerProperties.startRadius ||
+            event == GradientLayerProperties.endRadius) {
             return true
         }
         return super.needsDisplay(forKey: event)
     }
     
     override open func action(forKey event: String) -> CAAction? {
-        if (event == OMGradientLayerProperties.startPoint ||
-            event == OMGradientLayerProperties.locations   ||
-            event == OMGradientLayerProperties.colors      ||
-            event == OMGradientLayerProperties.endPoint    ||
-            event == OMGradientLayerProperties.startRadius ||
-            event == OMGradientLayerProperties.endRadius) {
+        if (event == GradientLayerProperties.startPoint ||
+            event == GradientLayerProperties.locations   ||
+            event == GradientLayerProperties.colors      ||
+            event == GradientLayerProperties.endPoint    ||
+            event == GradientLayerProperties.startRadius ||
+            event == GradientLayerProperties.endRadius) {
             return animationActionForKey(event);
         }
         return super.action(forKey: event)
@@ -290,8 +291,12 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
     func prepareContextIfNeeds(_ ctx:CGContext, scale:CGAffineTransform, closure:TransformContextClosure) {
         
-        let sp  = self.startPoint * self.bounds.size
-        let ep  = self.endPoint   * self.bounds.size
+        let sp  = CGPoint( x: self.startPoint.x * self.bounds.size.width,
+                           y: self.startPoint.y * self.bounds.size.height)
+        let ep  = CGPoint( x: self.endPoint.x * self.bounds.size.width,
+                           y: self.endPoint.y * self.bounds.size.height)
+        
+//        let ep  = self.endPoint   * self.bounds.size
         let mr  = minRadius(self.bounds.size)
         // Scaling transformation and keeping track of the inverse
         let invScaleT = scale.inverted();
@@ -324,17 +329,17 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     func isDrawable() -> Bool {
         if (colors.count == 0) {
             // nothing to do
-            OMLog.printv("\(self.name ?? "") Unable to do the shading without colors.")
+            Log.print("\(self.name ?? "") Unable to do the shading without colors.")
             return false
         }
         if (startPoint.isZero && endPoint.isZero) {
             // nothing to do
-            OMLog.printv("\(self.name ?? "") Start point and end point are {x:0, y:0}.")
+            Log.print("\(self.name ?? "") Start point and end point are {x:0, y:0}.")
             return false
         }
         if (startRadius == endRadius && self.isRadial) {
             // nothing to do
-            OMLog.printv("\(self.name ?? "") Start radius and end radius are equal. \(startRadius) \(endRadius)")
+            Log.print("\(self.name ?? "") Start radius and end radius are equal. \(startRadius) \(endRadius)")
             return false
         }
         return true;

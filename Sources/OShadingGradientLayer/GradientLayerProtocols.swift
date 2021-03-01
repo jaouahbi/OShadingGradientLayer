@@ -26,13 +26,13 @@
 import UIKit
 
 
-public enum OMGradientType : Int {
+public enum GradientType : Int {
     case axial
     case radial
 }
 
 // Animatable Properties
-public struct OMGradientLayerProperties {
+public struct GradientLayerProperties {
     
     // OMGradientLayerProtocol
     static var startPoint   = "startPoint"
@@ -61,7 +61,7 @@ public protocol OMShapeableLayerProtocol {
     var path : CGPath?  {get set}
 }
 
-public protocol OMColorsAndLocationsProtocol {
+public protocol ColorsAndLocationsProtocol {
     // The array of UIColor objects defining the color of each gradient
     // stop. Defaults to nil. Animatable.
     var colors: [UIColor] {get set}
@@ -75,7 +75,7 @@ public protocol OMColorsAndLocationsProtocol {
 }
 
 // Axial Gradient layer Protocol
-public protocol OMGradientLayerProtocol : OMShapeableLayerProtocol, OMColorsAndLocationsProtocol {
+public protocol GradientLayerProtocol : OMShapeableLayerProtocol, ColorsAndLocationsProtocol {
 
     //Defaults to CGPoint(x: 0.5,y: 0.0). Animatable.
     var startPoint: CGPoint   {get set}
@@ -83,7 +83,7 @@ public protocol OMGradientLayerProtocol : OMShapeableLayerProtocol, OMColorsAndL
     var endPoint: CGPoint  {get set}
     var extendsBeforeStart : Bool  {get set}
     var extendsPastEnd:Bool {get set}
-    var gradientType : OMGradientType  {get set}
+    var gradientType : GradientType  {get set}
     // Radial
     var startRadius:CGFloat  {get set}
     var endRadius: CGFloat   {get set}

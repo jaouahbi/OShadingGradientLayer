@@ -9,6 +9,8 @@
 // https://gist.github.com/erica/c54826fd3411d6db053bfdfe1f64ab54
 
 import UIKit
+import LibControl
+
 
 public enum PolygonStyle : Int { case flatsingle, flatdouble, curvesingle, curvedouble, flattruple, curvetruple }
 
@@ -181,7 +183,7 @@ extension UIBezierPath
     }
     
     func ApplyCenteredPathTransform(_ transform:CGAffineTransform) {
-        let center = self.boundingBox().size.center()
+        let center = self.boundingBox().size.center
         var t = CGAffineTransform.identity;
         t = t.translatedBy(x: center.x, y: center.y);
         t = transform.concatenating(t);

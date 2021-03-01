@@ -50,8 +50,9 @@
 import CoreGraphics
 import CoreText
 import CoreFoundation
+import LibControl
 
-@objc class OMTextLayer : CALayer
+@objc public class OMTextLayer : CALayer
 {
     // MARK: properties
     
@@ -70,7 +71,7 @@ import CoreFoundation
     }
     var radiusRatio : CGFloat = 0.0 {
         didSet {
-            radiusRatio = clamp(radiusRatio, lower: 0, upper: 1.0)
+            radiusRatio = clamp(radiusRatio, lowerValue: 0, upperValue: 1.0)
             setNeedsDisplay()
         }
     }
@@ -352,7 +353,7 @@ import CoreFoundation
     
     // MARK: overrides
     
-    override func draw(in context: CGContext) {
+    public override func draw(in context: CGContext) {
         
         if let string = self.string {
             
@@ -437,7 +438,7 @@ extension OMTextLayer
     
     func createPathFromStringWithAttributes() -> UIBezierPath? {
         
-        OMLog.printd("\(self.name ?? ""): createPathFromStringWithAttributes()")
+        Log.print("\(self.name ?? ""): createPathFromStringWithAttributes()")
         
         if let line = createLine() {
             
@@ -526,7 +527,7 @@ extension OMTextLayer {
             
             angleArc += glyphAngle
             
-            //OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(CPCAngle.format(Double(glyphAngle))) arc length :\(CPCAngle.format(Double(angleArc)))")
+            //Log.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(CPCAngle.format(Double(glyphAngle))) arc length :\(CPCAngle.format(Double(angleArc)))")
             
             glyphArcInfo[lineGlyphIndex].angle = glyphAngle
             
@@ -539,7 +540,7 @@ extension OMTextLayer {
     
     func drawWithArc(context:CGContext, rect:CGRect)
     {
-        OMLog.printd("\(self.name ?? ""): drawWithArc(\(rect))")
+        Log.print("\(self.name ?? ""): drawWithArc(\(rect))")
         
         if let string = string, let angle = self.angleLenght {
             
@@ -547,7 +548,7 @@ extension OMTextLayer {
             let line  = CTLineCreateWithAttributedString(attributeString)
             let glyphCount:CFIndex = CTLineGetGlyphCount(line);
             if glyphCount == 0 {
-                OMLog.printw("\(self.name ?? ""): 0 glyphs \(attributeString))")
+                Log.print("\(self.name ?? ""): 0 glyphs \(attributeString))")
                 return;
             }
             
@@ -583,7 +584,7 @@ extension OMTextLayer {
                         
                         let angleRotation:CGFloat = -(glyphArcInfo[runGlyphIndex + glyphOffset].angle);
                         
-                        //OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(CPCAngle.format(Double(angleRotation)))");
+                        //Log.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(CPCAngle.format(Double(angleRotation)))");
                         
                         context.rotate(by: angleRotation);
                         

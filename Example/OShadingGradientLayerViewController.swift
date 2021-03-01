@@ -17,10 +17,12 @@
 
 
 import UIKit
+import OMShadingGradientLayer
+import LibControl
 
 let kDefaultAnimationDuration: TimeInterval = 5.0
 
-class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
+class OShadingGradientLayerViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView:  UITableView!
     
@@ -52,7 +54,7 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     
     var colors      : [UIColor] = []
     var locations   : [CGFloat] = [0.0,1.0]
-    var subviewForGradientLayer : OMGradientView<OMShadingGradientLayer>!
+    var subviewForGradientLayer : OMView<OMShadingGradientLayer>!
     var gradientLayer: OMShadingGradientLayer = OMShadingGradientLayer(type:.radial)
     var animate       = true
     
@@ -182,7 +184,7 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        subviewForGradientLayer  = OMGradientView<OMShadingGradientLayer>(frame: viewForGradientLayer.frame)
+        subviewForGradientLayer  = OMView<OMShadingGradientLayer>(frame: viewForGradientLayer.frame)
         
         viewForGradientLayer.addSubview(subviewForGradientLayer)
         
@@ -205,8 +207,8 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         pointEndX.maximumValue     = 1.0
         pointEndY.minimumValue     = 0.0
         
-        let startPoint = CGPoint(x:viewBounds.minX,y: viewBounds.minY) / viewBounds.size
-        let endPoint   = CGPoint(x:viewBounds.minX,y: viewBounds.maxY) / viewBounds.size
+        let startPoint = CGPoint(x:viewBounds.minX / viewBounds.size.width,y: viewBounds.minY / viewBounds.size.height)
+        let endPoint   = CGPoint(x:viewBounds.minX / viewBounds.size.width,y: viewBounds.maxY / viewBounds.size.height)
         
         pointStartX.value = Float(startPoint.x)
         pointStartY.value = Float(startPoint.y)
@@ -300,7 +302,7 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
     @IBAction func maskSwitchChanged(_ sender: UISwitch) {
         if sender.isOn  {
             let style = PolygonStyle(rawValue:Int(arc4random_uniform(6)))!
-            let radius = CGFloat(drand48()) * viewForGradientLayer.bounds.size.min()
+            let radius = CGFloat(drand48()) * viewForGradientLayer.bounds.size.min
             let sides = Int(arc4random_uniform(32)) + 4
             let path = UIBezierPath.polygon(frame: viewForGradientLayer.bounds,
                                             sides: sides,
@@ -391,10 +393,9 @@ class OMShadingGradientLayerViewController : UIViewController, UITableViewDataSo
         self.colors.removeAll()
         var numberOfColor  = round(Float(drand48()) * 16)
         while numberOfColor > 0 {
-            if let color = UIColor.random() {
-                self.colors.append(color)
-                numberOfColor = numberOfColor - 1
-            }
+            let color = UIColor.random
+            self.colors.append(color)
+            numberOfColor = numberOfColor - 1
         }
         self.gradientLayer.colors = colors
     }

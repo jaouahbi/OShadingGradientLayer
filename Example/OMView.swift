@@ -18,7 +18,7 @@
 
 
 //
-//  OMGradientView.swift
+//  OMView.swift
 //
 //  Created by Jorge Ouahbi on 21/4/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
@@ -27,14 +27,13 @@
 import UIKit
 
 
-// MARK: - Gradient View
-open class OMGradientView<T: CALayer>: UIView {
+// MARK: - Layer's View
+public class OMView<T: CALayer>: UIView {
     
     // MARK: - Properties
-    
-    /// The view’s conical gradient layer used for rendering. (read-only)
-    open var gradientLayer: T {
-        return layer as! T
+    /// The view’s conical  layer used for rendering. (read-only)
+    var gradientLayer: T {
+        return super.layer as! T
     }
     
     override open class var layerClass: AnyClass {

@@ -16,12 +16,27 @@
 
 
 import UIKit
+import LibControl
 
-open class OMShadingGradientLayer : OMGradientLayer {
+//public func * (left: CGPoint, right: CGSize) -> CGSize {
+//    return CGSize(width: left.x * right.width, height: left.y * right.height)
+//}
+//public func / (left: CGPoint, right: CGSize) -> CGSize {
+//    return CGSize(width: left.x * right.width, height: left.y * right.height)
+//}
+//
+////public func * (left: CGPoint, right: CGSize) -> CGPoint {
+////    return CGPoint(x: left.x * right.width, y: left.y * right.height)
+////}
+////public func / (left: CGPoint, right: CGSize) -> CGPoint {
+////    return CGPoint(x: left.x * right.width, y: left.y * right.height)
+////}
+
+public class OMShadingGradientLayer: GradientBaseLayer {
     
-       var shading:[OMShadingGradient] = []
+    var shading: [ShadingGradient] = []
     /// Contruct gradient object with a type
-    convenience public init(type:OMGradientType) {
+    convenience public init(type: GradientType) {
         self.init()
         self.gradientType  = type;
         
@@ -74,7 +89,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
         
         if let player = player {
             
-            OMLog.printv("\(self.name ?? "") (presentation) \(player)")
+            Log.print("\(self.name ?? "") (presentation) \(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -84,15 +99,18 @@ open class OMShadingGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-            OMLog.printv("\(self.name ?? "") (model) \(self)")
+            Log.print("\(self.name ?? "") (model) \(self)")
         }
         
         if isDrawable() {
             ctx.saveGState()
             // The starting point of the axis, in the shading's target coordinate space.
-            var start:CGPoint = startPoint * self.bounds.size
+            var start:CGPoint = CGPoint(x: startPoint.x * self.bounds.size.width,
+                                        y: startPoint.y * self.bounds.size.height)
+                                        // The ending point
             // The ending point of the axis, in the shading's target coordinate space.
-            var end:CGPoint  = endPoint   * self.bounds.size
+            var end:CGPoint  = CGPoint(x: endPoint.x * self.bounds.size.width,
+                                       y: endPoint.y * self.bounds.size.height)
             // The context must be clipped before scale the matrix.
             addPathAndClipIfNeeded(ctx)
             
@@ -113,8 +131,10 @@ open class OMShadingGradientLayer : OMGradientLayer {
                 ctx.scaleBy(x: self.bounds.size.width,
                             y: self.bounds.size.height );
                 
-                start  = start / self.bounds.size
-                end    = end   / self.bounds.size
+                start  = CGPoint(x: start.x / self.bounds.size.width,
+                                 y: start.y / self.bounds.size.height)
+                end    = CGPoint(x: end.x   / self.bounds.size.width,
+                                 y: end.y /  self.bounds.size.height)
             }
             else
             {
@@ -124,13 +144,11 @@ open class OMShadingGradientLayer : OMGradientLayer {
                 // shading's target coordinate space.
             }
             
-        
-            
             if !self.radialTransform.isIdentity && !self.isAxial {
                 // transform the radial context
                 self.prepareContextIfNeeds(ctx, scale: self.radialTransform,
                                            closure:{(ctx, startPoint, endPoint, startRadius, endRadius) -> (Void) in
-                                            var shading = OMShadingGradient(colors: colors,
+                                            var shading = ShadingGradient(colors: colors,
                                                                         locations: locations,
                                                                         startPoint: startPoint ,
                                                                         startRadius: startRadius,
@@ -152,7 +170,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
             } else {
                 let minimumRadius = minRadius(self.bounds.size)
                 
-                var shading = OMShadingGradient(colors: colors,
+                var shading = ShadingGradient(colors: colors,
                                             locations: locations,
                                             startPoint: start ,
                                             startRadius: startRadius * minimumRadius,
