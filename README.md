@@ -25,7 +25,7 @@ Open a issue.
 
 ## Manual Installation
 
-> To use OMShadingGradientLayer with a project , you must include all Swift files located inside the `OMShadingGradientLayer` directory directly in your project.
+> To use OShadingGradientLayer with a project , you must include all Swift files located inside the `OShadingGradientLayer` directory directly in your project.
 
 ## CocoaPods Installation
 
